@@ -12,7 +12,7 @@ package ecm;
 
 import java.math.*;
 
-public final class expression {
+public final class Expression {
   private static final BigInteger BigInt1 = BigInteger.valueOf(1L);
   private static final BigInteger BigInt2 = BigInteger.valueOf(2L);
   private static final BigInteger BigInt3 = BigInteger.valueOf(3L);

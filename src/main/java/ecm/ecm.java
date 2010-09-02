@@ -11,7 +11,7 @@
 //
 package ecm;
 
-import ecm.expression;
+import ecm.Expression;
 import java.applet.*;
 import java.awt.*;
 import java.math.*;
@@ -1189,7 +1189,7 @@ public class ecm extends Applet implements Runnable
         try
         {
           ExpressionRC =
-            expression.ComputeExpression(
+            Expression.ComputeExpression(
               textNumber.getText().trim(),
               0,
               ExpressionResult);
@@ -7663,7 +7663,7 @@ public class ecm extends Applet implements Runnable
     try
     {
       ExpressionRC =
-        expression.ComputeExpression(
+        Expression.ComputeExpression(
               expr,
               type,
               ExpressionResult);
