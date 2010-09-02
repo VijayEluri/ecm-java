@@ -8,6 +8,9 @@
 // the written consent from the author. Otherwise it can be used freely
 // except that you have to write somewhere in the code this header.
 // 
+package ecm;
+
+import ecm.ecm;
 import java.math.*;
 
 final class Siqs implements Runnable

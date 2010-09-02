@@ -7,8 +7,11 @@
 // No part of this code can be used for commercial purposes without
 // the written consent from the author. Otherwise it can be used freely
 // except that you have to write somewhere in the code this header.
-// 
+//
+package ecm;
+
 import java.math.*;
+
 public final class expression {
   private static final BigInteger BigInt1 = BigInteger.valueOf(1L);
   private static final BigInteger BigInt2 = BigInteger.valueOf(2L);

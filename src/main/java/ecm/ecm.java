@@ -9,6 +9,9 @@
 // the written consent from the author. Otherwise it can be used freely
 // except that you have to write somewhere in the code this header.
 //
+package ecm;
+
+import ecm.expression;
 import java.applet.*;
 import java.awt.*;
 import java.math.*;
