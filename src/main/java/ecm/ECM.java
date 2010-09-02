@@ -19,7 +19,7 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 
-public class ecm extends Applet implements Runnable
+public class ECM extends Applet implements Runnable
 {
   static final long serialVersionUID = 20L;
   static final boolean KARATSUBA_ENABLED = false;
@@ -483,7 +483,7 @@ public class ecm extends Applet implements Runnable
       }
       System.out.println("factor="+a+", time="+(System.currentTimeMillis()-time)+" msec");
       
-      final ecm ecm1 = new ecm();
+      final ECM ecm1 = new ECM();
       ecm1.init();
       ecm1.StartFactorExprBatch("-991", 1);
 //      ecm1.StartFactorExprBatch("10^59+213", 0);
@@ -525,7 +525,7 @@ public class ecm extends Applet implements Runnable
     else
     {
       Frame frame = new Frame("Integer factorization using ECM/SIQS");
-      ecm ecm1 = new ecm();
+      ECM ecm1 = new ECM();
       frame.addWindowListener(new PanelWindowListener());
       frame.setLayout(new BorderLayout());
       frame.add("Center", ecm1);
@@ -7858,9 +7858,9 @@ public class ecm extends Applet implements Runnable
   class Command implements ActionListener
   {
     int id;
-    ecm appletEcm;
+    ECM appletEcm;
 
-    public Command(int id, ecm appletEcm)
+    public Command(int id, ECM appletEcm)
     {
       this.id = id;
       this.appletEcm = appletEcm;
@@ -7955,12 +7955,13 @@ public class ecm extends Applet implements Runnable
   } // end inner class
 
 } /* end applet */
+/* end applet */
 
 class AlertContinue extends Frame
 {
   static final long serialVersionUID = 30L;
 
-  public AlertContinue(ecm applet)
+  public AlertContinue(ECM applet)
   {
     super("Warning!");
     Label label1, label2;
@@ -7995,8 +7996,8 @@ class AlertContinue extends Frame
 
 class AlertActionListener implements ActionListener
 {
-  private ecm appletEcm;
-  public AlertActionListener(ecm myApplet)
+  private ECM appletEcm;
+  public AlertActionListener(ECM myApplet)
   {
     appletEcm = myApplet;
   }
@@ -8012,6 +8013,7 @@ class AlertActionListener implements ActionListener
   }
 
 } /* end class */
+/* end class */
 
 class PanelWindowListener implements WindowListener
 {

@@ -10,12 +10,12 @@
 // 
 package ecm;
 
-import ecm.ecm;
+import ecm.ECM;
 import java.math.*;
 
 final class Siqs implements Runnable
 {
-  ecm ecmApplet;
+  ECM ecmApplet;
   private String SIQSInfoText;
   private int numberThreads;
   int NumberLength;
@@ -72,7 +72,7 @@ final class Siqs implements Runnable
   static final double dDosALa62 = dDosALa31 * dDosALa31;
   static final long Mi = 1000000000;
 
-  Siqs(ecm ecmApplet)
+  Siqs(ECM ecmApplet)
   {
     this.ecmApplet = ecmApplet;
     this.NumberLength = ecmApplet.NumberLength;
@@ -107,16 +107,16 @@ final class Siqs implements Runnable
     }
     if (polyadd = ((F1 & 2) != 0))   // Adjust value of B as appropriate
     {                                // according to the Gray code.
-      ecm.AddBigNbr(biLinearCoeff, biLinearDelta[indexFactorA], biLinearCoeff,
+      ECM.AddBigNbr(biLinearCoeff, biLinearDelta[indexFactorA], biLinearCoeff,
                     NumberLength);
-      ecm.AddBigNbr(biLinearCoeff, biLinearDelta[indexFactorA], biLinearCoeff,
+      ECM.AddBigNbr(biLinearCoeff, biLinearDelta[indexFactorA], biLinearCoeff,
                     NumberLength);
     }
     else
     {
-      ecm.SubtractBigNbr(biLinearCoeff, biLinearDelta[indexFactorA],
+      ECM.SubtractBigNbr(biLinearCoeff, biLinearDelta[indexFactorA],
                          biLinearCoeff, NumberLength);
-      ecm.SubtractBigNbr(biLinearCoeff, biLinearDelta[indexFactorA],
+      ECM.SubtractBigNbr(biLinearCoeff, biLinearDelta[indexFactorA],
                          biLinearCoeff, NumberLength);
     }
     indexFactorA--;
@@ -1500,31 +1500,31 @@ final class Siqs implements Runnable
     mergeArrays(aindex, nbrFactorsA, rowMatrixB, rowMatrixBbeforeMerge,
                 primeTrialDivisionData, rowSquares);
     nbrSquares = rowSquares[0];
-    ecm.LongToBigNbr(1, biR, NumberLength);
-    ecm.LongToBigNbr(positive? 1: -1, biT, NumberLength);
-    ecm.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biU,
+    ECM.LongToBigNbr(1, biR, NumberLength);
+    ECM.LongToBigNbr(positive? 1: -1, biT, NumberLength);
+    ECM.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biU,
                                NumberLength);                     // Ax
-    ecm.AddBigNbr(biU, biLinearCoeff, biU, NumberLength);         // Ax+B
+    ECM.AddBigNbr(biU, biLinearCoeff, biU, NumberLength);         // Ax+B
     if (oddPolynomial)
     {
-      ecm.SubtractBigNbr(biU, biLinearDelta[0], biU, NumberLength);// Ax+B (odd)
-      ecm.SubtractBigNbr(biU, biLinearDelta[0], biU, NumberLength);// Ax+B (odd)
+      ECM.SubtractBigNbr(biU, biLinearDelta[0], biU, NumberLength);// Ax+B (odd)
+      ECM.SubtractBigNbr(biU, biLinearDelta[0], biU, NumberLength);// Ax+B (odd)
     }
     if ((biU[NumberLength - 1] & 0x40000000) != 0)
     {                                        // If number is negative
-      ecm.ChSignBigNbr(biU, NumberLength);   // make it positive.
+      ECM.ChSignBigNbr(biU, NumberLength);   // make it positive.
     }
     for (index=1; index < nbrSquares; index++)
     {
       D = rowSquares[index];
       if (D == multiplier)
       {
-      	ecm.AddBigNbr(biU, TestNbr, biU, NumberLength);
-        ecm.DivBigNbrByLong(biU, D, biU, NumberLength);
+      	ECM.AddBigNbr(biU, TestNbr, biU, NumberLength);
+        ECM.DivBigNbrByLong(biU, D, biU, NumberLength);
       }
       else
       {
-        ecm.MultBigNbrByLong(biR, D, biR, NumberLength);
+        ECM.MultBigNbrByLong(biR, D, biR, NumberLength);
       }
     }
     if (InsertNewRelation(matrixB, rowMatrixB, vectLeftHandSide, biT,
@@ -1596,23 +1596,23 @@ final class Siqs implements Runnable
         }
         seed = rowPartial[squareRootSize + 2];
         getFactorsOfA(seed, nbrFactorsA, indexFactorsA, indexMinFactorA);
-        ecm.LongToBigNbr(newDivid, biR, NumberLength);
+        ECM.LongToBigNbr(newDivid, biR, NumberLength);
         nbrFactorsPartial = 0;
                                               // biT = old (Ax+B)^2.
-        ecm.MultBigNbr(biV, biV, biT, NumberLength);
+        ECM.MultBigNbr(biV, biV, biT, NumberLength);
                                               // biT = old (Ax+B)^2 - N.
-        ecm.SubtractBigNbr(biT, TestNbr, biT, NumberLength);
+        ECM.SubtractBigNbr(biT, TestNbr, biT, NumberLength);
         if (oldDivid < 0)
         {
           rowPartials[nbrFactorsPartial++] = 0; // Insert -1 as a factor.
         }
         if (biT[NumberLength-1] >= 0x40000000)
         {
-          ecm.ChSignBigNbr(biT, NumberLength);   // Make it positive.
+          ECM.ChSignBigNbr(biT, NumberLength);   // Make it positive.
         }
         NumberLengthDivid = NumberLength;
            // The number is multiple of the big prime, so divide by it.
-        ecm.DivBigNbrByLong(biT, newDivid, biT, NumberLengthDivid);
+        ECM.DivBigNbrByLong(biT, newDivid, biT, NumberLengthDivid);
         if (biT[NumberLengthDivid-1] == 0 &&
             biT[NumberLengthDivid-2] < 0x40000000)
         {
@@ -1620,7 +1620,7 @@ final class Siqs implements Runnable
         }
         for (index=0; index < nbrFactorsA; index++)
         {
-          ecm.DivBigNbrByLong(biT,
+          ECM.DivBigNbrByLong(biT,
                  primeTrialDivisionData[indexFactorsA[index]].value, biT,
                  NumberLengthDivid);
           if (biT[NumberLengthDivid-1] == 0 &&
@@ -1686,7 +1686,7 @@ final class Siqs implements Runnable
               break;
             }
             expParity = 1 - expParity;
-            ecm.DivBigNbrByLong(biT, Divisor, biT, NumberLengthDivid);
+            ECM.DivBigNbrByLong(biT, Divisor, biT, NumberLengthDivid);
             DividLSDW = ((long)biT[1] << 31) + biT[0];
             biT2 = biT[2];
             biT3 = biT[3];
@@ -1715,20 +1715,20 @@ final class Siqs implements Runnable
             rowPartials[nbrFactorsPartial++] = index;
           }
         }
-        ecm.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
+        ECM.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
                              NumberLength);
-        ecm.AddBigNbr(biT, biLinearCoeff, biT, NumberLength); // biT = Ax+B
+        ECM.AddBigNbr(biT, biLinearCoeff, biT, NumberLength); // biT = Ax+B
         if (oddPolynomial)
         {                                                     // Ax+B (odd)
-          ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
-          ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+          ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+          ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
         }
         if ((biT[NumberLength - 1] & 0x40000000) != 0)
         {                                        // If number is negative
-          ecm.ChSignBigNbr(biT, NumberLength);   // make it positive.
+          ECM.ChSignBigNbr(biT, NumberLength);   // make it positive.
         }
                // biU = Product of old Ax+B times new Ax+B
-        ecm.MultBigNbrModN(biV, biT, biU, TestNbr, NumberLength);
+        ECM.MultBigNbrModN(biV, biT, biU, TestNbr, NumberLength);
         // Add all elements of aindex array to the rowMatrixB array discarding
         // duplicates.
         mergeArrays(aindex, nbrFactorsA, rowMatrixB, rowMatrixBbeforeMerge,
@@ -1746,12 +1746,12 @@ final class Siqs implements Runnable
           D = rowSquares[index];
           if (D != multiplier)
           {
-            ecm.MultBigNbrByLong(biR, D, biR, NumberLength);
+            ECM.MultBigNbrByLong(biR, D, biR, NumberLength);
           }
           else
           {
-            ecm.AddBigNbr(biU, TestNbr, biU, NumberLength);
-            ecm.DivBigNbrByLong(biU, multiplier, biU, NumberLength);
+            ECM.AddBigNbr(biU, TestNbr, biU, NumberLength);
+            ECM.DivBigNbrByLong(biU, multiplier, biU, NumberLength);
           }
         }
         if (rowMatrixB[0] > 1 &&
@@ -1787,31 +1787,31 @@ final class Siqs implements Runnable
         // duplicates.
         mergeArrays(aindex, nbrFactorsA, rowMatrixB, rowMatrixBbeforeMerge,
                     primeTrialDivisionData, rowSquares);
-        ecm.LongToBigNbr(Divid, biR, NumberLength);
+        ECM.LongToBigNbr(Divid, biR, NumberLength);
         nbrSquares = rowSquares[0];
         for (index=1; index < nbrSquares; index++)
         {
           D = rowSquares[index];
-          ecm.MultBigNbrByLongModN(biR, D, biR, TestNbr, NumberLength);
+          ECM.MultBigNbrByLongModN(biR, D, biR, TestNbr, NumberLength);
           if (D == multiplier)
           {
-            ecm.DivBigNbrByLong(biU, D, biU, NumberLength);
+            ECM.DivBigNbrByLong(biU, D, biU, NumberLength);
           }
         }
         rowPartial[0] = (positive?newDivid:-newDivid);
                    // Indicate last index with this hash.
         rowPartial[1] = -1; 
-        ecm.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
+        ECM.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
                              NumberLength);
-        ecm.AddBigNbr(biT, biLinearCoeff, biT, NumberLength); // biT = Ax+B
+        ECM.AddBigNbr(biT, biLinearCoeff, biT, NumberLength); // biT = Ax+B
         if (oddPolynomial)
         {                                                     // Ax+B (odd)
-          ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
-          ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+          ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+          ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
         }
         if ((biT[NumberLength-1] & 0x40000000) != 0)
         {                      // If square root is negative convert to positive.
-          ecm.ChSignBigNbr(biT, NumberLength);
+          ECM.ChSignBigNbr(biT, NumberLength);
         }
         for (index = 0; index < squareRootSize; index++)
         { 
@@ -1847,17 +1847,17 @@ final class Siqs implements Runnable
     int nbrColumns;
 
     trialDivisions++;
-    ecm.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
+    ECM.MultBigNbrByLong(biQuadrCoeff, index2 - SieveLimit, biT,
                          NumberLength);                       // Ax
-    ecm.AddBigNbr(biT, biLinearCoeff, biT, NumberLength);     // Ax+B
+    ECM.AddBigNbr(biT, biLinearCoeff, biT, NumberLength);     // Ax+B
     if (oddPolynomial)
     {                                                         // Ax+B (odd)
-      ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
-      ecm.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+      ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
+      ECM.SubtractBigNbr(biT, biLinearDelta[0], biT, NumberLength);
     }
-    ecm.MultBigNbr(biT, biT, biDividend, NumberLength);       // (Ax+B)^2
+    ECM.MultBigNbr(biT, biT, biDividend, NumberLength);       // (Ax+B)^2
                                                    // To factor: (Ax+B)^2-N
-    ecm.SubtractBigNbr(biDividend, TestNbr, biDividend, NumberLength);
+    ECM.SubtractBigNbr(biDividend, TestNbr, biDividend, NumberLength);
             /* factor biDividend */
 
     NumberLengthDivid = NumberLength; /* Number length for dividend */
@@ -1865,12 +1865,12 @@ final class Siqs implements Runnable
     if (biDividend[NumberLengthDivid - 1] >= 0x40000000)
     { /* Negative */
       positive = false;
-      ecm.ChSignBigNbr(biDividend, NumberLengthDivid); // Convert to positive
+      ECM.ChSignBigNbr(biDividend, NumberLengthDivid); // Convert to positive
     }
     rowSquares[0] = 1;
     for (index = 0; index < nbrFactorsA; index++)
     {
-      ecm.DivBigNbrByLong(biDividend, afact[index], biDividend,
+      ECM.DivBigNbrByLong(biDividend, afact[index], biDividend,
                                 NumberLengthDivid);
       if ((biDividend[NumberLengthDivid - 1] == 0
           && biDividend[NumberLengthDivid - 2] < 0x40000000))
@@ -2002,7 +2002,7 @@ final class Siqs implements Runnable
     amodq = new int[nbrFactorsA];
     tmodqq = new int[nbrFactorsA];
     NbrPolynomials = (1 << (nbrFactorsA - 1)) - 1;
-    NumberLength = ecm.BigNbrToBigInt(NbrToFactor, TestNbr);
+    NumberLength = ECM.BigNbrToBigInt(NbrToFactor, TestNbr);
     TestNbr[NumberLength++] = 0;
     System.arraycopy(TestNbr, 0,          // Source
                      TestNbr2, 0,         // Destination
@@ -2070,7 +2070,7 @@ final class Siqs implements Runnable
     currentPrime = 3;
     while (currentPrime < 10000)
     { 
-      NbrMod = (int) ecm.RemDivBigNbrByLong(TestNbr, currentPrime,
+      NbrMod = (int) ECM.RemDivBigNbrByLong(TestNbr, currentPrime,
                               NumberLength);
       halfCurrentPrime = (currentPrime - 1) / 2;
       int jacobi = (int)modPow(NbrMod, halfCurrentPrime, currentPrime);
@@ -2111,7 +2111,7 @@ final class Siqs implements Runnable
         multiplier = arrmult[j];
       }
     } /* end while */
-    ecm.MultBigNbrByLong(TestNbr2, multiplier, TestNbr, NumberLength);
+    ECM.MultBigNbrByLong(TestNbr2, multiplier, TestNbr, NumberLength);
     matrixPartial = new int[nbrPrimes * 8][NumberLength/2 + 4];
     FactorBase = currentPrime;
     matrixB = new int[nbrPrimes + 50][];
@@ -2156,7 +2156,7 @@ final class Siqs implements Runnable
     currentPrime = 3;
     while (j < nbrPrimes)
     { /* select small primes */
-      NbrMod = (int) ecm.RemDivBigNbrByLong(TestNbr, currentPrime,
+      NbrMod = (int) ECM.RemDivBigNbrByLong(TestNbr, currentPrime,
                                 NumberLength);
       if (currentPrime != multiplier &&
           modPow(NbrMod, (currentPrime - 1) / 2, currentPrime) == 1)
@@ -2513,8 +2513,8 @@ final class Siqs implements Runnable
       // primes are multiplied an odd number of times.
     for (mask = 1; mask != 0; mask *= 2)
     {
-      ecm.LongToBigNbr(1, biT, NumberLength);
-      ecm.LongToBigNbr(1, biR, NumberLength);    
+      ECM.LongToBigNbr(1, biT, NumberLength);
+      ECM.LongToBigNbr(1, biR, NumberLength);
       for (row = matrixBlength - 1; row >= 0; row--)
       {
         vectExpParity[row] = 0;
@@ -2528,7 +2528,7 @@ final class Siqs implements Runnable
       {
         if ((matrixV[row] & mask) != 0)
         {
-          ecm.MultBigNbrModN(vectLeftHandSide[row], biR, biU, TestNbr,
+          ECM.MultBigNbrModN(vectLeftHandSide[row], biR, biU, TestNbr,
                          NumberLength);
           for (j = 0; j <= NumberLength; j++)
           {
@@ -2543,11 +2543,11 @@ final class Siqs implements Runnable
             {
               if (primeIndex == 0)
               {
-                ecm.SubtractBigNbr(TestNbr, biT, biT, NumberLength); // Multiply biT by -1.
+                ECM.SubtractBigNbr(TestNbr, biT, biT, NumberLength); // Multiply biT by -1.
               }
               else
               {
-                ecm.MultBigNbrByLongModN(biT,
+                ECM.MultBigNbrByLongModN(biT,
                         primeTrialDivisionData[primeIndex].value, biT,
                         TestNbr, NumberLength);
               }
@@ -2556,7 +2556,7 @@ final class Siqs implements Runnable
         }
       }
       NumberLength = NumberLengthBak;
-      ecm.SubtractBigNbrModN(biR, biT, biR, TestNbr, NumberLength);
+      ECM.SubtractBigNbrModN(biR, biT, biR, TestNbr, NumberLength);
       ecmApplet.GcdBigNbr(biR, TestNbr2, biT, NumberLength);
       index = 0;
       if (biT[0] == 1)
@@ -2651,13 +2651,13 @@ final class Siqs implements Runnable
     /* Convert negative numbers to the range 0 <= n < TestNbr */
     if ((TestNbr[0] & 1) == 0)
     {
-      ecm.DivBigNbrByLong(TestNbr, 2, TestNbr2, NumberLength);
+      ECM.DivBigNbrByLong(TestNbr, 2, TestNbr2, NumberLength);
              // If biR >= TestNbr perform biR = biR - TestNbr.
       for (k = 0; k < NumberLength; k++)
       {
         biT[k] = 0;
       }
-      ecm.AddBigNbrModN(biR, biT, biR, TestNbr2, NumberLength);
+      ECM.AddBigNbrModN(biR, biT, biR, TestNbr2, NumberLength);
       ecmApplet.ModInvBigNbr(biR, biT, TestNbr2, NumberLength);
     }
     else
@@ -2666,12 +2666,12 @@ final class Siqs implements Runnable
     }
     if ((biU[NumberLength - 1] & 0x40000000) != 0)
     {
-      ecm.AddBigNbr(biU, TestNbr, biU, NumberLength);
+      ECM.AddBigNbr(biU, TestNbr, biU, NumberLength);
     }
 
     // Compute biU / biR  (mod TestNbr)
 
-    ecm.MultBigNbrModN(biU, biT, biR, TestNbr, NumberLength);
+    ECM.MultBigNbrModN(biU, biT, biR, TestNbr, NumberLength);
 
     matrixB[i] = new int[nbrColumns];        // Add relation to matrix B.
     System.arraycopy(rowMatrixB, 1,          // Source
@@ -3421,7 +3421,7 @@ nextpoly:
                      primeTrialDivisionData,
                      vectExpParity,
                      vectLeftHandSide, biT, biR, biU, NumberLength));
-              result = ecm.BigIntToBigNbr(biT, NumberLength);  // Factor found.
+              result = ECM.BigIntToBigNbr(biT, NumberLength);  // Factor found.
               synchronized(matrixB)
               {
                 factorSiqs = result;
@@ -3452,10 +3452,10 @@ nextpoly:
             }
              // Compute the leading coefficient in biQuadrCoeff.
     
-            ecm.LongToBigNbr(afact[0], biQuadrCoeff, NumberLength);
+            ECM.LongToBigNbr(afact[0], biQuadrCoeff, NumberLength);
             for (index = 1; index < nbrFactorsA; index++)
             {
-              ecm.MultBigNbrByLong(biQuadrCoeff, afact[index], biQuadrCoeff,
+              ECM.MultBigNbrByLong(biQuadrCoeff, afact[index], biQuadrCoeff,
                                    NumberLength);
             }
             for (NumberLengthA=NumberLength; NumberLengthA>=2; NumberLengthA--)
@@ -3469,20 +3469,20 @@ nextpoly:
             for (index = 0; index < nbrFactorsA; index++)
             {
               currentPrime = (int)afact[index];
-              D = ecm.RemDivBigNbrByLong(biQuadrCoeff,
+              D = ECM.RemDivBigNbrByLong(biQuadrCoeff,
                        currentPrime*currentPrime, NumberLengthA)/currentPrime;
               Q = (long)primeSieveData[aindex[index]].modsqrt *
                   modInv((int)D, currentPrime) % currentPrime;
               amodq[index] = (int)D << 1;
-              tmodqq[index] = (int)ecm.RemDivBigNbrByLong(TestNbr,
+              tmodqq[index] = (int)ECM.RemDivBigNbrByLong(TestNbr,
                        currentPrime*currentPrime, NumberLength);
               if (Q+Q > currentPrime)
               {
                 Q = currentPrime - Q;
               }
-              ecm.DivBigNbrByLong(biQuadrCoeff, currentPrime, biDividend,
+              ECM.DivBigNbrByLong(biQuadrCoeff, currentPrime, biDividend,
                                   NumberLengthA);
-              ecm.MultBigNbrByLong(biDividend, Q, biLinearDelta[index],
+              ECM.MultBigNbrByLong(biDividend, Q, biLinearDelta[index],
                                    NumberLengthA);
               for (index2 = NumberLengthA; index2 < NumberLength; index2++)
               {
@@ -3679,12 +3679,12 @@ nextpoly:
         {
           if ((grayCode & (1<<i)) == 0)
           {
-            ecm.AddBigNbr(biLinearCoeff, biLinearDelta[i], biLinearCoeff,
+            ECM.AddBigNbr(biLinearCoeff, biLinearDelta[i], biLinearCoeff,
                           NumberLength);
           }
           else
           {
-            ecm.SubtractBigNbr(biLinearCoeff, biLinearDelta[i], biLinearCoeff,
+            ECM.SubtractBigNbr(biLinearCoeff, biLinearDelta[i], biLinearCoeff,
                                NumberLength);
           }
         }
@@ -3702,7 +3702,7 @@ nextpoly:
           System.arraycopy(biLinearCoeff, 0,     // Source
                            biT, 0,               // Destination
                            NumberLength);        // Number of elements.
-          ecm.ChSignBigNbr(biT, NumberLength);   // Make it positive.
+          ECM.ChSignBigNbr(biT, NumberLength);   // Make it positive.
           biAbsLinearCoeff = biT;
         }
         else
