@@ -6,6 +6,6 @@ is a Java implementation done by Dario Alpern.
 AUTHOR
 ======
 Darío Alejandro Alpern
-Buenos Aires - Argentina
-http://www.alpertron.com.ar/ (en castellano)
-http://www.alpertron.com.ar/ENGLISH.HTM (in English)
+- Buenos Aires - Argentina
+- http://www.alpertron.com.ar/ (en castellano)
+- http://www.alpertron.com.ar/ENGLISH.HTM (in English)
