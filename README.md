@@ -8,6 +8,7 @@ http://en.wikipedia.org/wiki/Elliptic_curve_method
 AUTHOR
 ======
 Darío Alejandro Alpern
+
 * Buenos Aires - Argentina
 * http://www.alpertron.com.ar/ (en castellano)
 * http://www.alpertron.com.ar/ENGLISH.HTM (in English)
