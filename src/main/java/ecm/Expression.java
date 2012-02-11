@@ -10,7 +10,7 @@
 //
 package ecm;
 
-import java.math.*;
+import java.math.BigInteger;
 
 public final class Expression {
   private static final BigInteger BigInt1 = BigInteger.valueOf(1L);

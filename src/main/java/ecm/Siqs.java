@@ -10,8 +10,7 @@
 // 
 package ecm;
 
-import ecm.ECM;
-import java.math.*;
+import java.math.BigInteger;
 
 final class Siqs implements Runnable
 {
