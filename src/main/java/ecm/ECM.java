@@ -15,16 +15,13 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.URL;
 
-public class ECM extends Applet implements Runnable
-{
+public class ECM extends Applet implements Runnable {
 	static final long serialVersionUID = 20L;
 	static final boolean KARATSUBA_ENABLED = false;
 	static final boolean debugging_main = true;
@@ -63,7 +60,7 @@ public class ECM extends Applet implements Runnable
 	static final int NLen = 1200;
 	final int aiIndx[] = new int[Qmax];
 	final int aiF[] = new int[Qmax];
-	static final int aiP[] = { 2, 3, 5, 7, 11, 13 };
+	static final int aiP[] = {2, 3, 5, 7, 11, 13};
 	static final int aiQ[] =
 			{
 					2,
@@ -201,7 +198,7 @@ public class ECM extends Applet implements Runnable
 					24571,
 					25741,
 					26209,
-					28081 };
+					28081};
 	static final int aiG[] =
 			{
 					1,
@@ -339,10 +336,10 @@ public class ECM extends Applet implements Runnable
 					7,
 					6,
 					11,
-					19 };
+					19};
 	final int aiInv[] = new int[PWmax];
-	static final int aiNP[] = { 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6 };
-	static final int aiNQ[] = { 5, 8, 11, 18, 22, 27, 36, 59, 79, 89, 136 };
+	static final int aiNP[] = {2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6};
+	static final int aiNQ[] = {5, 8, 11, 18, 22, 27, 36, 59, 79, 89, 136};
 	static final int aiT[] =
 			{
 					2 * 2 * 3,
@@ -355,7 +352,7 @@ public class ECM extends Applet implements Runnable
 					2 * 2 * 2 * 2 * 3 * 3 * 3 * 5 * 7 * 11,
 					2 * 2 * 2 * 2 * 3 * 3 * 3 * 5 * 5 * 7 * 11,
 					2 * 2 * 2 * 2 * 2 * 3 * 3 * 3 * 5 * 5 * 7 * 11,
-					2 * 2 * 2 * 2 * 2 * 3 * 3 * 3 * 5 * 5 * 7 * 11 * 13 };
+					2 * 2 * 2 * 2 * 2 * 3 * 3 * 3 * 5 * 5 * 7 * 11 * 13};
 	final int biTmp[] = new int[NLen];
 	final int biExp[] = new int[NLen];
 	final int biN[] = new int[NLen];
@@ -454,15 +451,15 @@ public class ECM extends Applet implements Runnable
 	long ValuesSieved;
 	private long primeModMult;
 	private long lModularMult;
-	private final int[] arrNbr = new int[4*NLen];
-	private final int[] arrNbrM = new int[4*NLen];
-	private final int[] arrNbrAux = new int[4*NLen];
-	private final int[] montgKaratsubaArr = new int[2*NLen];
+	private final int[] arrNbr = new int[4 * NLen];
+	private final int[] arrNbrM = new int[4 * NLen];
+	private final int[] arrNbrAux = new int[4 * NLen];
+	private final int[] montgKaratsubaArr = new int[2 * NLen];
 	private static final int KARATSUBA_CUTOFF = 64;
 	private int karatLength;
 
 	/* ECM limits for 30, 35, ..., 85 digits */
-	static final int limits[] = { 5, 8, 15, 25, 25, 27, 32, 43, 70, 150, 300, 350, 600 };
+	static final int limits[] = {5, 8, 15, 25, 25, 27, 32, 43, 70, 150, 300, 350, 600};
 	static final String[] expressionText =
 			{
 					"Number too high (more than 10000 digits).",
@@ -474,18 +471,15 @@ public class ECM extends Applet implements Runnable
 					"Invalid parameter."
 			};
 
-	public static void main(final String args[])
-	{
-		if (debugging_main)
-		{
-			int [] queue = new int[200];
-			int i, a=0;
+	public static void main(final String args[]) {
+		if (debugging_main) {
+			int[] queue = new int[200];
+			int i, a = 0;
 			long time = System.currentTimeMillis();
-			for (i=0; i<1; i++)
-			{
-				a = Siqs.SQUFOF(Long.parseLong(args[0]),queue);
+			for (i = 0; i < 1; i++) {
+				a = Siqs.SQUFOF(Long.parseLong(args[0]), queue);
 			}
-			System.out.println("factor="+a+", time="+(System.currentTimeMillis()-time)+" msec");
+			System.out.println("factor=" + a + ", time=" + (System.currentTimeMillis() - time) + " msec");
 
 			final ECM ecm1 = new ECM();
 			ecm1.init();
@@ -525,9 +519,7 @@ public class ECM extends Applet implements Runnable
       big1 = BigIntToBigNbr(ecm1.TestNbr, int NumberLength);
       System.out.println(big1.toString());
     */
-		}
-		else
-		{
+		} else {
 			Frame frame = new Frame("Integer factorization using ECM/SIQS");
 			ECM ecm1 = new ECM();
 			frame.addWindowListener(new PanelWindowListener());
@@ -540,10 +532,8 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	public void init()
-	{
-		if (onlyFactoring)
-		{
+	public void init() {
+		if (onlyFactoring) {
 			layout(
 					"Type number or numerical expression to factor here and press Return:",
 					true);
@@ -553,8 +543,7 @@ public class ECM extends Applet implements Runnable
 	public int getFactors(
 			final BigInteger NbrToFactor,
 			final BigInteger[] Primes,
-			final int[] Exponents)
-	{
+			final int[] Exponents) {
 		layout("Number to factor:", false);
 		textNumber.setText(NbrToFactor.toString());
 		startNewFactorization(true);       // Request complete factorization
@@ -563,8 +552,7 @@ public class ECM extends Applet implements Runnable
 		return NbrFactors;
 	}
 
-	void layout(final String caption, final boolean editable)
-	{
+	void layout(final String caption, final boolean editable) {
 		setBackground(Color.lightGray);
 		setLayout(null);
 		labelTop = new Label(caption);
@@ -610,8 +598,7 @@ public class ECM extends Applet implements Runnable
 		labelBottom.setFont(new Font("Courier", Font.PLAIN, 12));
 		labelBottom.setAlignment(Label.CENTER);
 		add(labelBottom);
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			textNumber.addActionListener(new Command(ACTION_TEXT_NBR, this));
 			textCurve.addActionListener(new Command(ACTION_TEXT_CURVE, this));
 			btnCurve.addActionListener(new Command(ACTION_BTN_CURVE, this));
@@ -628,15 +615,12 @@ public class ECM extends Applet implements Runnable
 		ProbArray[5] = 1.53E10;
 	}
 
-	public void destroy()
-	{ /* Applet end */
+	public void destroy() { /* Applet end */
 		TerminateThread = true;
 	}
 
-	public int setState(final String state)
-	{
-		if (onlyFactoring)
-		{
+	public int setState(final String state) {
+		if (onlyFactoring) {
 			int index = 0;
 			int indexNew;
 			final int indexEnd = state.length();
@@ -647,50 +631,40 @@ public class ECM extends Applet implements Runnable
 			int indexParen;
 			int i;
 
-			if (indexComma == -1)
-			{
+			if (indexComma == -1) {
 				indexComma = indexEnd;
 			}
 			NumberToFactor = BigInt1;
 			NbrFactors = 0;
-			for (i = 0; i < 400; i++)
-			{
+			for (i = 0; i < 400; i++) {
 				Exp[i] = Typ[i] = 0;
 			}
-			while (index < indexComma)
-			{
+			while (index < indexComma) {
 				indexTimes = state.indexOf('x', index);
-				if (indexTimes == -1)
-				{
+				if (indexTimes == -1) {
 					indexTimes = indexComma;
 				}
 				indexExp = state.indexOf('^', index);
 				indexParen = state.indexOf('(', index);
-				if (indexParen > indexTimes || indexParen == -1)
-				{
+				if (indexParen > indexTimes || indexParen == -1) {
 					indexParen = indexTimes;
 				}
-				if (indexExp > indexParen || indexExp == -1)
-				{
+				if (indexExp > indexParen || indexExp == -1) {
 					indexExp = indexParen;
 				}
 				indexNew = indexTimes + 1;
-				switch (state.charAt(indexTimes - 1))
-				{
-					case ')' :
+				switch (state.charAt(indexTimes - 1)) {
+					case ')':
 						Typ[NbrFactors] =
 								Integer.parseInt(state.substring(indexParen + 1, indexTimes - 1));
 						break;
-					default :
+					default:
 						Typ[NbrFactors] = 0; /* Prime */
 				}
 				PD[NbrFactors] = new BigInteger(state.substring(index, indexExp));
-				if (indexExp == indexParen)
-				{
+				if (indexExp == indexParen) {
 					Exp[NbrFactors] = 1;
-				}
-				else
-				{
+				} else {
 					Exp[NbrFactors] =
 							Integer.parseInt(state.substring(indexExp + 1, indexParen));
 				}
@@ -700,52 +674,38 @@ public class ECM extends Applet implements Runnable
 				index = indexNew;
 			} /* end while */
 			lModularMult = -1;
-			if (indexComma < indexEnd)
-			{
+			if (indexComma < indexEnd) {
 				indexPlus = state.indexOf('+', indexComma);
-				if (indexPlus > 0)
-				{
+				if (indexPlus > 0) {
 					OldTimeElapsed =
 							Long.parseLong(state.substring(indexComma + 1, indexPlus));
 					indexPlus2 = state.indexOf('+', indexPlus + 1);
-					if (indexPlus2 > 0)
-					{
+					if (indexPlus2 > 0) {
 						lModularMult =
 								Long.parseLong(state.substring(indexPlus + 1, indexPlus2));
 						digitsInGroup = Integer.parseInt(state.substring(indexPlus2 + 1));
-					}
-					else
-					{
+					} else {
 						lModularMult = Long.parseLong(state.substring(indexPlus + 1));
 					}
-				}
-				else
-				{
+				} else {
 					OldTimeElapsed = Long.parseLong(state.substring(indexComma + 1));
 				}
-			}
-			else
-			{
+			} else {
 				OldTimeElapsed = -1; /* Old cookie format */
 			}
-			if (NumberToFactor.compareTo(BigInt1) > 0)
-			{
+			if (NumberToFactor.compareTo(BigInt1) > 0) {
 				textNumber.setText(NumberToFactor.toString());
 				calcThread = new Thread(this);
 				calcThread.start();
 			}
 			return digitsInGroup; /* Number of digits in a group */
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
 
-	public void setDigits(final int nbrDigits)
-	{
-		if (onlyFactoring)
-		{
+	public void setDigits(final int nbrDigits) {
+		if (onlyFactoring) {
 			digitsInGroup = (digitsInGroup & 0xFC00) | nbrDigits;
 			final String Tmp1 = textAreaContents;
 			final String Tmp2 = StringToLabel;
@@ -755,43 +715,30 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	public void setThreads(final int nbrThreads)
-	{
+	public void setThreads(final int nbrThreads) {
 		numberThreads = nbrThreads;
 	}
 
-	public void switchSIQS(final int newSwitchSIQS)
-	{
-		if (newSwitchSIQS == 1)
-		{
+	public void switchSIQS(final int newSwitchSIQS) {
+		if (newSwitchSIQS == 1) {
 			digitsInGroup &= 0xFBFF;
-		}
-		else
-		{
+		} else {
 			digitsInGroup |= 0x0400;
 		}
 	}
 
-	public void useCunnTable(final int newUseCunnTable)
-	{
-		if (newUseCunnTable == 1)
-		{
+	public void useCunnTable(final int newUseCunnTable) {
+		if (newUseCunnTable == 1) {
 			digitsInGroup &= 0xEFFF;
-		}
-		else
-		{
+		} else {
 			digitsInGroup |= 0x1000;
 		}
 	}
 
-	public void Verbose(final int verboseType)
-	{
-		if (verboseType == 0)
-		{
+	public void Verbose(final int verboseType) {
+		if (verboseType == 0) {
 			digitsInGroup &= 0xF7FF;
-		}
-		else
-		{
+		} else {
 			digitsInGroup |= 0x0800;
 		}
 		final String Tmp1 = textAreaContents;
@@ -801,84 +748,65 @@ public class ECM extends Applet implements Runnable
 		StringToLabel = Tmp2;
 	}
 
-	public String getState()
-	{
-		if (onlyFactoring)
-		{
+	public String getState() {
+		if (onlyFactoring) {
 			int i;
 			StringBuffer state = new StringBuffer();
 
-			if (calcThread != null)
-			{
+			if (calcThread != null) {
 				TerminateThread = true;
-				try
-				{
+				try {
 					calcThread.join(); /* Wait until the factorization thread dies */
-				}
-				catch (InterruptedException ie)
-				{
+				} catch (InterruptedException ie) {
 				}
 			}
-			for (i = 0; i < (Computing3Squares ? NbrFactors1 : NbrFactors); i++)
-			{
-				if (i != 0)
-				{
+			for (i = 0; i < (Computing3Squares ? NbrFactors1 : NbrFactors); i++) {
+				if (i != 0) {
 					state.append('x');
 				}
 				state.append(PD[i].toString());
-				if (Exp[i] != 1)
-				{
+				if (Exp[i] != 1) {
 					state.append('^');
 					state.append(Exp[i]);
 				}
-				if (Typ[i] != 0)
-				{
+				if (Typ[i] != 0) {
 					state.append('(');
 					state.append(Typ[i]);
 					state.append(')');
 				}
 			}
-			if (OldTimeElapsed >= 0)
-			{
+			if (OldTimeElapsed >= 0) {
 				state.append(',');
 				state.append(OldTimeElapsed);
 			}
-			if (lModularMult >= 0)
-			{
+			if (lModularMult >= 0) {
 				state.append('+');
 				state.append(lModularMult);
 			}
 			state.append('+');
 			state.append(digitsInGroup);
 			return state.toString();
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	public String getStringsFromBothPanes()
-	{
-		if (onlyFactoring)
-		{
+	public String getStringsFromBothPanes() {
+		if (onlyFactoring) {
 			final String lower = lowerTextArea.getText();
 			StringBuffer text = new StringBuffer(
 					"<HTML><TITLE>Elliptic Curve Method factorization</TITLE><BODY><H2>Elliptic Curve Method factorization</H2><P><I>Written by Dario Alejandro Alpern (alpertron@hotmail.com)</I><P><PRE>");
 			text.append(upperTextArea.getText());
 			text.append("<HR><P>");
 			text.append(lower);
-			if (lower.indexOf("complete") < 0)
-			{
+			if (lower.indexOf("complete") < 0) {
 				final long New = System.currentTimeMillis();
-				if (OldTimeElapsed >= 0)
-				{
+				if (OldTimeElapsed >= 0) {
 					OldTimeElapsed += New - Old;
 					Old = New;
 					text.append("<HR><P>Elapsed time: ");
 					text.append(GetDHMS(OldTimeElapsed / 1000));
-					if (lModularMult >= 0)
-					{
+					if (lModularMult >= 0) {
 						text.append('\n');
 						text.append(lModularMult);
 						text.append(" modular multiplications have been done");
@@ -887,149 +815,98 @@ public class ECM extends Applet implements Runnable
 			}
 			text.append("</PRE><BODY></HTML>");
 			return text.toString();
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	String GetDHMS(final long time)
-	{
+	String GetDHMS(final long time) {
 		return time / 86400 + "d " + (time % 86400) / 3600 + "h " +
 				((time % 3600) / 60) + "m " + (time % 60) + "s";
 	}
 
-	String GetDHMSd(final long time)
-	{
+	String GetDHMSd(final long time) {
 		return time / 864000 + "d " + (time % 864000) / 36000 + "h " +
-				((time % 36000) / 600) + "m " + ((time % 600)/10)+"."+
-				(time%10) + "s";
+				((time % 36000) / 600) + "m " + ((time % 600) / 10) + "." +
+				(time % 10) + "s";
 	}
 
-	void addStringToLabel(String value)
-	{
-		if (value.length() + 1 + StringToLabel.length() >= 79)
-		{
+	void addStringToLabel(String value) {
+		if (value.length() + 1 + StringToLabel.length() >= 79) {
 			textAreaContents += StringToLabel + "\n";
 			StringToLabel = value + " ";
-		}
-		else
-		{
+		} else {
 			StringToLabel += value + " ";
 		}
 	}
 
-	void ShowUpperPane()
-	{
+	void ShowUpperPane() {
 		int i;
 
 		textAreaContents = "";
 		StringToLabel = "";
-		if (numberIsNegative)
-		{
+		if (numberIsNegative) {
 			addStringToLabel("-");         // Indicate number is negative.
 		}
 		insertBigNbr(NumberToFactor);
-		if (NbrFactors == 1 && Exp[0] == 1)
-		{
-			if (Typ[0] > 0)
-			{
+		if (NbrFactors == 1 && Exp[0] == 1) {
+			if (Typ[0] > 0) {
 				addStringToLabel("is composite");
-			}
-			else
-			{
-				if (Typ[0] < 0)
-				{
+			} else {
+				if (Typ[0] < 0) {
 					addStringToLabel("is unknown");
-				}
-				else
-				{
+				} else {
 					addStringToLabel("is prime");
 				}
 			}
-		}
-		else
-		{
-			if (numberIsNegative)
-			{
+		} else {
+			if (numberIsNegative) {
 				addStringToLabel("= -1 *");
-			}
-			else
-			{
+			} else {
 				addStringToLabel("=");
 			}
-			for (i = 0; i < NbrFactors; i++)
-			{
-				if (i != 0)
-				{
+			for (i = 0; i < NbrFactors; i++) {
+				if (i != 0) {
 					addStringToLabel("x");
 				}
 				insertBigNbr(PD[i]);
-				if (Exp[i] != 1)
-				{
+				if (Exp[i] != 1) {
 					addStringToLabel("^");
 					addStringToLabel(String.valueOf(Exp[i]));
 				}
-				if (Typ[i] > 0)
-				{
-					if ((digitsInGroup & 0x800) == 0x800)
-					{
-						if (Typ[i] == TYP_AURIF)
-						{
+				if (Typ[i] > 0) {
+					if ((digitsInGroup & 0x800) == 0x800) {
+						if (Typ[i] == TYP_AURIF) {
 							addStringToLabel("(Aurifeuille)");
-						}
-						else if (Typ[i] / 50000000 * 50000000 == TYP_AURIF)
-						{
+						} else if (Typ[i] / 50000000 * 50000000 == TYP_AURIF) {
 							addStringToLabel("(Aurif - Composite)");
-						}
-						else if (Typ[i] == TYP_TABLE)
-						{
+						} else if (Typ[i] == TYP_TABLE) {
 							addStringToLabel("(Table)");
-						}
-						else if (Typ[i] / 50000000 * 50000000 == TYP_TABLE)
-						{
+						} else if (Typ[i] / 50000000 * 50000000 == TYP_TABLE) {
 							addStringToLabel("(Table - Composite)");
-						}
-						else if (Typ[i] == TYP_SIQS)
-						{
+						} else if (Typ[i] == TYP_SIQS) {
 							addStringToLabel("(SIQS)");
-						}
-						else if (Typ[i] / 50000000 * 50000000 == TYP_SIQS)
-						{
+						} else if (Typ[i] / 50000000 * 50000000 == TYP_SIQS) {
 							addStringToLabel("(SIQS - Composite)");
-						}
-						else if (Typ[i] == TYP_LEHMAN)
-						{
+						} else if (Typ[i] == TYP_LEHMAN) {
 							addStringToLabel("(Lehman)");
-						}
-						else if (Typ[i] / 50000000 * 50000000 == TYP_LEHMAN)
-						{
+						} else if (Typ[i] / 50000000 * 50000000 == TYP_LEHMAN) {
 							addStringToLabel("(Lehman - Composite)");
-						}
-						else if (Typ[i] > TYP_EC)
-						{
+						} else if (Typ[i] > TYP_EC) {
 							addStringToLabel("(Curve " + (Typ[i] - TYP_EC) + ")");
-						}
-						else
-						{
+						} else {
 							addStringToLabel("(Composite)");
 						}
-					}
-					else if (
+					} else if (
 							Typ[i] < TYP_EC
 									&& Typ[i] != TYP_LEHMAN
 									&& Typ[i] != TYP_SIQS
 									&& Typ[i] != TYP_AURIF
-									&& Typ[i] != TYP_TABLE)
-					{
+									&& Typ[i] != TYP_TABLE) {
 						addStringToLabel("(Composite)");
 					}
-				}
-				else
-				{
-					if (Typ[i] < 0)
-					{
+				} else {
+					if (Typ[i] < 0) {
 						addStringToLabel("(Unknown)");
 					}
 				}
@@ -1038,59 +915,44 @@ public class ECM extends Applet implements Runnable
 		upperTextArea.setText(textAreaContents + StringToLabel);
 	}
 
-	void insertBigNbr(final BigInteger N)
-	{
+	void insertBigNbr(final BigInteger N) {
 		int i, dig;
 		dig = digitsInGroup & 0x3FF;
 		final String value = N.toString();
 		i = (value.length() + dig - 1) % dig + 1;
 		addStringToLabel(value.substring(0, i));
-		while (i < value.length())
-		{
+		while (i < value.length()) {
 			addStringToLabel(value.substring(i, i + dig));
 			i += dig;
 		}
 	}
 
-	void InsertNewFactor(final BigInteger InputFactor)
-	{
-		int g,exp;
+	void InsertNewFactor(final BigInteger InputFactor) {
+		int g, exp;
 
 		/* Insert input factor */
-		for (g = NbrFactors - 1; g >= 0; g--)
-		{
+		for (g = NbrFactors - 1; g >= 0; g--) {
 			PD[NbrFactors] = PD[g].gcd(InputFactor);
-			if (PD[NbrFactors].equals(BigInt1) || PD[NbrFactors].equals(PD[g]))
-			{
+			if (PD[NbrFactors].equals(BigInt1) || PD[NbrFactors].equals(PD[g])) {
 				continue;
 			}
-			for (exp=0; PD[g].remainder(PD[NbrFactors]).signum() == 0; exp++)
-			{
+			for (exp = 0; PD[g].remainder(PD[NbrFactors]).signum() == 0; exp++) {
 				PD[g] = PD[g].divide(PD[NbrFactors]);
 			}
 			Exp[NbrFactors] = Exp[g] * exp;
-			if (Typ[g] < 100000000)
-			{
+			if (Typ[g] < 100000000) {
 				Typ[g] = -EC;
 				Typ[NbrFactors] = -TYP_EC - EC;
-			}
-			else if (Typ[g] < 150000000)
-			{
+			} else if (Typ[g] < 150000000) {
 				Typ[NbrFactors] = -Typ[g];
 				Typ[g] = TYP_AURIF - Typ[g];
-			}
-			else if (Typ[g] < 200000000)
-			{
+			} else if (Typ[g] < 200000000) {
 				Typ[NbrFactors] = -Typ[g];
 				Typ[g] = TYP_TABLE - Typ[g];
-			}
-			else if (Typ[g] < 250000000)
-			{
+			} else if (Typ[g] < 250000000) {
 				Typ[NbrFactors] = -Typ[g];
 				Typ[g] = TYP_SIQS - Typ[g];
-			}
-			else
-			{
+			} else {
 				Typ[NbrFactors] = -Typ[g];
 				Typ[g] = TYP_LEHMAN - Typ[g];
 			}
@@ -1099,17 +961,13 @@ public class ECM extends Applet implements Runnable
 		SortFactorsInputNbr();
 	}
 
-	void SortFactorsInputNbr()
-	{
+	void SortFactorsInputNbr() {
 		int g, i, j;
 		BigInteger Nbr1;
 
-		for (g = 0; g < NbrFactors - 1; g++)
-		{
-			for (j = g + 1; j < NbrFactors; j++)
-			{
-				if (PD[g].compareTo(PD[j]) > 0)
-				{
+		for (g = 0; g < NbrFactors - 1; g++) {
+			for (j = g + 1; j < NbrFactors; j++) {
+				if (PD[g].compareTo(PD[j]) > 0) {
 					Nbr1 = PD[g];
 					PD[g] = PD[j];
 					PD[j] = Nbr1;
@@ -1124,36 +982,26 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	void startNewFactorization(final boolean completefactorization)
-	{
-		if (calcThread != null && batchFinished)
-		{
+	void startNewFactorization(final boolean completefactorization) {
+		if (calcThread != null && batchFinished) {
 			TerminateThread = true;
-			try
-			{
+			try {
 				calcThread.join(); /* Wait until the factorization thread dies */
-			}
-			catch (InterruptedException ie)
-			{
+			} catch (InterruptedException ie) {
 			}
 		}
 		onlyFactoring = completefactorization ^ true;
 		lModularMult = OldTimeElapsed = NbrFactors = EC = 0;
-		if (completefactorization)
-		{
+		if (completefactorization) {
 			factorize();
-		}
-		else
-		{
-			calcThread = new Thread(Thread.currentThread().getThreadGroup(),this); /* Start factorization thread */
+		} else {
+			calcThread = new Thread(Thread.currentThread().getThreadGroup(), this); /* Start factorization thread */
 			calcThread.start();
 		}
 	}
 
-	public void run()
-	{
-		if (!batchFinished)
-		{
+	public void run() {
+		if (!batchFinished) {
 			BatchThread();
 			return;
 		}
@@ -1165,8 +1013,7 @@ public class ECM extends Applet implements Runnable
 		factorize();
 	}
 
-	void factorize()
-	{
+	void factorize() {
 		BigInteger NN;
 		long TestComp, New;
 		BigInteger N1, N2, Tmp;
@@ -1185,79 +1032,58 @@ public class ECM extends Applet implements Runnable
 		Computing3Squares = false;
 		TerminateThread = false;
 		Old = System.currentTimeMillis();
-		if (onlyFactoring)
-		{
-			if (NbrFactors == 0)
-			{
+		if (onlyFactoring) {
+			if (NbrFactors == 0) {
 				lowerTextArea.setText("Computing input expression...");
-				try
-				{
+				try {
 					ExpressionRC =
 							Expression.ComputeExpression(
 									textNumber.getText().trim(),
 									0,
 									ExpressionResult);
-				}
-				catch (OutOfMemoryError e)
-				{
+				} catch (OutOfMemoryError e) {
 					lowerTextArea.setText("Out of memory.");
 					return;
-				}
-				catch (ArithmeticException e)
-				{
+				} catch (ArithmeticException e) {
 					return;
 				}
 				NumberToFactor = ExpressionResult[0];
-				if (ExpressionRC > 1)
-				{
+				if (ExpressionRC > 1) {
 					lowerTextArea.setText(expressionText[-2 - ExpressionRC]);
 					return;
 				}
 			}
-		}
-		else
-		{
-			if (NbrFactors == 0)
-			{
+		} else {
+			if (NbrFactors == 0) {
 				NumberToFactor = new BigInteger(textNumber.getText().trim());
 			}
 		}
-		if (NumberToFactor.abs().compareTo(BigInt1) <= 0)
-		{                    // Factor number -1, 0 or 1.
-			lowerTextArea.setText(NumberToFactor.toString()+" = "+
+		if (NumberToFactor.abs().compareTo(BigInt1) <= 0) {                    // Factor number -1, 0 or 1.
+			lowerTextArea.setText(NumberToFactor.toString() + " = " +
 					NumberToFactor.toString());
 			return;
-		}
-		else if (NumberToFactor.signum() > 0)
-		{                    // Factor positive number.
+		} else if (NumberToFactor.signum() > 0) {                    // Factor positive number.
 			numberIsNegative = false;
-		}
-		else
-		{                    // Factor negative number.
+		} else {                    // Factor negative number.
 			numberIsNegative = true;
 			NumberToFactor = NumberToFactor.negate();  // Convert to positive.
 		}
 		BigNbr1[0] = 1;
-		for (i = 1; i < NLen; i++)
-		{
+		for (i = 1; i < NLen; i++) {
 			BigNbr1[i] = 0;
 		}
-		try
-		{
-			if (NbrFactors == 0)
-			{
+		try {
+			if (NbrFactors == 0) {
 				lowerTextArea.setText(
 						"Searching for small factors (less than 131072).");
 				TestComp = GetSmallFactors(NumberToFactor, PD, Exp, Typ, 0);
-				if (TestComp != 1)
-				{                      // There are factors greater than 131071.
+				if (TestComp != 1) {                      // There are factors greater than 131071.
 					PD[NbrFactors] = BigIntToBigNbr(TestNbr, NumberLength);
 					Exp[NbrFactors] = 1;
 					Typ[NbrFactors] = -1; /* Unknown */
 					NbrFactors++;
 					ShowUpperPane();
-					if (batchFinished || !batchPrime)
-					{
+					if (batchFinished || !batchPrime) {
 						lowerTextArea.setText("Searching for perfect power plus/minus 1.");
 						PowerPM1Check(); /* Find algebraic and Aurifeuillian factors */
 						lowerTextArea.setText("Searching for Lucas number.");
@@ -1268,25 +1094,19 @@ public class ECM extends Applet implements Runnable
 				}
 			}
 			performLehman = true;
-			factor_loop : for (;;)
-			{
+			factor_loop:
+			for (; ; ) {
 				ShowUpperPane();
-				for (i = 0; i < NbrFactors; i++)
-				{
-					if (Typ[i] < 0)
-					{ /* Unknown */
+				for (i = 0; i < NbrFactors; i++) {
+					if (Typ[i] < 0) { /* Unknown */
 						lowerTextArea.setText("Searching for perfect power.");
-						if (PowerCheck(i) != 0)
-						{
+						if (PowerCheck(i) != 0) {
 							SortFactorsInputNbr();
 							continue factor_loop;
 						}
-						if (PD[i].bitLength() <= 33)
-						{
+						if (PD[i].bitLength() <= 33) {
 							j = 0;
-						}
-						else
-						{
+						} else {
 							lowerTextArea.setText("Before calling prime check routine.");
 							final long oldModularMult = lModularMult;
 							timePrimalityTests -= System.currentTimeMillis();
@@ -1294,62 +1114,43 @@ public class ECM extends Applet implements Runnable
 							timePrimalityTests += System.currentTimeMillis();
 							nbrPrimalityTests++;
 							primeModMult += lModularMult - oldModularMult;
-							if (!batchFinished && batchPrime)
-							{
+							if (!batchFinished && batchPrime) {
 								NbrFactors = j;
 								return;
 							}
 						}
-						if (j == 0)
-						{
-							if (Typ[i] < -TYP_EC)
-							{
+						if (j == 0) {
+							if (Typ[i] < -TYP_EC) {
 								Typ[i] = -Typ[i]; /* Prime */
-							}
-							else if (Typ[i] < -TYP_LEHMAN)
-							{
+							} else if (Typ[i] < -TYP_LEHMAN) {
 								Typ[i] = TYP_LEHMAN; /* Prime */
-							}
-							else if (Typ[i] < -TYP_SIQS)
-							{
+							} else if (Typ[i] < -TYP_SIQS) {
 								Typ[i] = TYP_SIQS; /* Prime */
-							}
-							else if (Typ[i] < -TYP_AURIF)
-							{
+							} else if (Typ[i] < -TYP_AURIF) {
 								Typ[i] = TYP_AURIF; /* Prime */
-							}
-							else
-							{
+							} else {
 								Typ[i] = 0; /* Prime */
 							}
-						}
-						else
-						{
-							if (Typ[i] < -TYP_EC)
-							{
+						} else {
+							if (Typ[i] < -TYP_EC) {
 								Typ[i] = -TYP_EC - Typ[i]; /* Composite */
-							}
-							else
-							{
+							} else {
 								Typ[i] = -Typ[i]; /* Composite */
 							}
 						}
 						continue factor_loop;
 					}
 				}
-				for (i = 0; i < NbrFactors; i++)
-				{
+				for (i = 0; i < NbrFactors; i++) {
 					EC = Typ[i];
 					if (EC > 0 && EC < TYP_EC && EC != TYP_AURIF
-							&& EC != TYP_SIQS && EC != TYP_LEHMAN)
-					{ /* Composite */
+							&& EC != TYP_SIQS && EC != TYP_LEHMAN) { /* Composite */
 						EC %= 50000000;
 						timeECM -= System.currentTimeMillis();
 						NN = fnECM(PD[i], i);
 						timeECM += System.currentTimeMillis();
 						nbrECM++;
-						if (NN.equals(BigInt1))
-						{
+						if (NN.equals(BigInt1)) {
 							timeSIQS -= System.currentTimeMillis();
 							Siqs SIQS = new Siqs(this);
 							NN = SIQS.FactoringSIQS(PD[i]);
@@ -1357,12 +1158,9 @@ public class ECM extends Applet implements Runnable
 							timeSIQS += System.currentTimeMillis();
 							nbrSIQS++;
 						}
-						if (foundByLehman)
-						{              // Factor found using Lehman method
+						if (foundByLehman) {              // Factor found using Lehman method
 							Typ[i] = TYP_LEHMAN + EC + 1;
-						}
-						else
-						{
+						} else {
 							Typ[i] = EC;
 						}
 						InsertNewFactor(NN);
@@ -1371,16 +1169,13 @@ public class ECM extends Applet implements Runnable
 				}
 				break;
 			}
-			if (onlyFactoring)
-			{
-				if (!numberIsNegative)
-				{
+			if (onlyFactoring) {
+				if (!numberIsNegative) {
 					textAreaContents = upperTextArea.getText() + "\n\n";
 					StringToLabel = ""; // Start new line.
 					addStringToLabel("Number of divisors: ");
 					N1 = BigInt1;
-					for (i = 0; i < NbrFactors; i++)
-					{
+					for (i = 0; i < NbrFactors; i++) {
 						N1 = N1.multiply(BigInteger.valueOf(Exp[i] + 1));
 					}
 					insertBigNbr(N1); // Show number of divisors.
@@ -1388,8 +1183,7 @@ public class ECM extends Applet implements Runnable
 					StringToLabel = ""; // Start new line.
 					addStringToLabel("Sum of divisors: ");
 					N1 = BigInt1;
-					for (i = 0; i < NbrFactors; i++)
-					{
+					for (i = 0; i < NbrFactors; i++) {
 						N1 =
 								N1.multiply(PD[i].pow(Exp[i] + 1).subtract(BigInt1)).divide(
 										PD[i].subtract(BigInt1));
@@ -1399,20 +1193,15 @@ public class ECM extends Applet implements Runnable
 					StringToLabel = ""; // Start new line.
 					addStringToLabel("Euler's Totient: ");
 					N1 = NumberToFactor;
-					for (i = 0; i < NbrFactors; i++)
-					{
+					for (i = 0; i < NbrFactors; i++) {
 						N1 = N1.multiply(PD[i].subtract(BigInt1)).divide(PD[i]);
 					}
 					insertBigNbr(N1);
 					j = 1; // Compute Moebius
-					for (i = 0; i < NbrFactors; i++)
-					{
-						if (Exp[i] == 1)
-						{
+					for (i = 0; i < NbrFactors; i++) {
+						if (Exp[i] == 1) {
 							j = -j;
-						}
-						else
-						{
+						} else {
 							j = 0;
 						}
 					} // Show Euler's totient and Moebius
@@ -1420,28 +1209,23 @@ public class ECM extends Applet implements Runnable
 					StringToLabel = "\n\nSum of squares: "; // Start new line.
 					ComputeFourSquares(PD, Exp); // Quad1^2 + Quad2^2 + Quad3^2 + Quad4^2
 					NbrFactors1 = NbrFactors;
-					if (Quad4.signum() != 0)
-					{ // Check if four squares are really needed.
+					if (Quad4.signum() != 0) { // Check if four squares are really needed.
 						j = NumberToFactor.getLowestSetBit();
 						if (j % 2 != 0
 								|| !NumberToFactor.shiftRight(j).and(BigInteger.valueOf(7)).equals(
-								BigInteger.valueOf(7)))
-						{
+								BigInteger.valueOf(7))) {
 							/* Only three squares are required here */
 
 							Computing3Squares = true;
 							j = j / 2;
 							lowerTextArea.setText("Computing sum of three squares...");
-							for (N1 = BigInt1.shiftLeft(j);; N1 = N1.add(BigInt1.shiftLeft(j)))
-							{
-								if (TerminateThread)
-								{
+							for (N1 = BigInt1.shiftLeft(j); ; N1 = N1.add(BigInt1.shiftLeft(j))) {
+								if (TerminateThread) {
 									throw new ArithmeticException();
 								}
 								New = System.currentTimeMillis();
 								if (OldTimeElapsed >= 0
-										&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000)
-								{
+										&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000) {
 									OldTimeElapsed += New - Old;
 									Old = New;
 									labelStatus.setText(
@@ -1452,36 +1236,30 @@ public class ECM extends Applet implements Runnable
 								}
 								N2 = NumberToFactor.subtract(N1.multiply(N1));
 								TestComp = GetSmallFactors(N2, PD1, Exp1, Typ1, 1);
-								if (TestComp >= 0)
-								{
-									if (TestComp == 1)
-									{ // Number has all factors < 2^17
+								if (TestComp >= 0) {
+									if (TestComp == 1) { // Number has all factors < 2^17
 										ComputeFourSquares(PD1, Exp1); // Quad1^2 + Quad2^2
 										break;
 									}
-									if (TestNbr[0] % 4 == 3)
-									{
+									if (TestNbr[0] % 4 == 3) {
 										continue;
 									} // This value of c does not work
 									PD1[NbrFactors] = BigIntToBigNbr(TestNbr, NumberLength);
 									Exp1[NbrFactors] = 1;
 									NbrFactors++;
-									if (ComputeFourSquares(PD1, Exp1))
-									{ // Quad1^2 + Quad2^2
+									if (ComputeFourSquares(PD1, Exp1)) { // Quad1^2 + Quad2^2
 										break;
 									}
 								}
 							} /* end for */
 							Quad3 = N1;
 							// Sort squares (only Quad3 can be out of order).
-							if (Quad1.compareTo(Quad3) < 0)
-							{
+							if (Quad1.compareTo(Quad3) < 0) {
 								Tmp = Quad1;
 								Quad1 = Quad3;
 								Quad3 = Tmp;
 							}
-							if (Quad2.compareTo(Quad3) < 0)
-							{
+							if (Quad2.compareTo(Quad3) < 0) {
 								Tmp = Quad2;
 								Quad2 = Quad3;
 								Quad3 = Tmp;
@@ -1490,17 +1268,12 @@ public class ECM extends Applet implements Runnable
 						}
 					}
 					NbrFactors = NbrFactors1;
-					if (Quad4.signum() == 0)
-					{
-						if (Quad3.signum() == 0)
-						{
-							if (Quad2.signum() == 0)
-							{
+					if (Quad4.signum() == 0) {
+						if (Quad3.signum() == 0) {
+							if (Quad2.signum() == 0) {
 								insertBigNbr(Quad1);
 								addStringToLabel("^2");
-							}
-							else
-							{
+							} else {
 								textAreaContents += StringToLabel + "a^2 + b^2\n";
 								StringToLabel = "a = "; // Start new line.
 								insertBigNbr(Quad1);
@@ -1508,9 +1281,7 @@ public class ECM extends Applet implements Runnable
 								StringToLabel = "b = "; // Start new line.
 								insertBigNbr(Quad2);
 							}
-						}
-						else
-						{
+						} else {
 							textAreaContents += StringToLabel + "a^2 + b^2 + c^2\n";
 							StringToLabel = "a = "; // Start new line.
 							insertBigNbr(Quad1);
@@ -1521,9 +1292,7 @@ public class ECM extends Applet implements Runnable
 							StringToLabel = "c = "; // Start new line.
 							insertBigNbr(Quad3);
 						}
-					}
-					else
-					{
+					} else {
 						textAreaContents += StringToLabel + "a^2 + b^2 + c^2 + d^2\n";
 						StringToLabel = "a = "; // Start new line.
 						insertBigNbr(Quad1);
@@ -1540,21 +1309,18 @@ public class ECM extends Applet implements Runnable
 				}
 				upperTextArea.setText(textAreaContents + StringToLabel);
 				New = System.currentTimeMillis();
-				if (OldTimeElapsed >= 0)
-				{
+				if (OldTimeElapsed >= 0) {
 					OldTimeElapsed += New - Old;
 					String timeElapsed = GetDHMS(OldTimeElapsed / 1000);
 					String textAreaInfo = "Factorization complete in " + timeElapsed;
-					if (lModularMult >= 0)
-					{
+					if (lModularMult >= 0) {
 						textAreaInfo += "\nECM: "
 								+ (lModularMult - primeModMult)
 								+ " modular multiplications\nPrime checking: "
 								+ primeModMult
 								+ " modular multiplications";
 					}
-					if (smoothsFound > 0)
-					{
+					if (smoothsFound > 0) {
 						textAreaInfo += "\nSIQS: "
 								+ polynomialsSieved
 								+ " polynomials sieved\n      "
@@ -1562,33 +1328,29 @@ public class ECM extends Applet implements Runnable
 								+ " sets of trial divisions\n      "
 								+ smoothsFound
 								+ " smooth congruences found (1 out of every "
-								+ ValuesSieved/smoothsFound+" values)\n      "
+								+ ValuesSieved / smoothsFound + " values)\n      "
 								+ totalPartials
 								+ " partial congruences found (1 out of every "
-								+ ValuesSieved/totalPartials+" values)\n      "
+								+ ValuesSieved / totalPartials + " values)\n      "
 								+ partialsFound
 								+ " useful partial congruences";
 					}
-					if (nbrSIQS > 0 || nbrECM > 0 || nbrPrimalityTests > 0)
-					{
+					if (nbrSIQS > 0 || nbrECM > 0 || nbrPrimalityTests > 0) {
 						textAreaInfo += "\n\nTimings:";
-						if (nbrPrimalityTests > 0)
-						{
-							textAreaInfo += "\nPrimality test of "+nbrPrimalityTests+
-									" number"+(nbrPrimalityTests!=1?"s":"")+
-									": " + GetDHMSd(timePrimalityTests/100);
+						if (nbrPrimalityTests > 0) {
+							textAreaInfo += "\nPrimality test of " + nbrPrimalityTests +
+									" number" + (nbrPrimalityTests != 1 ? "s" : "") +
+									": " + GetDHMSd(timePrimalityTests / 100);
 						}
-						if (nbrECM > 0)
-						{
-							textAreaInfo += "\nFactoring "+nbrECM+
-									" number"+(nbrECM!=1?"s":"")+
-									" using ECM: " + GetDHMSd(timeECM/100);
+						if (nbrECM > 0) {
+							textAreaInfo += "\nFactoring " + nbrECM +
+									" number" + (nbrECM != 1 ? "s" : "") +
+									" using ECM: " + GetDHMSd(timeECM / 100);
 						}
-						if (nbrSIQS > 0)
-						{
-							textAreaInfo += "\nFactoring "+nbrSIQS+
-									" number"+(nbrSIQS!=1?"s":"")+
-									" using SIQS: " + GetDHMSd(timeSIQS/100);
+						if (nbrSIQS > 0) {
+							textAreaInfo += "\nFactoring " + nbrSIQS +
+									" number" + (nbrSIQS != 1 ? "s" : "") +
+									" using SIQS: " + GetDHMSd(timeSIQS / 100);
 						}
 					}
 					lowerTextArea.setText(textAreaInfo);
@@ -1598,19 +1360,14 @@ public class ECM extends Applet implements Runnable
 									+ "    mod mult: "
 									+ (lModularMult >= 0 ? String.valueOf(lModularMult) :
 									"I don't know"));
-				}
-				else
-				{
+				} else {
 					lowerTextArea.setText("Factorization complete");
 				}
 				NextEC = -1; /* First curve of new number should be 1 */
 			}
-		}
-		catch (ArithmeticException e)
-		{
+		} catch (ArithmeticException e) {
 			New = System.currentTimeMillis();
-			if (OldTimeElapsed >= 0)
-			{
+			if (OldTimeElapsed >= 0) {
 				OldTimeElapsed += New - Old;
 			}
 			System.gc();
@@ -1624,8 +1381,7 @@ public class ECM extends Applet implements Runnable
 			BigInteger PD[],
 			int Exp[],
 			int Typ[],
-			final int Type)
-	{
+			final int Type) {
 
 		long Div, TestComp;
 		int i;
@@ -1633,112 +1389,83 @@ public class ECM extends Applet implements Runnable
 
 		NumberLength = BigNbrToBigInt(NumberToFactor, TestNbr);
 		NbrFactors = 0;
-		for (i = 0; i < 400; i++)
-		{
+		for (i = 0; i < 400; i++) {
 			Exp[i] = Typ[i] = 0;
 		}
-		while ((TestNbr[0] & 1) == 0)
-		{ /* N even */
-			if (Exp[NbrFactors] == 0)
-			{
+		while ((TestNbr[0] & 1) == 0) { /* N even */
+			if (Exp[NbrFactors] == 0) {
 				PD[NbrFactors] = BigInt2;
 			}
 			Exp[NbrFactors]++;
 			DivBigNbrByLong(TestNbr, 2, TestNbr, NumberLength);
 		}
-		if (Exp[NbrFactors] != 0)
-		{
+		if (Exp[NbrFactors] != 0) {
 			NbrFactors++;
 		}
-		while (RemDivBigNbrByLong(TestNbr, 3, NumberLength) == 0)
-		{
-			if (Type == 1)
-			{
+		while (RemDivBigNbrByLong(TestNbr, 3, NumberLength) == 0) {
+			if (Type == 1) {
 				checkExpParity ^= true;
 			}
-			if (Exp[NbrFactors] == 0)
-			{
+			if (Exp[NbrFactors] == 0) {
 				PD[NbrFactors] = BigInt3;
 			}
 			Exp[NbrFactors]++;
 			DivBigNbrByLong(TestNbr, 3, TestNbr, NumberLength);
 		}
-		if (checkExpParity)
-		{
+		if (checkExpParity) {
 			return -1; /* Discard it */
 		}
-		if (Exp[NbrFactors] != 0)
-		{
+		if (Exp[NbrFactors] != 0) {
 			NbrFactors++;
 		}
 		Div = 5;
-		TestComp = (long)TestNbr[0] + ((long)TestNbr[1] << 31);
-		if (TestComp < 0)
-		{
+		TestComp = (long) TestNbr[0] + ((long) TestNbr[1] << 31);
+		if (TestComp < 0) {
 			TestComp = 10000 * DosALa31;
-		}
-		else
-		{
-			for (i = 2; i < NumberLength; i++)
-			{
-				if (TestNbr[i] != 0)
-				{
+		} else {
+			for (i = 2; i < NumberLength; i++) {
+				if (TestNbr[i] != 0) {
 					TestComp = 10000 * DosALa31;
 					break;
 				}
 			}
 		}
-		while (Div < 131072)
-		{
-			if (Div % 3 != 0)
-			{
-				while (RemDivBigNbrByLong(TestNbr, Div, NumberLength) == 0)
-				{
-					if (Type == 1 && Div % 4 == 3)
-					{
+		while (Div < 131072) {
+			if (Div % 3 != 0) {
+				while (RemDivBigNbrByLong(TestNbr, Div, NumberLength) == 0) {
+					if (Type == 1 && Div % 4 == 3) {
 						checkExpParity ^= true;
 					}
-					if (Exp[NbrFactors] == 0)
-					{
+					if (Exp[NbrFactors] == 0) {
 						PD[NbrFactors] = BigInteger.valueOf(Div);
 					}
 					Exp[NbrFactors]++;
 					DivBigNbrByLong(TestNbr, Div, TestNbr, NumberLength);
-					TestComp = (long)TestNbr[0] + ((long)TestNbr[1] << 31);
-					if (TestComp < 0)
-					{
+					TestComp = (long) TestNbr[0] + ((long) TestNbr[1] << 31);
+					if (TestComp < 0) {
 						TestComp = 10000 * DosALa31;
-					}
-					else
-					{
-						for (i = 2; i < NumberLength; i++)
-						{
-							if (TestNbr[i] != 0)
-							{
+					} else {
+						for (i = 2; i < NumberLength; i++) {
+							if (TestNbr[i] != 0) {
 								TestComp = 10000 * DosALa31;
 								break;
 							}
 						}
 					} /* end while */
 				}
-				if (checkExpParity)
-				{
+				if (checkExpParity) {
 					return -1; /* Discard it */
 				}
-				if (Exp[NbrFactors] != 0)
-				{
+				if (Exp[NbrFactors] != 0) {
 					NbrFactors++;
 				}
 			}
 			Div += 2;
-			if (TestComp < Div * Div && TestComp != 1)
-			{
-				if (Type == 1 && TestComp % 4 == 3)
-				{
+			if (TestComp < Div * Div && TestComp != 1) {
+				if (Type == 1 && TestComp % 4 == 3) {
 					return -1; /* Discard it */
 				}
-				if (Exp[NbrFactors] != 0)
-				{
+				if (Exp[NbrFactors] != 0) {
 					NbrFactors++;
 				}
 				PD[NbrFactors] = BigInteger.valueOf(TestComp);
@@ -1751,8 +1478,7 @@ public class ECM extends Applet implements Runnable
 		return TestComp;
 	}
 
-	int PowerCheck(final int i)
-	{
+	int PowerCheck(final int i) {
 		long New;
 		final int maxExpon = (PD[i].bitLength() - 1) / 17;
 		int h, j;
@@ -1761,12 +1487,11 @@ public class ECM extends Applet implements Runnable
 		double log2N;
 		BigInteger root, rootN1, rootN, dif, nextroot;
 		final int prime2310x1[] =
-				{ 2311, 4621, 9241, 11551, 18481, 25411, 32341, 34651, 43891, 50821 };
+				{2311, 4621, 9241, 11551, 18481, 25411, 32341, 34651, 43891, 50821};
 		// Primes of the form 2310x+1.
 		boolean expon2 = true, expon3 = true, expon5 = true;
 		boolean expon7 = true, expon11 = true;
-		for (h = 0; h < prime2310x1.length; h++)
-		{
+		for (h = 0; h < prime2310x1.length; h++) {
 			final long testprime = prime2310x1[h];
 			final long mod = PD[i].mod(BigInteger.valueOf(testprime)).intValue();
 			if (expon2 && modPow(mod, testprime / 2, testprime) > 1)
@@ -1782,35 +1507,25 @@ public class ECM extends Applet implements Runnable
 		}
 		boolean ProcessExpon[] = new boolean[maxExpon + 1];
 		boolean primes[] = new boolean[2 * maxExpon + 3];
-		for (h = 2; h <= maxExpon; h++)
-		{
+		for (h = 2; h <= maxExpon; h++) {
 			ProcessExpon[h] = true;
 		}
-		for (h = 2; h < primes.length; h++)
-		{
+		for (h = 2; h < primes.length; h++) {
 			primes[h] = true;
 		}
-		for (h = 2; h * h < primes.length; h++)
-		{ // Generation of primes
-			for (j = h * h; j < primes.length; j += h)
-			{ // using Eratosthenes sieve
+		for (h = 2; h * h < primes.length; h++) { // Generation of primes
+			for (j = h * h; j < primes.length; j += h) { // using Eratosthenes sieve
 				primes[j] = false;
 			}
 		}
-		for (h = 13; h < primes.length; h++)
-		{
-			if (primes[h])
-			{
+		for (h = 13; h < primes.length; h++) {
+			if (primes[h]) {
 				int processed = 0;
-				for (j = 2 * h + 1; j < primes.length; j += 2 * h)
-				{
-					if (primes[j])
-					{
+				for (j = 2 * h + 1; j < primes.length; j += 2 * h) {
+					if (primes[j]) {
 						modulus = PD[i].mod(BigInteger.valueOf(j)).longValue();
-						if (modPow(modulus, j / h, j) > 1)
-						{
-							for (j = h; j <= maxExpon; j += h)
-							{
+						if (modPow(modulus, j / h, j) > 1) {
+							for (j = h; j <= maxExpon; j += h) {
 								ProcessExpon[j] = false;
 							}
 							break;
@@ -1821,8 +1536,7 @@ public class ECM extends Applet implements Runnable
 				}
 			}
 		}
-		for (int Exponent = maxExpon; Exponent >= 2; Exponent--)
-		{
+		for (int Exponent = maxExpon; Exponent >= 2; Exponent--) {
 			if (Exponent % 2 == 0 && !expon2)
 				continue; // Not a square
 			if (Exponent % 3 == 0 && !expon3)
@@ -1837,8 +1551,7 @@ public class ECM extends Applet implements Runnable
 				continue;
 			New = System.currentTimeMillis();
 			if (OldTimeElapsed >= 0
-					&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000)
-			{
+					&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000) {
 				OldTimeElapsed += New - Old;
 				Old = New;
 				labelStatus.setText(
@@ -1847,8 +1560,7 @@ public class ECM extends Applet implements Runnable
 								+ "    Power exponent: "
 								+ Exponent);
 //        Thread.yield();
-				if (TerminateThread)
-				{
+				if (TerminateThread) {
 					throw new ArithmeticException();
 				}
 			}
@@ -1859,25 +1571,20 @@ public class ECM extends Applet implements Runnable
 							/ Math.log(2)
 							- 32;
 			log2N /= Exponent;
-			if (log2N < 32)
-			{
+			if (log2N < 32) {
 				root = BigInteger.valueOf((long) Math.exp(log2N * Math.log(2)));
-			}
-			else
-			{
+			} else {
 				intLog2N = (int) Math.floor(log2N) - 32;
 				root =
 						BigInteger
 								.valueOf((long) Math.exp((log2N - intLog2N) * Math.log(2)) + 10)
 								.shiftLeft(intLog2N);
 			}
-			for (;;)
-			{
+			for (; ; ) {
 				rootN1 = root.pow(Exponent - 1);
 				rootN = root.multiply(rootN1);
 				dif = PD[i].subtract(rootN);
-				if (dif.signum() == 0)
-				{ // Perfect power
+				if (dif.signum() == 0) { // Perfect power
 					PD[i] = root;
 					Exp[i] *= Exponent;
 					return 1;
@@ -1897,9 +1604,8 @@ public class ECM extends Applet implements Runnable
 	}
 
 	// Perform Lehman algorithm
-	static BigInteger Lehman(final BigInteger nbr, final int k)
-	{
-		final long bitsSqr[] = { 0x0000000000000003L, // 3
+	static BigInteger Lehman(final BigInteger nbr, final int k) {
+		final long bitsSqr[] = {0x0000000000000003L, // 3
 				0x0000000000000013L, // 5
 				0x0000000000000017L, // 7
 				0x000000000000023BL, // 11
@@ -1918,7 +1624,7 @@ public class ECM extends Applet implements Runnable
 				0x1713E6940A59F23BL, // 61
 		};
 		final int primes[] =
-				{ 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61 };
+				{3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61};
 		int nbrs[] = new int[17];
 		int diffs[] = new int[17];
 		int i, j, m;
@@ -1926,22 +1632,16 @@ public class ECM extends Applet implements Runnable
 		double log2N;
 		BigInteger root, rootN, dif, nextroot;
 		BigInteger bM, a, c, r, sqr, val;
-		if (!nbr.testBit(0))
-		{ // nbr Even
+		if (!nbr.testBit(0)) { // nbr Even
 			r = BigInt0;
 			m = 1;
 			bM = BigInt1;
-		}
-		else
-		{
-			if (k % 2 == 0)
-			{ // k Even
+		} else {
+			if (k % 2 == 0) { // k Even
 				r = BigInt1;
 				m = 2;
 				bM = BigInt2;
-			}
-			else
-			{ // k Odd
+			} else { // k Odd
 				r = BigInteger.valueOf(k).add(nbr).and(BigInt3);
 				m = 4;
 				bM = BigInteger.valueOf(4);
@@ -1955,24 +1655,19 @@ public class ECM extends Applet implements Runnable
 						/ Math.log(2)
 						- 32;
 		log2N /= 2;
-		if (log2N < 32)
-		{
+		if (log2N < 32) {
 			root = BigInteger.valueOf((long) Math.exp(log2N * Math.log(2)));
-		}
-		else
-		{
+		} else {
 			intLog2N = (int) Math.floor(log2N) - 32;
 			root =
 					BigInteger
 							.valueOf((long) Math.exp((log2N - intLog2N) * Math.log(2)) + 10)
 							.shiftLeft(intLog2N);
 		}
-		for (;;)
-		{
+		for (; ; ) {
 			rootN = root.multiply(root);
 			dif = sqr.subtract(rootN);
-			if (dif.signum() == 0)
-			{ // Perfect power
+			if (dif.signum() == 0) { // Perfect power
 				break;
 			}
 			nextroot =
@@ -1984,28 +1679,22 @@ public class ECM extends Applet implements Runnable
 		}
 		a = root;
 		while (!a.mod(bM).equals(r) ||
-				a.multiply(a).compareTo(sqr)<0)
-		{
+				a.multiply(a).compareTo(sqr) < 0) {
 			a = a.add(BigInt1);
 		}
 		c = a.multiply(a).subtract(sqr);
-		for (i = 0; i < 17; i++)
-		{
+		for (i = 0; i < 17; i++) {
 			final BigInteger prime = BigInteger.valueOf(primes[i]);
 			nbrs[i] = c.mod(prime).intValue();
 			diffs[i] = bM.multiply(a.shiftLeft(1).add(bM)).mod(prime).intValue();
 		}
-		for (j = 0; j < 10000; j++)
-		{
-			for (i = 0; i < 17; i++)
-			{
-				if ((bitsSqr[i] & (1L << nbrs[i])) == 0)
-				{ // Not a perfect square
+		for (j = 0; j < 10000; j++) {
+			for (i = 0; i < 17; i++) {
+				if ((bitsSqr[i] & (1L << nbrs[i])) == 0) { // Not a perfect square
 					break;
 				}
 			}
-			if (i == 17)
-			{ // Test for perfect square
+			if (i == 17) { // Test for perfect square
 				val = a.add(BigInteger.valueOf(m * j));
 				c = val.multiply(val).subtract(sqr);
 				intLog2N = c.bitLength() - 1;
@@ -2015,27 +1704,21 @@ public class ECM extends Applet implements Runnable
 								/ Math.log(2)
 								- 32;
 				log2N /= 2;
-				if (log2N < 32)
-				{
+				if (log2N < 32) {
 					root = BigInteger.valueOf((long) Math.exp(log2N * Math.log(2)));
-				}
-				else
-				{
+				} else {
 					intLog2N = (int) Math.floor(log2N) - 32;
 					root =
 							BigInteger
 									.valueOf((long) Math.exp((log2N - intLog2N) * Math.log(2)) + 10)
 									.shiftLeft(intLog2N);
 				}
-				for (;;)
-				{
+				for (; ; ) {
 					rootN = root.multiply(root);
 					dif = c.subtract(rootN);
-					if (dif.signum() == 0)
-					{ // Perfect power -> factor found
+					if (dif.signum() == 0) { // Perfect power -> factor found
 						root = nbr.gcd(val.add(root));
-						if (root.compareTo(BigInteger.valueOf(10000)) > 0)
-						{
+						if (root.compareTo(BigInteger.valueOf(10000)) > 0) {
 							return root; // Return non-trivial found
 						}
 					}
@@ -2047,8 +1730,7 @@ public class ECM extends Applet implements Runnable
 					root = nextroot;
 				}
 			}
-			for (i = 0; i < 17; i++)
-			{
+			for (i = 0; i < 17; i++) {
 				nbrs[i] = (nbrs[i] + diffs[i]) % primes[i];
 				diffs[i] = (diffs[i] + 2 * m * m) % primes[i];
 			}
@@ -2056,10 +1738,8 @@ public class ECM extends Applet implements Runnable
 		return BigInt1; // Factor not found
 	}
 
-	final void PowerPM1Check()
-	{
-		if (onlyFactoring)
-		{
+	final void PowerPM1Check() {
+		if (onlyFactoring) {
 			boolean plus1 = false;
 			boolean minus1 = false;
 			int Exponent = 0;
@@ -2073,66 +1753,50 @@ public class ECM extends Applet implements Runnable
 							+ Math.log(NumberToFactor.shiftRight(maxExpon - 32).longValue());
 			boolean ProcessExpon[] = new boolean[maxExpon + 1];
 			boolean primes[] = new boolean[2 * maxExpon + 3];
-			for (i = 2; i <= maxExpon; i++)
-			{
+			for (i = 2; i <= maxExpon; i++) {
 				ProcessExpon[i] = true;
 			}
-			for (i = 2; i < primes.length; i++)
-			{
+			for (i = 2; i < primes.length; i++) {
 				primes[i] = true;
 			}
-			for (i = 2; i * i < primes.length; i++)
-			{ // Generation of primes
-				for (j = i * i; j < primes.length; j += i)
-				{
+			for (i = 2; i * i < primes.length; i++) { // Generation of primes
+				for (j = i * i; j < primes.length; j += i) {
 					primes[j] = false;
 				}
 			}
 			// If the number +/- 1 is multiple of a prime but not a multiple
 			// of its square then the number +/- 1 cannot be a perfect power.
-			for (i = 2; i < primes.length; i++)
-			{
-				if (primes[i])
-				{
+			for (i = 2; i < primes.length; i++) {
+				if (primes[i]) {
 					i2 = (long) i * (long) i;
 					modulus = NumberToFactor.mod(BigInteger.valueOf(i)).intValue();
 					if (modulus == 1
-							&& NumberToFactor.mod(BigInteger.valueOf(i2)).longValue() != 1L)
-					{
+							&& NumberToFactor.mod(BigInteger.valueOf(i2)).longValue() != 1L) {
 						plus1 = true; // NumberFactor cannot be a power + 1
 					}
 					if (modulus == i - 1
-							&& NumberToFactor.mod(BigInteger.valueOf(i2)).longValue() != i2 - 1L)
-					{
+							&& NumberToFactor.mod(BigInteger.valueOf(i2)).longValue() != i2 - 1L) {
 						minus1 = true; // NumberFactor cannot be a power - 1
 					}
 					if (minus1 && plus1)
 						return;
-					if (!ProcessExpon[i / 2])
-					{
+					if (!ProcessExpon[i / 2]) {
 						continue;
 					}
-					if (modulus > (plus1 ? 1 : 2) && modulus < (minus1 ? i - 1 : i - 2))
-					{
-						for (j = i / 2; j <= maxExpon; j += i / 2)
-						{
+					if (modulus > (plus1 ? 1 : 2) && modulus < (minus1 ? i - 1 : i - 2)) {
+						for (j = i / 2; j <= maxExpon; j += i / 2) {
 							ProcessExpon[j] = false;
 						}
-					}
-					else
-					{
-						if (modulus == i - 2)
-						{
-							for (j = i - 1; j <= maxExpon; j += i - 1)
-							{
+					} else {
+						if (modulus == i - 2) {
+							for (j = i - 1; j <= maxExpon; j += i - 1) {
 								ProcessExpon[j] = false;
 							}
 						}
 					}
 				}
 			}
-			for (j = 2; j < 100; j++)
-			{
+			for (j = 2; j < 100; j++) {
 				double u = logar / Math.log(j) + .000005;
 				Exponent = (int) Math.floor(u);
 				if (u - Exponent > .00001)
@@ -2144,8 +1808,7 @@ public class ECM extends Applet implements Runnable
 				if (ProcessExponent(Exponent))
 					return;
 			}
-			for (; Exponent >= 2; Exponent--)
-			{
+			for (; Exponent >= 2; Exponent--) {
 				if (Exponent % 3 == 0 && mod9 > 2 && mod9 < 7)
 					continue;
 				if (!ProcessExpon[Exponent])
@@ -2156,16 +1819,14 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	private boolean ProcessExponent(int Exponent)
-	{
+	private boolean ProcessExponent(int Exponent) {
 		BigInteger NFp1, NFm1, root, rootN1, rootN, rootbak;
 		BigInteger nextroot, dif;
 		int intLog2N;
 		double log2N;
 		long New = System.currentTimeMillis();
 		if (OldTimeElapsed >= 0
-				&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000)
-		{
+				&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000) {
 			OldTimeElapsed += New - Old;
 			Old = New;
 			labelStatus.setText(
@@ -2174,8 +1835,7 @@ public class ECM extends Applet implements Runnable
 							+ "    Power +/- 1 exponent: "
 							+ Exponent);
 //      Thread.yield();
-			if (TerminateThread)
-			{
+			if (TerminateThread) {
 				throw new ArithmeticException();
 			}
 		}
@@ -2188,12 +1848,9 @@ public class ECM extends Applet implements Runnable
 						/ Math.log(2)
 						- 32;
 		log2N /= Exponent;
-		if (log2N < 32)
-		{
+		if (log2N < 32) {
 			root = BigInteger.valueOf((long) Math.exp(log2N * Math.log(2)));
-		}
-		else
-		{
+		} else {
 			intLog2N = (int) Math.floor(log2N) - 32;
 			root =
 					BigInteger
@@ -2201,13 +1858,11 @@ public class ECM extends Applet implements Runnable
 							.shiftLeft(intLog2N);
 		}
 		rootbak = root;
-		for (;;)
-		{
+		for (; ; ) {
 			rootN1 = root.pow(Exponent - 1);
 			rootN = root.multiply(rootN1);
 			dif = NFp1.subtract(rootN);
-			if (dif.signum() == 0)
-			{ // Perfect power
+			if (dif.signum() == 0) { // Perfect power
 				Cunningham(root, Exponent, BigInt1.negate(), PD[NbrFactors - 1]);
 				return true;
 			}
@@ -2222,13 +1877,11 @@ public class ECM extends Applet implements Runnable
 			root = nextroot;
 		}
 		root = rootbak;
-		for (;;)
-		{
+		for (; ; ) {
 			rootN1 = root.pow(Exponent - 1);
 			rootN = root.multiply(rootN1);
 			dif = NFm1.subtract(rootN);
-			if (dif.signum() == 0)
-			{ // Perfect power
+			if (dif.signum() == 0) { // Perfect power
 				Cunningham(root, Exponent, BigInt1, PD[NbrFactors - 1]);
 				return true;
 			}
@@ -2245,13 +1898,10 @@ public class ECM extends Applet implements Runnable
 		return false;
 	}
 
-	final void LucasCheck()
-	{
+	final void LucasCheck() {
 		int i, j;
-		if (onlyFactoring)
-		{
-			if (NumberToFactor.bitLength() > 32)
-			{
+		if (onlyFactoring) {
+			if (NumberToFactor.bitLength() > 32) {
 				int maxExpon = NumberToFactor.bitLength();
 				double logar =
 						(maxExpon - 32) * Math.log(2)
@@ -2264,16 +1914,13 @@ public class ECM extends Applet implements Runnable
 			BigInteger LucasAct = BigInt2;
 			BigInteger LucasNext;
 			i = 0;
-			for (;;)
-			{
+			for (; ; ) {
 				j = LucasAct.compareTo(NumberToFactor);
-				if (j == 0)
-				{
+				if (j == 0) {
 					FactorLucas(i, PD[NbrFactors - 1]);
 					return;
 				}
-				if (j > 0)
-				{
+				if (j > 0) {
 					return;
 				}
 				LucasNext = LucasPrev.add(LucasAct);
@@ -2284,13 +1931,10 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	final void FibonacciCheck()
-	{
+	final void FibonacciCheck() {
 		int i, j;
-		if (onlyFactoring)
-		{
-			if (NumberToFactor.bitLength() > 32)
-			{
+		if (onlyFactoring) {
+			if (NumberToFactor.bitLength() > 32) {
 				int maxExpon = NumberToFactor.bitLength();
 				double logar =
 						(maxExpon - 32) * Math.log(2)
@@ -2303,16 +1947,13 @@ public class ECM extends Applet implements Runnable
 			BigInteger FibonAct = BigInt0;
 			BigInteger FibonNext;
 			i = 0;
-			for (;;)
-			{
+			for (; ; ) {
 				j = FibonAct.compareTo(NumberToFactor);
-				if (j == 0)
-				{
+				if (j == 0) {
 					FactorFibonacci(i, PD[NbrFactors - 1]);
 					return;
 				}
-				if (j > 0)
-				{
+				if (j > 0) {
 					return;
 				}
 				FibonNext = FibonPrev.add(FibonAct);
@@ -2326,8 +1967,7 @@ public class ECM extends Applet implements Runnable
 	// Prime checking routine
 	// Return codes: 0 = Number is prime.
 	//               1 = Number is composite.
-	int AprtCle(BigInteger N)
-	{
+	int AprtCle(BigInteger N) {
 		int i, j, G, H, I, J, K, P, Q, T, U, W, X;
 		int IV, InvX, LEVELnow, NP, PK, PL, PM, SW, VK, TestedQs, TestingQs;
 		int QQ, T1, T3, U1, U3, V1, V3;
@@ -2340,8 +1980,7 @@ public class ECM extends Applet implements Runnable
 		NumberLength = BigNbrToBigInt(N, TestNbr);
 		GetYieldFrequency();
 		GetMontgomeryParms();
-		if (!Computing3Squares)
-		{
+		if (!Computing3Squares) {
 			textAreaContents = "";
 			StringToLabel = "Testing primality of ";
 			insertBigNbr(N);
@@ -2350,27 +1989,22 @@ public class ECM extends Applet implements Runnable
 					textAreaContents + StringToLabel + "\nAPRT-CLE progress: ";
 		}
 		j = PK = PL = PM = 0;
-		for (I = 0; I < NumberLength; I++)
-		{
+		for (I = 0; I < NumberLength; I++) {
 			biS[I] = 0;
-			for (J = 0; J < PWmax; J++)
-			{
+			for (J = 0; J < PWmax; J++) {
 				aiJX[J][I] = 0;
 			}
 		}
-		GetPrimes2Test : for (i = 0; i < LEVELmax; i++)
-		{
+		GetPrimes2Test:
+		for (i = 0; i < LEVELmax; i++) {
 			biS[0] = 2;
-			for (I = 1; I < NumberLength; I++)
-			{
+			for (I = 1; I < NumberLength; I++) {
 				biS[I] = 0;
 			}
-			for (j = 0; j < aiNQ[i]; j++)
-			{
+			for (j = 0; j < aiNQ[i]; j++) {
 				Q = aiQ[j];
 				U = aiT[i] * Q;
-				do
-				{
+				do {
 					U /= Q;
 					MultBigNbrByLong(biS, Q, biS, NumberLength);
 				}
@@ -2378,14 +2012,12 @@ public class ECM extends Applet implements Runnable
 
 				// Exit loop if S^2 > N.
 
-				if (CompareSquare(biS, TestNbr) > 0)
-				{
+				if (CompareSquare(biS, TestNbr) > 0) {
 					break GetPrimes2Test;
 				}
 			} /* End for j */
 		} /* End for i */
-		if (i == LEVELmax)
-		{ /* too big */
+		if (i == LEVELmax) { /* too big */
 			return ProbabilisticPrimeTest(N);
 		}
 		LEVELnow = i;
@@ -2393,40 +2025,32 @@ public class ECM extends Applet implements Runnable
 		T = aiT[LEVELnow];
 		NP = aiNP[LEVELnow];
 
-		MainStart : for (;;)
-		{
-			for (i = 0; i < NP; i++)
-			{
+		MainStart:
+		for (; ; ) {
+			for (i = 0; i < NP; i++) {
 				P = aiP[i];
 				SW = TestedQs = 0;
 				Q = W = (int) BigNbrModLong(TestNbr, P * P);
-				for (J = P - 2; J > 0; J--)
-				{
+				for (J = P - 2; J > 0; J--) {
 					W = (W * Q) % (P * P);
 				}
-				if (P > 2 && W != 1)
-				{
+				if (P > 2 && W != 1) {
 					SW = 1;
 				}
-				for (;;)
-				{
-					for (j = TestedQs; j <= TestingQs; j++)
-					{
+				for (; ; ) {
+					for (j = TestedQs; j <= TestingQs; j++) {
 						Q = aiQ[j] - 1;
 						G = aiG[j];
 						K = 0;
-						while (Q % P == 0)
-						{
+						while (Q % P == 0) {
 							K++;
 							Q /= P;
 						}
 						Q = aiQ[j];
-						if (K == 0)
-						{
+						if (K == 0) {
 							continue;
 						}
-						if (!Computing3Squares)
-						{
+						if (!Computing3Squares) {
 							lowerTextArea.setText(
 									primalityString
 											+ "P = "
@@ -2438,116 +2062,88 @@ public class ECM extends Applet implements Runnable
 											+ "%)");
 						}
 						PM = 1;
-						for (I = 1; I < K; I++)
-						{
+						for (I = 1; I < K; I++) {
 							PM = PM * P;
 						}
 						PL = (P - 1) * PM;
 						PK = P * PM;
 						J = 1;
-						for (I = 1; I < Q; I++)
-						{
+						for (I = 1; I < Q; I++) {
 							J = J * G % Q;
 							aiIndx[J] = I;
 						}
 						J = 1;
-						for (I = 1; I <= Q - 2; I++)
-						{
+						for (I = 1; I <= Q - 2; I++) {
 							J = J * G % Q;
 							aiF[I] = aiIndx[(Q + 1 - J) % Q];
 						}
-						for (I = 0; I < PK; I++)
-						{
-							for (J = 0; J < NumberLength; J++)
-							{
+						for (I = 0; I < PK; I++) {
+							for (J = 0; J < NumberLength; J++) {
 								aiJ0[I][J] = aiJ1[I][J] = 0;
 							}
 						}
-						if (P > 2)
-						{
+						if (P > 2) {
 							JacobiSum(1, 1, P, PK, PL, PM, Q);
-						}
-						else
-						{
-							if (K != 1)
-							{
+						} else {
+							if (K != 1) {
 								JacobiSum(1, 1, P, PK, PL, PM, Q);
-								for (I = 0; I < PK; I++)
-								{
-									for (J = 0; J < NumberLength; J++)
-									{
+								for (I = 0; I < PK; I++) {
+									for (J = 0; J < NumberLength; J++) {
 										aiJW[I][J] = 0;
 									}
 								}
-								if (K != 2)
-								{
-									for (I = 0; I < PM; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+								if (K != 2) {
+									for (I = 0; I < PM; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJW[I][J] = aiJ0[I][J];
 										}
 									}
 									JacobiSum(2, 1, P, PK, PL, PM, Q);
-									for (I = 0; I < PM; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+									for (I = 0; I < PM; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJS[I][J] = aiJ0[I][J];
 										}
 									}
 									JS_JW(PK, PL, PM, P);
 									NormalizeJS(PK, PL, PM, P);
-									for (I = 0; I < PM; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+									for (I = 0; I < PM; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJ1[I][J] = aiJS[I][J];
 										}
 									}
 									JacobiSum(3 << (K - 3), 1 << (K - 3), P, PK, PL, PM, Q);
-									for (J = 0; J < NumberLength; J++)
-									{
-										for (I = 0; I < PK; I++)
-										{
+									for (J = 0; J < NumberLength; J++) {
+										for (I = 0; I < PK; I++) {
 											aiJW[I][J] = 0;
 										}
-										for (I = 0; I < PM; I++)
-										{
+										for (I = 0; I < PM; I++) {
 											aiJS[I][J] = aiJ0[I][J];
 										}
 									}
 									JS_2(PK, PL, PM, P);
 									NormalizeJS(PK, PL, PM, P);
-									for (I = 0; I < PM; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+									for (I = 0; I < PM; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJ2[I][J] = aiJS[I][J];
 										}
 									}
 								}
 							}
 						}
-						for (J = 0; J < NumberLength; J++)
-						{
+						for (J = 0; J < NumberLength; J++) {
 							aiJ00[0][J] = aiJ01[0][J] = MontgomeryMultR1[J];
-							for (I = 1; I < PK; I++)
-							{
+							for (I = 1; I < PK; I++) {
 								aiJ00[I][J] = aiJ01[I][J] = 0;
 							}
 						}
 						VK = (int) BigNbrModLong(TestNbr, PK);
-						for (I = 1; I < PK; I++)
-						{
-							if (I % P != 0)
-							{
+						for (I = 1; I < PK; I++) {
+							if (I % P != 0) {
 								U1 = 1;
 								U3 = I;
 								V1 = 0;
 								V3 = PK;
-								while (V3 != 0)
-								{
+								while (V3 != 0) {
 									QQ = U3 / V3;
 									T1 = U1 - V1 * QQ;
 									T3 = U3 - V3 * QQ;
@@ -2557,133 +2153,92 @@ public class ECM extends Applet implements Runnable
 									V3 = T3;
 								}
 								aiInv[I] = (U1 + PK) % PK;
-							}
-							else
-							{
+							} else {
 								aiInv[I] = 0;
 							}
 						}
-						if (P != 2)
-						{
-							for (IV = 0; IV <= 1; IV++)
-							{
-								for (X = 1; X < PK; X++)
-								{
-									for (I = 0; I < PK; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+						if (P != 2) {
+							for (IV = 0; IV <= 1; IV++) {
+								for (X = 1; X < PK; X++) {
+									for (I = 0; I < PK; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJS[I][J] = aiJ0[I][J];
 										}
 									}
-									if (X % P == 0)
-									{
+									if (X % P == 0) {
 										continue;
 									}
-									if (IV == 0)
-									{
+									if (IV == 0) {
 										LongToBigNbr(X, biExp, NumberLength);
-									}
-									else
-									{
+									} else {
 										LongToBigNbr(VK * X / PK, biExp, NumberLength);
-										if (VK * X / PK == 0)
-										{
+										if (VK * X / PK == 0) {
 											continue;
 										}
 									}
 									JS_E(PK, PL, PM, P);
-									for (I = 0; I < PK; I++)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+									for (I = 0; I < PK; I++) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJW[I][J] = 0;
 										}
 									}
 									InvX = aiInv[X];
-									for (I = 0; I < PK; I++)
-									{
+									for (I = 0; I < PK; I++) {
 										J = I * InvX % PK;
 										AddBigNbrModN(aiJW[J], aiJS[I], aiJW[J], TestNbr,
 												NumberLength);
 									}
 									NormalizeJW(PK, PL, PM, P);
-									if (IV == 0)
-									{
-										for (I = 0; I < PK; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+									if (IV == 0) {
+										for (I = 0; I < PK; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJS[I][J] = aiJ00[I][J];
 											}
 										}
-									}
-									else
-									{
-										for (I = 0; I < PK; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+									} else {
+										for (I = 0; I < PK; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJS[I][J] = aiJ01[I][J];
 											}
 										}
 									}
 									JS_JW(PK, PL, PM, P);
-									if (IV == 0)
-									{
-										for (I = 0; I < PK; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+									if (IV == 0) {
+										for (I = 0; I < PK; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJ00[I][J] = aiJS[I][J];
 											}
 										}
-									}
-									else
-									{
-										for (I = 0; I < PK; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+									} else {
+										for (I = 0; I < PK; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJ01[I][J] = aiJS[I][J];
 											}
 										}
 									}
 								} /* end for X */
 							} /* end for IV */
-						}
-						else
-						{
-							if (K == 1)
-							{
+						} else {
+							if (K == 1) {
 								MultBigNbrByLongModN(MontgomeryMultR1, Q, aiJ00[0],
 										TestNbr, NumberLength);
-								for (J = 0; J < NumberLength; J++)
-								{
+								for (J = 0; J < NumberLength; J++) {
 									aiJ01[0][J] = MontgomeryMultR1[J];
 								}
-							}
-							else
-							{
-								if (K == 2)
-								{
-									if (VK == 1)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+							} else {
+								if (K == 2) {
+									if (VK == 1) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJ01[0][J] = MontgomeryMultR1[J];
 										}
 									}
-									for (J = 0; J < NumberLength; J++)
-									{
+									for (J = 0; J < NumberLength; J++) {
 										aiJS[0][J] = aiJ0[0][J];
 										aiJS[1][J] = aiJ0[1][J];
 									}
 									JS_2(PK, PL, PM, P);
-									if (VK == 3)
-									{
-										for (J = 0; J < NumberLength; J++)
-										{
+									if (VK == 3) {
+										for (J = 0; J < NumberLength; J++) {
 											aiJ01[0][J] = aiJS[0][J];
 											aiJ01[1][J] = aiJS[1][J];
 										}
@@ -2692,119 +2247,84 @@ public class ECM extends Applet implements Runnable
 											NumberLength);
 									MultBigNbrByLongModN(aiJS[1], Q, aiJ00[1], TestNbr,
 											NumberLength);
-								}
-								else
-								{
-									for (IV = 0; IV <= 1; IV++)
-									{
-										for (X = 1; X < PK; X += 2)
-										{
-											for (I = 0; I <= PM; I++)
-											{
-												for (J = 0; J < NumberLength; J++)
-												{
+								} else {
+									for (IV = 0; IV <= 1; IV++) {
+										for (X = 1; X < PK; X += 2) {
+											for (I = 0; I <= PM; I++) {
+												for (J = 0; J < NumberLength; J++) {
 													aiJS[I][J] = aiJ1[I][J];
 												}
 											}
-											if (X % 8 == 5 || X % 8 == 7)
-											{
+											if (X % 8 == 5 || X % 8 == 7) {
 												continue;
 											}
-											if (IV == 0)
-											{
+											if (IV == 0) {
 												LongToBigNbr(X, biExp, NumberLength);
-											}
-											else
-											{
+											} else {
 												LongToBigNbr(VK * X / PK, biExp, NumberLength);
-												if (VK * X / PK == 0)
-												{
+												if (VK * X / PK == 0) {
 													continue;
 												}
 											}
 											JS_E(PK, PL, PM, P);
-											for (I = 0; I < PK; I++)
-											{
-												for (J = 0; J < NumberLength; J++)
-												{
+											for (I = 0; I < PK; I++) {
+												for (J = 0; J < NumberLength; J++) {
 													aiJW[I][J] = 0;
 												}
 											}
 											InvX = aiInv[X];
-											for (I = 0; I < PK; I++)
-											{
+											for (I = 0; I < PK; I++) {
 												J = I * InvX % PK;
 												AddBigNbrModN(aiJW[J], aiJS[I], aiJW[J], TestNbr,
 														NumberLength);
 											}
 											NormalizeJW(PK, PL, PM, P);
-											if (IV == 0)
-											{
-												for (I = 0; I < PK; I++)
-												{
-													for (J = 0; J < NumberLength; J++)
-													{
+											if (IV == 0) {
+												for (I = 0; I < PK; I++) {
+													for (J = 0; J < NumberLength; J++) {
 														aiJS[I][J] = aiJ00[I][J];
 													}
 												}
-											}
-											else
-											{
-												for (I = 0; I < PK; I++)
-												{
-													for (J = 0; J < NumberLength; J++)
-													{
+											} else {
+												for (I = 0; I < PK; I++) {
+													for (J = 0; J < NumberLength; J++) {
 														aiJS[I][J] = aiJ01[I][J];
 													}
 												}
 											}
 											NormalizeJS(PK, PL, PM, P);
 											JS_JW(PK, PL, PM, P);
-											if (IV == 0)
-											{
-												for (I = 0; I < PK; I++)
-												{
-													for (J = 0; J < NumberLength; J++)
-													{
+											if (IV == 0) {
+												for (I = 0; I < PK; I++) {
+													for (J = 0; J < NumberLength; J++) {
 														aiJ00[I][J] = aiJS[I][J];
 													}
 												}
-											}
-											else
-											{
-												for (I = 0; I < PK; I++)
-												{
-													for (J = 0; J < NumberLength; J++)
-													{
+											} else {
+												for (I = 0; I < PK; I++) {
+													for (J = 0; J < NumberLength; J++) {
 														aiJ01[I][J] = aiJS[I][J];
 													}
 												}
 											}
 										} /* end for X */
-										if (IV == 0 || VK % 8 == 1 || VK % 8 == 3)
-										{
+										if (IV == 0 || VK % 8 == 1 || VK % 8 == 3) {
 											continue;
 										}
-										for (I = 0; I < PM; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+										for (I = 0; I < PM; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJW[I][J] = aiJ2[I][J];
 												aiJS[I][J] = aiJ01[I][J];
 											}
 										}
-										for (; I < PK; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+										for (; I < PK; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJW[I][J] = aiJS[I][J] = 0;
 											}
 										}
 										JS_JW(PK, PL, PM, P);
-										for (I = 0; I < PM; I++)
-										{
-											for (J = 0; J < NumberLength; J++)
-											{
+										for (I = 0; I < PM; I++) {
+											for (J = 0; J < NumberLength; J++) {
 												aiJ01[I][J] = aiJS[I][J];
 											}
 										}
@@ -2812,109 +2332,84 @@ public class ECM extends Applet implements Runnable
 								}
 							}
 						}
-						for (I = 0; I < PL; I++)
-						{
-							for (J = 0; J < NumberLength; J++)
-							{
+						for (I = 0; I < PL; I++) {
+							for (J = 0; J < NumberLength; J++) {
 								aiJS[I][J] = aiJ00[I][J];
 							}
 						}
-						for (; I < PK; I++)
-						{
-							for (J = 0; J < NumberLength; J++)
-							{
+						for (; I < PK; I++) {
+							for (J = 0; J < NumberLength; J++) {
 								aiJS[I][J] = 0;
 							}
 						}
 						DivBigNbrByLong(TestNbr, PK, biExp, NumberLength);
 						JS_E(PK, PL, PM, P);
-						for (I = 0; I < PK; I++)
-						{
-							for (J = 0; J < NumberLength; J++)
-							{
+						for (I = 0; I < PK; I++) {
+							for (J = 0; J < NumberLength; J++) {
 								aiJW[I][J] = 0;
 							}
 						}
-						for (I = 0; I < PL; I++)
-						{
-							for (J = 0; J < PL; J++)
-							{
+						for (I = 0; I < PL; I++) {
+							for (J = 0; J < PL; J++) {
 								MontgomeryMult(aiJS[I], aiJ01[J], biTmp);
 								AddBigNbrModN(biTmp, aiJW[(I + J) % PK], aiJW[(I + J) % PK], TestNbr,
 										NumberLength);
 							}
 						}
 						NormalizeJW(PK, PL, PM, P);
-						MatchingRoot : do
-						{
+						MatchingRoot:
+						do {
 							H = -1;
 							W = 0;
-							for (I = 0; I < PL; I++)
-							{
-								if (!BigNbrIsZero(aiJW[I]))
-								{
+							for (I = 0; I < PL; I++) {
+								if (!BigNbrIsZero(aiJW[I])) {
 									if (H == -1
-											&& BigNbrAreEqual(aiJW[I], MontgomeryMultR1))
-									{
+											&& BigNbrAreEqual(aiJW[I], MontgomeryMultR1)) {
 										H = I;
-									}
-									else
-									{
+									} else {
 										H = -2;
 										AddBigNbrModN(aiJW[I], MontgomeryMultR1, biTmp, TestNbr,
 												NumberLength);
-										if (BigNbrIsZero(biTmp))
-										{
+										if (BigNbrIsZero(biTmp)) {
 											W++;
 										}
 									}
 								}
 							}
-							if (H >= 0)
-							{
+							if (H >= 0) {
 								break MatchingRoot;
 							}
-							if (W != P - 1)
-							{
+							if (W != P - 1) {
 								return 1; /* Not prime */
 							}
-							for (I = 0; I < PM; I++)
-							{
+							for (I = 0; I < PM; I++) {
 								AddBigNbrModN(aiJW[I], MontgomeryMultR1, biTmp, TestNbr, NumberLength);
-								if (BigNbrIsZero(biTmp))
-								{
+								if (BigNbrIsZero(biTmp)) {
 									break;
 								}
 							}
-							if (I == PM)
-							{
+							if (I == PM) {
 								return 1; /* Not prime */
 							}
-							for (J = 1; J <= P - 2; J++)
-							{
+							for (J = 1; J <= P - 2; J++) {
 								AddBigNbrModN(aiJW[I + J * PM], MontgomeryMultR1, biTmp, TestNbr,
 										NumberLength);
-								if (!BigNbrIsZero(biTmp))
-								{
+								if (!BigNbrIsZero(biTmp)) {
 									return 1; /* Not prime */
 								}
 							}
 							H = I + PL;
 						}
 						while (false);
-						if (SW == 1 || H % P == 0)
-						{
+						if (SW == 1 || H % P == 0) {
 							continue;
 						}
-						if (P != 2)
-						{
+						if (P != 2) {
 							SW = 1;
 							continue;
 						}
-						if (K == 1)
-						{
-							if ((TestNbr[0] & 3) == 1)
-							{
+						if (K == 1) {
+							if ((TestNbr[0] & 3) == 1) {
 								SW = 1;
 							}
 							continue;
@@ -2924,61 +2419,49 @@ public class ECM extends Applet implements Runnable
 
 						MultBigNbrByLongModN(MontgomeryMultR1, Q, biTmp, TestNbr,
 								NumberLength);
-						for (I = 0; I < NumberLength; I++)
-						{
+						for (I = 0; I < NumberLength; I++) {
 							biR[I] = biTmp[I];
 						}
 						I = NumberLength - 1;
 						Mask = 0x40000000;
-						while ((TestNbr[I] & Mask) == 0)
-						{
+						while ((TestNbr[I] & Mask) == 0) {
 							Mask /= 2;
-							if (Mask == 0)
-							{
+							if (Mask == 0) {
 								I--;
 								Mask = 0x40000000L;
 							}
 						}
-						do
-						{
+						do {
 							Mask /= 2;
-							if (Mask == 0)
-							{
+							if (Mask == 0) {
 								I--;
 								Mask = 0x40000000L;
 							}
 							MontgomeryMult(biR, biR, biT);
-							for (J = 0; J < NumberLength; J++)
-							{
+							for (J = 0; J < NumberLength; J++) {
 								biR[J] = biT[J];
 							}
-							if ((TestNbr[I] & Mask) != 0)
-							{
+							if ((TestNbr[I] & Mask) != 0) {
 								MontgomeryMult(biR, biTmp, biT);
-								for (J = 0; J < NumberLength; J++)
-								{
+								for (J = 0; J < NumberLength; J++) {
 									biR[J] = biT[J];
 								}
 							}
 						}
 						while (I > 0 || Mask > 2);
 						AddBigNbrModN(biR, MontgomeryMultR1, biTmp, TestNbr, NumberLength);
-						if (!BigNbrIsZero(biTmp))
-						{
+						if (!BigNbrIsZero(biTmp)) {
 							return 1; /* Not prime */
 						}
 						SW = 1;
 					} /* end for j */
-					if (SW == 0)
-					{
+					if (SW == 0) {
 						TestedQs = TestingQs + 1;
-						if (TestingQs < aiNQ[LEVELnow] - 1)
-						{
+						if (TestingQs < aiNQ[LEVELnow] - 1) {
 							TestingQs++;
 							Q = aiQ[TestingQs];
 							U = T * Q;
-							do
-							{
+							do {
 								MultBigNbrByLong(biS, Q, biS, NumberLength);
 								U /= Q;
 							}
@@ -2986,29 +2469,24 @@ public class ECM extends Applet implements Runnable
 							continue; /* Retry */
 						}
 						LEVELnow++;
-						if (LEVELnow == LEVELmax)
-						{
+						if (LEVELnow == LEVELmax) {
 							return ProbabilisticPrimeTest(N); /* Cannot tell */
 						}
 						T = aiT[LEVELnow];
 						NP = aiNP[LEVELnow];
 						biS[0] = 2;
-						for (J = 1; J < NumberLength; J++)
-						{
+						for (J = 1; J < NumberLength; J++) {
 							biS[J] = 0;
 						}
-						for (J = 0; J <= aiNQ[LEVELnow]; J++)
-						{
+						for (J = 0; J <= aiNQ[LEVELnow]; J++) {
 							Q = aiQ[J];
 							U = T * Q;
-							do
-							{
+							do {
 								MultBigNbrByLong(biS, Q, biS, NumberLength);
 								U /= Q;
 							}
 							while (U % Q == 0);
-							if (CompareSquare(biS, TestNbr) > 0)
-							{
+							if (CompareSquare(biS, TestNbr) > 0) {
 								TestingQs = J;
 								continue MainStart; /* Retry from the beginning */
 							}
@@ -3022,93 +2500,73 @@ public class ECM extends Applet implements Runnable
 			// Final Test
 
 			LengthN = NumberLength;
-			for (I = 0; I < NumberLength; I++)
-			{
+			for (I = 0; I < NumberLength; I++) {
 				biN[I] = TestNbr[I];
 				TestNbr[I] = biS[I];
 				biR[I] = 0;
 			}
-			for (;;)
-			{
-				if (TestNbr[NumberLength - 1] != 0)
-				{
+			for (; ; ) {
+				if (TestNbr[NumberLength - 1] != 0) {
 					break;
 				}
 				NumberLength--;
 			}
 			dN = (double) TestNbr[NumberLength - 1];
-			if (NumberLength > 1)
-			{
+			if (NumberLength > 1) {
 				dN += (double) TestNbr[NumberLength - 2] / dDosALa31;
 			}
-			if (NumberLength > 2)
-			{
+			if (NumberLength > 2) {
 				dN += (double) TestNbr[NumberLength - 3] / dDosALa62;
 			}
 			LengthS = NumberLength;
 			dS = dN;
 			MontgomeryMultR1[0] = 1;
-			for (I = 1; I < NumberLength; I++)
-			{
+			for (I = 1; I < NumberLength; I++) {
 				MontgomeryMultR1[I] = 0;
 			}
 
 			biR[0] = 1;
 			BigNbrModN(biN, LengthN, biT); /* Compute N mod S */
-			for (J = 1; J <= T; J++)
-			{
+			for (J = 1; J <= T; J++) {
 				MultBigNbrModN(biR, biT, biTmp, TestNbr, NumberLength);
-				for (i = NumberLength - 1; i > 0; i--)
-				{
-					if (biTmp[i] != 0)
-					{
+				for (i = NumberLength - 1; i > 0; i--) {
+					if (biTmp[i] != 0) {
 						break;
 					}
 				}
-				if (i == 0 && biTmp[0] != 1)
-				{
+				if (i == 0 && biTmp[0] != 1) {
 					return 0; /* Number is prime */
 				}
-				for (;;)
-				{
-					if (biTmp[NumberLength - 1] != 0)
-					{
+				for (; ; ) {
+					if (biTmp[NumberLength - 1] != 0) {
 						break;
 					}
 					NumberLength--;
 				}
-				for (I = 0; I < NumberLength; I++)
-				{
+				for (I = 0; I < NumberLength; I++) {
 					TestNbr[I] = biTmp[I];
 				}
 				dN = (double) TestNbr[NumberLength - 1];
-				if (NumberLength > 1)
-				{
+				if (NumberLength > 1) {
 					dN += (double) TestNbr[NumberLength - 2] / dDosALa31;
 				}
-				if (NumberLength > 2)
-				{
+				if (NumberLength > 2) {
 					dN += (double) TestNbr[NumberLength - 3] / dDosALa62;
 				}
-				for (i = NumberLength - 1; i > 0; i--)
-				{
-					if (TestNbr[i] != biTmp[i])
-					{
+				for (i = NumberLength - 1; i > 0; i--) {
+					if (TestNbr[i] != biTmp[i]) {
 						break;
 					}
 				}
-				if (TestNbr[i] > biTmp[i])
-				{
+				if (TestNbr[i] > biTmp[i]) {
 					BigNbrModN(biN, LengthN, biTmp); /* Compute N mod R */
-					if (BigNbrIsZero(biTmp))
-					{ /* If N is multiple of R.. */
+					if (BigNbrIsZero(biTmp)) { /* If N is multiple of R.. */
 						return 1; /* Number is composite */
 					}
 				}
 				dN = dS;
 				NumberLength = LengthS;
-				for (I = 0; I < NumberLength; I++)
-				{
+				for (I = 0; I < NumberLength; I++) {
 					biR[I] = TestNbr[I];
 					TestNbr[I] = biS[I];
 				}
@@ -3120,8 +2578,7 @@ public class ECM extends Applet implements Runnable
 	// Prime checking routine
 	// Return codes: 0 = Number is prime.
 	//               1 = Number is composite.
-	int ProbabilisticPrimeTest(BigInteger N)
-	{
+	int ProbabilisticPrimeTest(BigInteger N) {
 		long Base, Q;
 		int baseNbr, nbrBases, exp, index, j, k;
 		long mask;
@@ -3133,21 +2590,15 @@ public class ECM extends Applet implements Runnable
 		GetMontgomeryParms();
 		Base = 1;
 		nbrBases = N.bitLength() / 2;
-		for (baseNbr = 0; baseNbr < nbrBases; baseNbr++)
-		{
-			if (Base < 3)
-			{
+		for (baseNbr = 0; baseNbr < nbrBases; baseNbr++) {
+			if (Base < 3) {
 				Base++;
-			}
-			else
-			{
-				calculate_new_prime4 : for (;;)
-				{
+			} else {
+				calculate_new_prime4:
+				for (; ; ) {
 					Base += 2;
-					for (Q = 3; Q * Q <= Base; Q += 2)
-					{ /* Check if Base is prime */
-						if (Base % Q == 0)
-						{
+					for (Q = 3; Q * Q <= Base; Q += 2) { /* Check if Base is prime */
+						if (Base % Q == 0) {
 							continue calculate_new_prime4; /* Composite */
 						}
 					}
@@ -3163,60 +2614,46 @@ public class ECM extends Applet implements Runnable
 			System.arraycopy(MontgomeryMultR1, 0, biN, 0, NumberLength);
 			index = NumberLength - 1;
 			mask = 0x40000000L;
-			for (k = NumberLength * 31; k > exp; k--)
-			{
+			for (k = NumberLength * 31; k > exp; k--) {
 				MontgomeryMult(biN, biN, biT);
-				if ((TestNbr[index] & mask) != 0)
-				{
+				if ((TestNbr[index] & mask) != 0) {
 					MultBigNbrByLongModN(biT, Base, biT, TestNbr, NumberLength);
 				}
 				System.arraycopy(biT, 0, biN, 0, NumberLength);
 				mask /= 2;
-				if (mask == 0)
-				{
+				if (mask == 0) {
 					index--;
 					mask = 0x40000000L;
 				}
 			}
-			for (j = 0; j < NumberLength; j++)
-			{
-				if (biN[j] != MontgomeryMultR1[j])
-				{
+			for (j = 0; j < NumberLength; j++) {
+				if (biN[j] != MontgomeryMultR1[j]) {
 					break;
 				}
 			}
-			if (j == NumberLength)
-			{
+			if (j == NumberLength) {
 				continue;
 			} /* Probable prime, go to next base */
-			for (k = 0; k < exp; k++)
-			{
+			for (k = 0; k < exp; k++) {
 				AddBigNbr(biN, MontgomeryMultR1, biT, NumberLength);
-				for (j = 0; j < NumberLength; j++)
-				{
-					if (biT[j] != TestNbr[j])
-					{
+				for (j = 0; j < NumberLength; j++) {
+					if (biT[j] != TestNbr[j]) {
 						break;
 					}
 				}
-				if (j == NumberLength)
-				{
+				if (j == NumberLength) {
 					break;
 				} /* Probable prime, go to next base */
 				MontgomeryMult(biN, biN, biT);
 				System.arraycopy(biT, 0, biN, 0, NumberLength);
 			}
-			if (k == exp)
-			{
-				for (j = 0; j < NumberLength; j++)
-				{
-					if (biN[j] != MontgomeryMultR1[j])
-					{
+			if (k == exp) {
+				for (j = 0; j < NumberLength; j++) {
+					if (biN[j] != MontgomeryMultR1[j]) {
 						break;
 					}
 				}
-				if (j < NumberLength)
-				{
+				if (j < NumberLength) {
 					return 1;
 				} /* Composite number */
 			}
@@ -3225,48 +2662,36 @@ public class ECM extends Applet implements Runnable
 	}
 
 	// Compare Nbr1^2 vs. Nbr2
-	int CompareSquare(int Nbr1[], int Nbr2[])
-	{
+	int CompareSquare(int Nbr1[], int Nbr2[]) {
 		int I, k;
 
-		for (I = NumberLength - 1; I > 0; I--)
-		{
-			if (Nbr1[I] != 0)
-			{
+		for (I = NumberLength - 1; I > 0; I--) {
+			if (Nbr1[I] != 0) {
 				break;
 			}
 		}
 		k = NumberLength / 2;
-		if (NumberLength % 2 == 0)
-		{
-			if (I >= k)
-			{
+		if (NumberLength % 2 == 0) {
+			if (I >= k) {
 				return 1;
 			} // Nbr1^2 > Nbr2
-			if (I < k - 1 || biS[k - 1] < 65536)
-			{
+			if (I < k - 1 || biS[k - 1] < 65536) {
 				return -1;
 			} // Nbr1^2 < Nbr2
-		}
-		else
-		{
-			if (I < k)
-			{
+		} else {
+			if (I < k) {
 				return -1;
 			} // Nbr1^2 < Nbr2
-			if (I > k || biS[k] >= 65536)
-			{
+			if (I > k || biS[k] >= 65536) {
 				return 1;
 			} // Nbr1^2 > Nbr2
 		}
 		MultBigNbr(biS, biS, biTmp, NumberLength);
 		SubtractBigNbr(biTmp, TestNbr, biTmp, NumberLength);
-		if (BigNbrIsZero(biTmp))
-		{
+		if (BigNbrIsZero(biTmp)) {
 			return 0;
 		} // Nbr1^2 == Nbr2
-		if (biTmp[NumberLength - 1] >= 0)
-		{
+		if (biTmp[NumberLength - 1] >= 0) {
 			return 1;
 		} // Nbr1^2 > Nbr2
 		return -1; // Nbr1^2 < Nbr2
@@ -3274,49 +2699,38 @@ public class ECM extends Applet implements Runnable
 
 	// Perform JS <- JS ^ E
 
-	void JS_E(int PK, int PL, int PM, int P)
-	{
+	void JS_E(int PK, int PL, int PM, int P) {
 		int I, J, K;
 		long Mask;
 
-		for (I = NumberLength - 1; I > 0; I--)
-		{
-			if (biExp[I] != 0)
-			{
+		for (I = NumberLength - 1; I > 0; I--) {
+			if (biExp[I] != 0) {
 				break;
 			}
 		}
-		if (I == 0 && biExp[0] == 1)
-		{
+		if (I == 0 && biExp[0] == 1) {
 			return;
 		} // Return if E == 1
-		for (K = 0; K < PL; K++)
-		{
-			for (J = 0; J < NumberLength; J++)
-			{
+		for (K = 0; K < PL; K++) {
+			for (J = 0; J < NumberLength; J++) {
 				aiJW[K][J] = aiJS[K][J];
 			}
 		}
 		Mask = 0x40000000L;
-		for (;;)
-		{
-			if ((biExp[I] & Mask) != 0)
-			{
+		for (; ; ) {
+			if ((biExp[I] & Mask) != 0) {
 				break;
 			}
 			Mask /= 2;
 		}
-		do
-		{
+		do {
 			JS_2(PK, PL, PM, P);
 			Mask /= 2;
-			if (Mask == 0)
-			{
+			if (Mask == 0) {
 				Mask = 0x40000000L;
 				I--;
 			}
-			if ((biExp[I] & Mask) != 0)
-			{
+			if ((biExp[I] & Mask) != 0) {
 				JS_JW(PK, PL, PM, P);
 			}
 		}
@@ -3325,22 +2739,17 @@ public class ECM extends Applet implements Runnable
 
 	// Perform JS <- JS * JW
 
-	void JS_JW(int PK, int PL, int PM, int P)
-	{
+	void JS_JW(int PK, int PL, int PM, int P) {
 		int I, J, K;
-		for (I = 0; I < PL; I++)
-		{
-			for (J = 0; J < PL; J++)
-			{
+		for (I = 0; I < PL; I++) {
+			for (J = 0; J < PL; J++) {
 				K = (I + J) % PK;
 				MontgomeryMult(aiJS[I], aiJW[J], biTmp);
 				AddBigNbrModN(aiJX[K], biTmp, aiJX[K], TestNbr, NumberLength);
 			}
 		}
-		for (I = 0; I < PK; I++)
-		{
-			for (J = 0; J < NumberLength; J++)
-			{
+		for (I = 0; I < PK; I++) {
+			for (J = 0; J < NumberLength; J++) {
 				aiJS[I][J] = aiJX[I][J];
 				aiJX[I][J] = 0;
 			}
@@ -3350,26 +2759,21 @@ public class ECM extends Applet implements Runnable
 
 	// Perform JS <- JS ^ 2
 
-	void JS_2(int PK, int PL, int PM, int P)
-	{
+	void JS_2(int PK, int PL, int PM, int P) {
 		int I, J, K;
-		for (I = 0; I < PL; I++)
-		{
+		for (I = 0; I < PL; I++) {
 			K = 2 * I % PK;
 			MontgomeryMult(aiJS[I], aiJS[I], biTmp);
 			AddBigNbrModN(aiJX[K], biTmp, aiJX[K], TestNbr, NumberLength);
 			AddBigNbrModN(aiJS[I], aiJS[I], biT, TestNbr, NumberLength);
-			for (J = I + 1; J < PL; J++)
-			{
+			for (J = I + 1; J < PL; J++) {
 				K = (I + J) % PK;
 				MontgomeryMult(biT, aiJS[J], biTmp);
 				AddBigNbrModN(aiJX[K], biTmp, aiJX[K], TestNbr, NumberLength);
 			}
 		}
-		for (I = 0; I < PK; I++)
-		{
-			for (J = 0; J < NumberLength; J++)
-			{
+		for (I = 0; I < PK; I++) {
+			for (J = 0; J < NumberLength; J++) {
 				aiJS[I][J] = aiJX[I][J];
 				aiJX[I][J] = 0;
 			}
@@ -3378,24 +2782,18 @@ public class ECM extends Applet implements Runnable
 	}
 
 	// Normalize coefficient of JS
-	void NormalizeJS(int PK, int PL, int PM, int P)
-	{
+	void NormalizeJS(int PK, int PL, int PM, int P) {
 		int I, J;
-		for (I = PL; I < PK; I++)
-		{
-			if (!BigNbrIsZero(aiJS[I]))
-			{
-				for (J = 0; J < NumberLength; J++)
-				{
+		for (I = PL; I < PK; I++) {
+			if (!BigNbrIsZero(aiJS[I])) {
+				for (J = 0; J < NumberLength; J++) {
 					biT[J] = aiJS[I][J];
 				}
-				for (J = 1; J < P; J++)
-				{
+				for (J = 1; J < P; J++) {
 					SubtractBigNbrModN(aiJS[I - J * PM], biT, aiJS[I - J * PM],
 							TestNbr, NumberLength);
 				}
-				for (J = 0; J < NumberLength; J++)
-				{
+				for (J = 0; J < NumberLength; J++) {
 					aiJS[I][J] = 0;
 				}
 			}
@@ -3403,53 +2801,39 @@ public class ECM extends Applet implements Runnable
 	}
 
 	// Normalize coefficient of JW
-	void NormalizeJW(int PK, int PL, int PM, int P)
-	{
+	void NormalizeJW(int PK, int PL, int PM, int P) {
 		int I, J;
-		for (I = PL; I < PK; I++)
-		{
-			if (!BigNbrIsZero(aiJW[I]))
-			{
-				for (J = 0; J < NumberLength; J++)
-				{
+		for (I = PL; I < PK; I++) {
+			if (!BigNbrIsZero(aiJW[I])) {
+				for (J = 0; J < NumberLength; J++) {
 					biT[J] = aiJW[I][J];
 				}
-				for (J = 1; J < P; J++)
-				{
+				for (J = 1; J < P; J++) {
 					SubtractBigNbrModN(aiJW[I - J * PM], biT, aiJW[I - J * PM],
 							TestNbr, NumberLength);
 				}
-				for (J = 0; J < NumberLength; J++)
-				{
+				for (J = 0; J < NumberLength; J++) {
 					aiJW[I][J] = 0;
 				}
 			}
 		}
 	}
 
-	void JacobiSum(int A, int B, int P, int PK, int PL, int PM, int Q)
-	{
+	void JacobiSum(int A, int B, int P, int PK, int PL, int PM, int Q) {
 		int I, J, K;
 
-		for (I = 0; I < PL; I++)
-		{
-			for (J = 0; J < NumberLength; J++)
-			{
+		for (I = 0; I < PL; I++) {
+			for (J = 0; J < NumberLength; J++) {
 				aiJ0[I][J] = 0;
 			}
 		}
-		for (I = 1; I <= Q - 2; I++)
-		{
+		for (I = 1; I <= Q - 2; I++) {
 			J = (A * I + B * aiF[I]) % PK;
-			if (J < PL)
-			{
+			if (J < PL) {
 				AddBigNbrModN(aiJ0[J], MontgomeryMultR1, aiJ0[J], TestNbr,
 						NumberLength);
-			}
-			else
-			{
-				for (K = 1; K < P; K++)
-				{
+			} else {
+				for (K = 1; K < P; K++) {
 					SubtractBigNbrModN(
 							aiJ0[J - K * PM],
 							MontgomeryMultR1,
@@ -3460,8 +2844,7 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	BigInteger fnECM(BigInteger N, int FactorIndex)
-	{
+	BigInteger fnECM(BigInteger N, int FactorIndex) {
 		int I, J, Pass, Qaux;
 		long L1, L2, LS, P, Q, IP, Paux = 1;
 		int[] A0 = new int[NLen];
@@ -3512,8 +2895,7 @@ public class ECM extends Applet implements Runnable
 		NumberLength = BigNbrToBigInt(N, TestNbr);
 		GetYieldFrequency();
 		GetMontgomeryParms();
-		for (I = 0; I < NumberLength; I++)
-		{
+		for (I = 0; I < NumberLength; I++) {
 			M[I] = DX[I] = DZ[I] = W3[I] = W4[I] = GD[I] = 0;
 		}
 		textAreaContents = "";
@@ -3524,16 +2906,13 @@ public class ECM extends Applet implements Runnable
 		SmallPrime[0] = 2;
 		P = 3;
 		indexM = 1;
-		for (indexM = 1; indexM < SmallPrime.length; indexM++)
-		{
+		for (indexM = 1; indexM < SmallPrime.length; indexM++) {
 			SmallPrime[indexM] = (int) P; /* Store prime */
-			calculate_new_prime1 : for (;;)
-			{
+			calculate_new_prime1:
+			for (; ; ) {
 				P += 2;
-				for (Q = 3; Q * Q <= P; Q += 2)
-				{ /* Check if P is prime */
-					if (P % Q == 0)
-					{
+				for (Q = 3; Q * Q <= P; Q += 2) { /* Check if P is prime */
+					if (P % Q == 0) {
 						continue calculate_new_prime1; /* Composite */
 					}
 				}
@@ -3541,35 +2920,27 @@ public class ECM extends Applet implements Runnable
 			}
 		}
 		foundByLehman = false;
-		do
-		{
-			new_curve : for (;;)
-			{
-				if (NextEC > 0)
-				{
+		do {
+			new_curve:
+			for (; ; ) {
+				if (NextEC > 0) {
 					EC = NextEC;
 					NextEC = -1;
-					if (EC >= TYP_SIQS)
-					{
+					if (EC >= TYP_SIQS) {
 						return BigInt1;
 					}
-				}
-				else
-				{
+				} else {
 					EC++;
 					NN = Lehman(NumberToFactor, EC);
-					if (!NN.equals(BigInt1))
-					{                // Factor found.
+					if (!NN.equals(BigInt1)) {                // Factor found.
 						foundByLehman = true;
 						return NN;
 					}
 					L1 = N.toString().length();   // Get number of digits.
 					if (L1 > 30 && L1 <= 90 &&    // If between 30 and 90 digits...
-							(digitsInGroup & 0x400) == 0)
-					{                             // Switch to SIQS checkbox is set.
-						int limit = limits[((int)L1 - 31) / 5];
-						if (EC % 50000000 >= limit && !forcedECM)
-						{                           // Switch to SIQS.
+							(digitsInGroup & 0x400) == 0) {                             // Switch to SIQS checkbox is set.
+						int limit = limits[((int) L1 - 31) / 5];
+						if (EC % 50000000 >= limit && !forcedECM) {                           // Switch to SIQS.
 							EC += TYP_SIQS;
 							return BigInt1;
 						}
@@ -3581,28 +2952,21 @@ public class ECM extends Applet implements Runnable
 				LS = 45;
 				Paux = EC;
 				nbrPrimes = 303; /* Number of primes less than 2000 */
-				if (EC > 25)
-				{
-					if (EC < 326)
-					{
+				if (EC > 25) {
+					if (EC < 326) {
 						L1 = 50000;
 						L2 = 5000000;
 						LS = 224;
 						Paux = EC - 24;
 						nbrPrimes = 5133; /* Number of primes less than 50000 */
-					}
-					else
-					{
-						if (EC < 2000)
-						{
+					} else {
+						if (EC < 2000) {
 							L1 = 1000000;
 							L2 = 100000000;
 							LS = 1001;
 							Paux = EC - 299;
 							nbrPrimes = 78498; /* Number of primes less than 1000000 */
-						}
-						else
-						{
+						} else {
 							L1 = 11000000;
 							L2 = 1100000000;
 							LS = 3316;
@@ -3621,25 +2985,18 @@ public class ECM extends Applet implements Runnable
 								+ ")    Curve ";
 				UpperLine = "Digits in factor:   ";
 				LowerLine = "Probability:        ";
-				for (I = 0; I < 6; I++)
-				{
+				for (I = 0; I < 6; I++) {
 					UpperLine += "    >= " + (I * 5 + 15);
 					Prob =
 							(int) Math.round(
 									100
-											* (1 - Math.exp(- ((double) L1 * (double) Paux) / ProbArray[I])));
-					if (Prob == 100)
-					{
+											* (1 - Math.exp(-((double) L1 * (double) Paux) / ProbArray[I])));
+					if (Prob == 100) {
 						LowerLine += "    100% ";
-					}
-					else
-					{
-						if (Prob >= 10)
-						{
+					} else {
+						if (Prob >= 10) {
 							LowerLine += "     " + Prob + "% ";
-						}
-						else
-						{
+						} else {
 							LowerLine += "      " + Prob + "% ";
 						}
 					}
@@ -3657,8 +3014,7 @@ public class ECM extends Applet implements Runnable
 				MultBigNbrByLongModN(A02, 9, Aux2, TestNbr, NumberLength);
 				SubtractBigNbrModN(Aux2, MontgomeryMultR1, Aux2, TestNbr, NumberLength);
 				MontgomeryMult(Aux1, Aux2, Aux3);
-				if (BigNbrIsZero(Aux3))
-				{
+				if (BigNbrIsZero(Aux3)) {
 					continue;
 				}
 				MultBigNbrByLongModN(A0, 4, Z, TestNbr, NumberLength);
@@ -3684,31 +3040,24 @@ public class ECM extends Applet implements Runnable
 				System.arraycopy(X, 0, Xaux, 0, NumberLength);
 				System.arraycopy(Z, 0, Zaux, 0, NumberLength);
 				System.arraycopy(MontgomeryMultR1, 0, GcdAccumulated, 0, NumberLength);
-				for (Pass = 0; Pass < 2; Pass++)
-				{
+				for (Pass = 0; Pass < 2; Pass++) {
 					/* For powers of 2 */
 					indexPrimes = 0;
 					StepECM = 1;
-					for (I = 1; I <= L1; I <<= 1)
-					{
+					for (I = 1; I <= L1; I <<= 1) {
 						duplicate(X, Z, X, Z);
 					}
-					for (I = 3; I <= L1; I *= 3)
-					{
+					for (I = 3; I <= L1; I *= 3) {
 						duplicate(W1, W2, X, Z);
 						add3(X, Z, X, Z, W1, W2, X, Z);
 					}
 
-					if (Pass == 0)
-					{
+					if (Pass == 0) {
 						MontgomeryMult(GcdAccumulated, Z, Aux1);
 						System.arraycopy(Aux1, 0, GcdAccumulated, 0, NumberLength);
-					}
-					else
-					{
+					} else {
 						GcdBigNbr(Z, TestNbr, GD, NumberLength);
-						if (!BigNbrAreEqual(GD, BigNbr1))
-						{
+						if (!BigNbrAreEqual(GD, BigNbr1)) {
 							break new_curve;
 						}
 					}
@@ -3716,25 +3065,19 @@ public class ECM extends Applet implements Runnable
 					/* for powers of odd primes */
 
 					indexM = 1;
-					do
-					{
+					do {
 						indexPrimes++;
 						P = SmallPrime[indexM];
-						for (IP = P; IP <= L1; IP *= P)
-						{
+						for (IP = P; IP <= L1; IP *= P) {
 							prac((int) P, X, Z, W1, W2, W3, W4);
 						}
 						indexM++;
-						if (Pass == 0)
-						{
+						if (Pass == 0) {
 							MontgomeryMult(GcdAccumulated, Z, Aux1);
 							System.arraycopy(Aux1, 0, GcdAccumulated, 0, NumberLength);
-						}
-						else
-						{
+						} else {
 							GcdBigNbr(Z, TestNbr, GD, NumberLength);
-							if (!BigNbrAreEqual(GD, BigNbr1))
-							{
+							if (!BigNbrAreEqual(GD, BigNbr1)) {
 								break new_curve;
 							}
 						}
@@ -3744,8 +3087,7 @@ public class ECM extends Applet implements Runnable
 
 					/* Initialize sieve2310[n]: 1 if gcd(P+2n,2310) > 1, 0 otherwise */
 					u = (int) P;
-					for (i = 0; i < 2310; i++)
-					{
+					for (i = 0; i < 2310; i++) {
 						sieve2310[i] =
 								(u % 3 == 0
 										|| u % 5 == 0
@@ -3753,31 +3095,25 @@ public class ECM extends Applet implements Runnable
 										|| u % 11 == 0 ? (byte) 1 : (byte) 0);
 						u += 2;
 					}
-					do
-					{
+					do {
 						/* Generate sieve */
 						GenerateSieve((int) P, sieve, sieve2310, SmallPrime);
 
 						/* Walk through sieve */
 
-						for (i = 0; i < 23100; i++)
-						{
+						for (i = 0; i < 23100; i++) {
 							if (sieve[i] != 0)
 								continue; /* Do not process composites */
 							if (P + 2 * i > L1)
 								break;
 							indexPrimes++;
 							prac((int) (P + 2 * i), X, Z, W1, W2, W3, W4);
-							if (Pass == 0)
-							{
+							if (Pass == 0) {
 								MontgomeryMult(GcdAccumulated, Z, Aux1);
 								System.arraycopy(Aux1, 0, GcdAccumulated, 0, NumberLength);
-							}
-							else
-							{
+							} else {
 								GcdBigNbr(Z, TestNbr, GD, NumberLength);
-								if (!BigNbrAreEqual(GD, BigNbr1))
-								{
+								if (!BigNbrAreEqual(GD, BigNbr1)) {
 									break new_curve;
 								}
 							}
@@ -3785,17 +3121,14 @@ public class ECM extends Applet implements Runnable
 						P += 46200;
 					}
 					while (P < L1);
-					if (Pass == 0)
-					{
-						if (BigNbrIsZero(GcdAccumulated))
-						{ // If GcdAccumulated is
+					if (Pass == 0) {
+						if (BigNbrIsZero(GcdAccumulated)) { // If GcdAccumulated is
 							System.arraycopy(Xaux, 0, X, 0, NumberLength);
 							System.arraycopy(Zaux, 0, Z, 0, NumberLength);
 							continue; // multiple of TestNbr, continue.
 						}
 						GcdBigNbr(GcdAccumulated, TestNbr, GD, NumberLength);
-						if (!BigNbrAreEqual(GD, BigNbr1))
-						{
+						if (!BigNbrAreEqual(GD, BigNbr1)) {
 							break new_curve;
 						}
 						break;
@@ -3807,22 +3140,17 @@ public class ECM extends Applet implements Runnable
 				/******************************************************/
 				StepECM = 2;
 				j = 0;
-				for (u = 1; u < 2310; u += 2)
-				{
-					if (u % 3 == 0 || u % 5 == 0 || u % 7 == 0 || u % 11 == 0)
-					{
+				for (u = 1; u < 2310; u += 2) {
+					if (u % 3 == 0 || u % 5 == 0 || u % 7 == 0 || u % 11 == 0) {
 						sieve2310[u / 2] = (byte) 1;
-					}
-					else
-					{
+					} else {
 						sieve2310[(sieveidx[j++] = u / 2)] = (byte) 0;
 					}
 				}
 				System.arraycopy(sieve2310, 0, sieve2310, 1155, 1155);
 				System.arraycopy(X, 0, Xaux, 0, NumberLength); // (X:Z) -> Q (output
 				System.arraycopy(Z, 0, Zaux, 0, NumberLength); //         from step 1)
-				for (Pass = 0; Pass < 2; Pass++)
-				{
+				for (Pass = 0; Pass < 2; Pass++) {
 					System.arraycopy(
 							MontgomeryMultR1,
 							0,
@@ -3856,8 +3184,7 @@ public class ECM extends Applet implements Runnable
 					SubtractBigNbrModN(W1, W2, Aux1, TestNbr, NumberLength);
 					MontgomeryMult(Aux1, Aux1, Aux2);
 					MontgomeryMult(Aux2, UX, Z); // (X:Z) -> 3Q
-					for (I = 5; I < 2310; I += 2)
-					{
+					for (I = 5; I < 2310; I += 2) {
 						System.arraycopy(X, 0, WX, 0, NumberLength);
 						System.arraycopy(Z, 0, WZ, 0, NumberLength);
 						SubtractBigNbrModN(X, Z, Aux1, TestNbr, NumberLength);
@@ -3872,26 +3199,20 @@ public class ECM extends Applet implements Runnable
 						SubtractBigNbrModN(W1, W2, Aux1, TestNbr, NumberLength);
 						MontgomeryMult(Aux1, Aux1, Aux2);
 						MontgomeryMult(Aux2, UX, Z); // (X:Z) -> 5Q, 7Q, ...
-						if (Pass == 0)
-						{
+						if (Pass == 0) {
 							MontgomeryMult(GcdAccumulated, Aux1, Aux2);
 							System.arraycopy(Aux2, 0, GcdAccumulated, 0, NumberLength);
-						}
-						else
-						{
+						} else {
 							GcdBigNbr(Aux1, TestNbr, GD, NumberLength);
-							if (!BigNbrAreEqual(GD, BigNbr1))
-							{
+							if (!BigNbrAreEqual(GD, BigNbr1)) {
 								break new_curve;
 							}
 						}
-						if (I == 1155)
-						{
+						if (I == 1155) {
 							System.arraycopy(X, 0, DX, 0, NumberLength);
 							System.arraycopy(Z, 0, DZ, 0, NumberLength); // (DX:DZ) -> 1155Q
 						}
-						if (I % 3 != 0 && I % 5 != 0 && I % 7 != 0 && I % 11 != 0)
-						{
+						if (I % 3 != 0 && I % 5 != 0 && I % 7 != 0 && I % 11 != 0) {
 							J++;
 							ModInvBigNbr(Z, Aux2, TestNbr, NumberLength);
 							MontgomeryMult(Aux2, MontgomeryMultAfterInv, Aux1);
@@ -3934,26 +3255,20 @@ public class ECM extends Applet implements Runnable
 					MontgomeryMult(Aux2, UX, Z); // (X:Z) -> 3*2310Q
 					Qaux = (int) (L1 / 4620);
 					maxIndexM = (int) (L2 / 4620);
-					for (indexM = 0; indexM <= maxIndexM; indexM++)
-					{
-						if (indexM >= Qaux)
-						{ // If inside step 2 range... 
-							if (indexM == 0)
-							{
+					for (indexM = 0; indexM <= maxIndexM; indexM++) {
+						if (indexM >= Qaux) { // If inside step 2 range...
+							if (indexM == 0) {
 								ModInvBigNbr(UZ, Aux2, TestNbr, NumberLength);
 								MontgomeryMult(Aux2, MontgomeryMultAfterInv, Aux3);
 								MontgomeryMult(UX, Aux3, Aux1); // Aux1 <- X/Z (2310Q)
-							}
-							else
-							{
+							} else {
 								ModInvBigNbr(Z, Aux2, TestNbr, NumberLength);
 								MontgomeryMult(Aux2, MontgomeryMultAfterInv, Aux3);
 								MontgomeryMult(X, Aux3, Aux1); // Aux1 <- X/Z (3,5,*
 							} //              2310Q)
 
 							/* Generate sieve */
-							if (indexM % 10 == 0 || indexM == Qaux)
-							{
+							if (indexM % 10 == 0 || indexM == Qaux) {
 								GenerateSieve(
 										indexM / 10 * 46200 + 1,
 										sieve,
@@ -3962,28 +3277,23 @@ public class ECM extends Applet implements Runnable
 							}
 							/* Walk through sieve */
 							J = 1155 + (indexM % 10) * 2310;
-							for (i = 0; i < 480; i++)
-							{
+							for (i = 0; i < 480; i++) {
 								j = sieveidx[i]; // 0 < J < 1155
-								if (sieve[J + j] != 0 && sieve[J - 1 - j] != 0)
-								{
+								if (sieve[J + j] != 0 && sieve[J - 1 - j] != 0) {
 									continue; // Do not process if both are composite numbers.
 								}
 								SubtractBigNbrModN(Aux1, root[i], M, TestNbr, NumberLength);
 								MontgomeryMult(GcdAccumulated, M, Aux2);
 								System.arraycopy(Aux2, 0, GcdAccumulated, 0, NumberLength);
 							}
-							if (Pass != 0)
-							{
+							if (Pass != 0) {
 								GcdBigNbr(GcdAccumulated, TestNbr, GD, NumberLength);
-								if (!BigNbrAreEqual(GD, BigNbr1))
-								{
+								if (!BigNbrAreEqual(GD, BigNbr1)) {
 									break new_curve;
 								}
 							}
 						}
-						if (indexM != 0)
-						{ // Update (X:Z)
+						if (indexM != 0) { // Update (X:Z)
 							System.arraycopy(X, 0, WX, 0, NumberLength);
 							System.arraycopy(Z, 0, WZ, 0, NumberLength);
 							SubtractBigNbrModN(X, Z, Aux1, TestNbr, NumberLength);
@@ -4002,21 +3312,17 @@ public class ECM extends Applet implements Runnable
 							System.arraycopy(WZ, 0, UZ, 0, NumberLength);
 						}
 					} // end for Q
-					if (Pass == 0)
-					{
-						if (BigNbrIsZero(GcdAccumulated))
-						{ // If GcdAccumulated is
+					if (Pass == 0) {
+						if (BigNbrIsZero(GcdAccumulated)) { // If GcdAccumulated is
 							System.arraycopy(Xaux, 0, X, 0, NumberLength);
 							System.arraycopy(Zaux, 0, Z, 0, NumberLength);
 							continue; // multiple of TestNbr, continue.
 						}
 						GcdBigNbr(GcdAccumulated, TestNbr, GD, NumberLength);
-						if (BigNbrAreEqual(GD, TestNbr))
-						{
+						if (BigNbrAreEqual(GD, TestNbr)) {
 							break;
 						}
-						if (!BigNbrAreEqual(GD, BigNbr1))
-						{
+						if (!BigNbrAreEqual(GD, BigNbr1)) {
 							break new_curve;
 						}
 						break;
@@ -4033,44 +3339,36 @@ public class ECM extends Applet implements Runnable
 
 	/**********************/
 	/* Auxiliary routines */
-	/**********************/
+
+	/**
+	 * ******************
+	 */
 
 	static void GenerateSieve(
 			int initial,
 			byte[] sieve,
 			byte[] sieve2310,
-			int[] SmallPrime)
-	{
+			int[] SmallPrime) {
 		int i, j, Q;
-		for (i = 0; i < 23100; i += 2310)
-		{
+		for (i = 0; i < 23100; i += 2310) {
 			System.arraycopy(sieve2310, 0, sieve, i, 2310);
 		}
 		j = 5;
 		Q = 13; /* Point to prime 13 */
-		do
-		{
-			if (initial > Q * Q)
-			{
+		do {
+			if (initial > Q * Q) {
 				for (i = (int) (((long) initial * ((Q - 1) / 2)) % Q);
 				     i < 23100;
-				     i += Q)
-				{
+				     i += Q) {
 					sieve[i] = 1; /* Composite */
 				}
-			}
-			else
-			{
+			} else {
 				i = Q * Q - initial;
-				if (i < 46200)
-				{
-					for (i = i / 2; i < 23100; i += Q)
-					{
+				if (i < 46200) {
+					for (i = i / 2; i < 23100; i += Q) {
 						sieve[i] = 1; /* Composite */
 					}
-				}
-				else
-				{
+				} else {
 					break;
 				}
 			}
@@ -4079,8 +3377,7 @@ public class ECM extends Applet implements Runnable
 		while (Q < 5000);
 	}
 
-	private void GetYieldFrequency()
-	{
+	private void GetYieldFrequency() {
 		yieldFreq = 1000000 / (NumberLength * NumberLength);
 		if (yieldFreq > 100000)
 			yieldFreq = yieldFreq / 100000 * 100000;
@@ -4092,8 +3389,7 @@ public class ECM extends Applet implements Runnable
 			yieldFreq = yieldFreq / 100 * 100;
 	}
 
-	static int BigNbrToBigInt(BigInteger N, int TestNbr[])
-	{
+	static int BigNbrToBigInt(BigInteger N, int TestNbr[]) {
 		byte[] Result;
 		long[] Temp;
 		int i, j, mask;
@@ -4101,17 +3397,15 @@ public class ECM extends Applet implements Runnable
 		int NumberLength;
 
 		Result = N.toByteArray();
-		NumberLength = (Result.length * 8 + 30)/31;
-		Temp = new long[NumberLength+1];
+		NumberLength = (Result.length * 8 + 30) / 31;
+		Temp = new long[NumberLength + 1];
 		j = 0;
 		mask = 1;
 		p = 0;
-		for (i = Result.length - 1; i >= 0; i--)
-		{
+		for (i = Result.length - 1; i >= 0; i--) {
 			p += mask * (long) (Result[i] >= 0 ? Result[i] : Result[i] + 256);
 			mask <<= 8;
-			if (mask == 0)
-			{                        // Overflow
+			if (mask == 0) {                        // Overflow
 				Temp[j++] = p;
 				mask = 1;
 				p = 0;
@@ -4119,8 +3413,7 @@ public class ECM extends Applet implements Runnable
 		}
 		Temp[j] = p;
 		Convert32To31Bits(Temp, TestNbr, NumberLength);
-		if (TestNbr[NumberLength - 1] > Mi)
-		{
+		if (TestNbr[NumberLength - 1] > Mi) {
 			TestNbr[NumberLength] = 0;
 			NumberLength++;
 		}
@@ -4130,13 +3423,14 @@ public class ECM extends Applet implements Runnable
 
 	/*********************************************************/
 	/* Start of code "borrowed" from Paul Zimmermann's ECM4C */
-	/*********************************************************/
+	/**
+	 * *****************************************************
+	 */
 	final static int ADD = 6; /* number of multiplications in an addition */
 	final static int DUP = 5; /* number of multiplications in a duplicate */
 
 	/* returns the number of modular multiplications */
-	static int lucas_cost(int n, double v)
-	{
+	static int lucas_cost(int n, double v) {
 		int c, d, e, r;
 
 		d = n;
@@ -4146,58 +3440,39 @@ public class ECM extends Applet implements Runnable
 		d = n - r;
 		e = 2 * r - n;
 		c = DUP + ADD; /* initial duplicate and final addition */
-		while (d != e)
-		{
-			if (d < e)
-			{
+		while (d != e) {
+			if (d < e) {
 				r = d;
 				d = e;
 				e = r;
 			}
-			if (4 * d <= 5 * e && ((d + e) % 3) == 0)
-			{ /* condition 1 */
+			if (4 * d <= 5 * e && ((d + e) % 3) == 0) { /* condition 1 */
 				r = (2 * d - e) / 3;
 				e = (2 * e - d) / 3;
 				d = r;
 				c += 3 * ADD; /* 3 additions */
-			}
-			else if (4 * d <= 5 * e && (d - e) % 6 == 0)
-			{ /* condition 2 */
+			} else if (4 * d <= 5 * e && (d - e) % 6 == 0) { /* condition 2 */
 				d = (d - e) / 2;
 				c += ADD + DUP; /* one addition, one duplicate */
-			}
-			else if (d <= (4 * e))
-			{ /* condition 3 */
+			} else if (d <= (4 * e)) { /* condition 3 */
 				d -= e;
 				c += ADD; /* one addition */
-			}
-			else if ((d + e) % 2 == 0)
-			{ /* condition 4 */
+			} else if ((d + e) % 2 == 0) { /* condition 4 */
 				d = (d - e) / 2;
 				c += ADD + DUP; /* one addition, one duplicate */
-			}
-			else if (d % 2 == 0)
-			{ /* condition 5 */
+			} else if (d % 2 == 0) { /* condition 5 */
 				d /= 2;
 				c += ADD + DUP; /* one addition, one duplicate */
-			}
-			else if (d % 3 == 0)
-			{ /* condition 6 */
+			} else if (d % 3 == 0) { /* condition 6 */
 				d = d / 3 - e;
 				c += 3 * ADD + DUP; /* three additions, one duplicate */
-			}
-			else if ((d + e) % 3 == 0)
-			{ /* condition 7 */
+			} else if ((d + e) % 3 == 0) { /* condition 7 */
 				d = (d - 2 * e) / 3;
 				c += 3 * ADD + DUP; /* three additions, one duplicate */
-			}
-			else if ((d - e) % 3 == 0)
-			{ /* condition 8 */
+			} else if ((d - e) % 3 == 0) { /* condition 8 */
 				d = (d - e) / 3;
 				c += 3 * ADD + DUP; /* three additions, one duplicate */
-			}
-			else if (e % 2 == 0)
-			{ /* condition 9 */
+			} else if (e % 2 == 0) { /* condition 9 */
 				e /= 2;
 				c += ADD + DUP; /* one addition, one duplicate */
 			}
@@ -4213,8 +3488,7 @@ public class ECM extends Applet implements Runnable
 			int[] xT,
 			int[] zT,
 			int[] xT2,
-			int[] zT2)
-	{
+			int[] zT2) {
 		int d, e, r, i;
 		int[] t;
 		int[] xA = x, zA = z;
@@ -4231,16 +3505,14 @@ public class ECM extends Applet implements Runnable
 						1.620181980807,
 						1.580178728295,
 						1.617214616534,
-						1.38196601125 };
+						1.38196601125};
 
 		/* chooses the best value of v */
 		r = lucas_cost(n, v[0]);
 		i = 0;
-		for (d = 1; d < 10; d++)
-		{
+		for (d = 1; d < 10; d++) {
 			e = lucas_cost(n, v[d]);
-			if (e < r)
-			{
+			if (e < r) {
 				r = e;
 				i = d;
 			}
@@ -4255,10 +3527,8 @@ public class ECM extends Applet implements Runnable
 		System.arraycopy(xA, 0, xC, 0, NumberLength); // C = A
 		System.arraycopy(zA, 0, zC, 0, NumberLength);
 		duplicate(xA, zA, xA, zA); /* A=2*A */
-		while (d != e)
-		{
-			if (d < e)
-			{
+		while (d != e) {
+			if (d < e) {
 				r = d;
 				d = e;
 				e = r;
@@ -4270,8 +3540,7 @@ public class ECM extends Applet implements Runnable
 				zB = t;
 			}
 			/* do the first line of Table 4 whose condition qualifies */
-			if (4 * d <= 5 * e && ((d + e) % 3) == 0)
-			{ /* condition 1 */
+			if (4 * d <= 5 * e && ((d + e) % 3) == 0) { /* condition 1 */
 				r = (2 * d - e) / 3;
 				e = (2 * e - d) / 3;
 				d = r;
@@ -4284,15 +3553,11 @@ public class ECM extends Applet implements Runnable
 				t = zA;
 				zA = zT2;
 				zT2 = t; /* swap A and T2 */
-			}
-			else if (4 * d <= 5 * e && (d - e) % 6 == 0)
-			{ /* condition 2 */
+			} else if (4 * d <= 5 * e && (d - e) % 6 == 0) { /* condition 2 */
 				d = (d - e) / 2;
 				add3(xB, zB, xA, zA, xB, zB, xC, zC); /* B = f(A,B,C) */
 				duplicate(xA, zA, xA, zA); /* A = 2*A */
-			}
-			else if (d <= (4 * e))
-			{ /* condition 3 */
+			} else if (d <= (4 * e)) { /* condition 3 */
 				d -= e;
 				add3(xT, zT, xB, zB, xA, zA, xC, zC); /* T = f(B,A,C) */
 				t = xB;
@@ -4303,21 +3568,15 @@ public class ECM extends Applet implements Runnable
 				zB = zT;
 				zT = zC;
 				zC = t; /* circular permutation (B,T,C) */
-			}
-			else if ((d + e) % 2 == 0)
-			{ /* condition 4 */
+			} else if ((d + e) % 2 == 0) { /* condition 4 */
 				d = (d - e) / 2;
 				add3(xB, zB, xB, zB, xA, zA, xC, zC); /* B = f(B,A,C) */
 				duplicate(xA, zA, xA, zA); /* A = 2*A */
-			}
-			else if (d % 2 == 0)
-			{ /* condition 5 */
+			} else if (d % 2 == 0) { /* condition 5 */
 				d /= 2;
 				add3(xC, zC, xC, zC, xA, zA, xB, zB); /* C = f(C,A,B) */
 				duplicate(xA, zA, xA, zA); /* A = 2*A */
-			}
-			else if (d % 3 == 0)
-			{ /* condition 6 */
+			} else if (d % 3 == 0) { /* condition 6 */
 				d = d / 3 - e;
 				duplicate(xT, zT, xA, zA); /* T1 = 2*A */
 				add3(xT2, zT2, xA, zA, xB, zB, xC, zC); /* T2 = f(A,B,C) */
@@ -4331,17 +3590,13 @@ public class ECM extends Applet implements Runnable
 				zC = zB;
 				zB = zT;
 				zT = t; /* circular permutation (C,B,T) */
-			}
-			else if ((d + e) % 3 == 0)
-			{ /* condition 7 */
+			} else if ((d + e) % 3 == 0) { /* condition 7 */
 				d = (d - 2 * e) / 3;
 				add3(xT, zT, xA, zA, xB, zB, xC, zC); /* T1 = f(A,B,C) */
 				add3(xB, zB, xT, zT, xA, zA, xB, zB); /* B = f(T1,A,B) */
 				duplicate(xT, zT, xA, zA);
 				add3(xA, zA, xA, zA, xT, zT, xA, zA); /* A = 3*A */
-			}
-			else if ((d - e) % 3 == 0)
-			{ /* condition 8 */
+			} else if ((d - e) % 3 == 0) { /* condition 8 */
 				d = (d - e) / 3;
 				add3(xT, zT, xA, zA, xB, zB, xC, zC); /* T1 = f(A,B,C) */
 				add3(xC, zC, xC, zC, xA, zA, xB, zB); /* C = f(A,C,B) */
@@ -4353,9 +3608,7 @@ public class ECM extends Applet implements Runnable
 				zT = t; /* swap B and T */
 				duplicate(xT, zT, xA, zA);
 				add3(xA, zA, xA, zA, xT, zT, xA, zA); /* A = 3*A */
-			}
-			else if (e % 2 == 0)
-			{ /* condition 9 */
+			} else if (e % 2 == 0) { /* condition 9 */
 				e /= 2;
 				add3(xC, zC, xC, zC, xB, zB, xA, zA); /* C = f(C,B,A) */
 				duplicate(xB, zB, xB, zB); /* B = 2*B */
@@ -4381,8 +3634,7 @@ public class ECM extends Applet implements Runnable
 			int[] x1,
 			int[] z1,
 			int[] x,
-			int[] z)
-	{
+			int[] z) {
 		int[] t = fieldTX;
 		int[] u = fieldTZ;
 		int[] v = fieldUX;
@@ -4397,16 +3649,13 @@ public class ECM extends Applet implements Runnable
 		MontgomeryMult(t, t, w);       // w = 4*(x1*x2-z1*z2)^2
 		SubtractBigNbrModN(u, v, t, TestNbr, NumberLength);   // t = 2*(x2*z1-x1*z2)
 		MontgomeryMult(t, t, v);       // v = 4*(x2*z1-x1*z2)^2
-		if (BigNbrAreEqual(x, x3))
-		{
+		if (BigNbrAreEqual(x, x3)) {
 			System.arraycopy(x, 0, u, 0, NumberLength);
 			System.arraycopy(w, 0, t, 0, NumberLength);
 			MontgomeryMult(z, t, w);
 			MontgomeryMult(v, u, z3);
 			System.arraycopy(w, 0, x3, 0, NumberLength);
-		}
-		else
-		{
+		} else {
 			MontgomeryMult(w, z, x3); // x3 = 4*z*(x1*x2-z1*z2)^2
 			MontgomeryMult(x, v, z3); // z3 = 4*x*(x2*z1-x1*z2)^2
 		}
@@ -4419,8 +3668,7 @@ public class ECM extends Applet implements Runnable
        - u, v, w : auxiliary variables
   Modifies: x2, z2, u, v, w
   */
-	void duplicate(int[] x2, int[] z2, int[] x1, int[] z1)
-	{
+	void duplicate(int[] x2, int[] z2, int[] x1, int[] z1) {
 		int[] u = fieldUZ;
 		int[] v = fieldTX;
 		int[] w = fieldTZ;
@@ -4436,8 +3684,7 @@ public class ECM extends Applet implements Runnable
 	}
 	/* End of code "borrowed" from Paul Zimmermann's ECM4C */
 
-	static BigInteger BigIntToBigNbr(int[] GD, int NumberLength)
-	{
+	static BigInteger BigIntToBigNbr(int[] GD, int NumberLength) {
 		byte[] Result;
 		long[] Temp;
 		int i, NL;
@@ -4447,8 +3694,7 @@ public class ECM extends Applet implements Runnable
 		Convert31To32Bits(GD, Temp, NumberLength);
 		NL = NumberLength * 4;
 		Result = new byte[NL];
-		for (i = 0; i < NumberLength; i++)
-		{
+		for (i = 0; i < NumberLength; i++) {
 			digit = Temp[i];
 			Result[NL - 1 - 4 * i] = (byte) (digit & 0xFF);
 			Result[NL - 2 - 4 * i] = (byte) (digit / 0x100 & 0xFF);
@@ -4458,220 +3704,181 @@ public class ECM extends Applet implements Runnable
 		return (new BigInteger(Result));
 	}
 
-	static void LongToBigNbr(long Nbr, int Out[], int NumberLength)
-	{
+	static void LongToBigNbr(long Nbr, int Out[], int NumberLength) {
 		int i;
 
-		Out[0] = (int)(Nbr & 0x7FFFFFFF);
-		Out[1] = (int)((Nbr >> 31) & 0x7FFFFFFF);
-		for (i = 2; i < NumberLength; i++)
-		{
+		Out[0] = (int) (Nbr & 0x7FFFFFFF);
+		Out[1] = (int) ((Nbr >> 31) & 0x7FFFFFFF);
+		for (i = 2; i < NumberLength; i++) {
 			Out[i] = (Nbr < 0 ? 0x7FFFFFFF : 0);
 		}
 	}
 
-	boolean BigNbrIsZero(int Nbr[])
-	{
-		for (int i = 0; i < NumberLength; i++)
-		{
-			if (Nbr[i] != 0)
-			{
+	boolean BigNbrIsZero(int Nbr[]) {
+		for (int i = 0; i < NumberLength; i++) {
+			if (Nbr[i] != 0) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	boolean BigNbrAreEqual(int Nbr1[], int Nbr2[])
-	{
-		for (int i = 0; i < NumberLength; i++)
-		{
-			if (Nbr1[i] != Nbr2[i])
-			{
+	boolean BigNbrAreEqual(int Nbr1[], int Nbr2[]) {
+		for (int i = 0; i < NumberLength; i++) {
+			if (Nbr1[i] != Nbr2[i]) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	static void ChSignBigNbr(int Nbr[], int NumberLength)
-	{
+	static void ChSignBigNbr(int Nbr[], int NumberLength) {
 		int carry = 0;
-		for (int i = 0; i < NumberLength; i++)
-		{
+		for (int i = 0; i < NumberLength; i++) {
 			carry = (carry >> 31) - Nbr[i];
 			Nbr[i] = carry & 0x7FFFFFFF;
 		}
 	}
 
 	static void AddBigNbr(int Nbr1[], int Nbr2[], int Sum[],
-	                      int NumberLength)
-	{
+	                      int NumberLength) {
 		long carry = 0;
-		for (int i = 0; i < NumberLength; i++)
-		{
-			carry = (carry >> 31) + (long)Nbr1[i] + (long)Nbr2[i];
-			Sum[i] = (int)(carry & 0x7FFFFFFFL);
+		for (int i = 0; i < NumberLength; i++) {
+			carry = (carry >> 31) + (long) Nbr1[i] + (long) Nbr2[i];
+			Sum[i] = (int) (carry & 0x7FFFFFFFL);
 		}
 	}
 
 	static void SubtractBigNbr(int Nbr1[], int Nbr2[], int Diff[],
-	                           int NumberLength)
-	{
+	                           int NumberLength) {
 		long carry = 0;
-		for (int i = 0; i < NumberLength; i++)
-		{
-			carry = (carry >> 31) + (long)Nbr1[i] - (long)Nbr2[i];
-			Diff[i] = (int)(carry & 0x7FFFFFFFL);
+		for (int i = 0; i < NumberLength; i++) {
+			carry = (carry >> 31) + (long) Nbr1[i] - (long) Nbr2[i];
+			Diff[i] = (int) (carry & 0x7FFFFFFFL);
 		}
 	}
 
-	void AddBigNbr32(long Nbr1[], long Nbr2[], long Sum[], int NumberLength)
-	{
+	void AddBigNbr32(long Nbr1[], long Nbr2[], long Sum[], int NumberLength) {
 		long carry = 0;
-		for (int i = 0; i < NumberLength; i++)
-		{
+		for (int i = 0; i < NumberLength; i++) {
 			carry = (carry >> 32) + Nbr1[i] + Nbr2[i];
 			Sum[i] = carry & 0xFFFFFFFFL;
 		}
 	}
 
-	void SubtractBigNbr32(long Nbr1[], long Nbr2[], long Diff[], int NumberLength)
-	{
+	void SubtractBigNbr32(long Nbr1[], long Nbr2[], long Diff[], int NumberLength) {
 		long carry = 0;
-		for (int i = 0; i < NumberLength; i++)
-		{
+		for (int i = 0; i < NumberLength; i++) {
 			carry = (carry >> 32) + Nbr1[i] - Nbr2[i];
 			Diff[i] = carry & 0xFFFFFFFFL;
 		}
 	}
 
-	static void MultBigNbr(int Nbr1[], int Nbr2[], int Prod[], int NumberLength)
-	{
+	static void MultBigNbr(int Nbr1[], int Nbr2[], int Prod[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long carry, Pr;
 		int i, j;
 		carry = Pr = 0;
-		for (i = 0; i < NumberLength; i++)
-		{
+		for (i = 0; i < NumberLength; i++) {
 			Pr = carry & MaxUInt;
 			carry >>>= 31;
-			for (j = 0; j <= i; j++)
-			{
-				Pr += (long)Nbr1[j] * (long)Nbr2[i - j];
+			for (j = 0; j <= i; j++) {
+				Pr += (long) Nbr1[j] * (long) Nbr2[i - j];
 				carry += (Pr >>> 31);
 				Pr &= MaxUInt;
 			}
-			Prod[i] = (int)Pr;
+			Prod[i] = (int) Pr;
 		}
 	}
 
 	static void MultBigNbrByLong(int Nbr1[], long Nbr2, int Prod[],
-	                             int NumberLength)
-	{
+	                             int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long Pr;
 		int i;
 		Pr = 0;
-		for (i = 0; i < NumberLength; i++)
-		{
-			Pr = (Pr >> 31) + Nbr2 * (long)Nbr1[i];
-			Prod[i] = (int)(Pr & MaxUInt);
+		for (i = 0; i < NumberLength; i++) {
+			Pr = (Pr >> 31) + Nbr2 * (long) Nbr1[i];
+			Prod[i] = (int) (Pr & MaxUInt);
 		}
 	}
 
-	long BigNbrModLong(int Nbr1[], long Nbr2)
-	{
+	long BigNbrModLong(int Nbr1[], long Nbr2) {
 		int i;
 		long Rem = 0;
 
-		for (i = NumberLength - 1; i >= 0; i--)
-		{
-			Rem = ((Rem << 31) + (long)Nbr1[i]) % Nbr2;
+		for (i = NumberLength - 1; i >= 0; i--) {
+			Rem = ((Rem << 31) + (long) Nbr1[i]) % Nbr2;
 		}
 		return Rem;
 	}
 
 	static void AddBigNbrModN(int Nbr1[], int Nbr2[], int Sum[],
-	                          int TestNbr[], int NumberLength)
-	{
+	                          int TestNbr[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long carry = 0;
 		int i;
 
-		for (i = 0; i < NumberLength; i++)
-		{
-			carry = (carry >> 31) + (long)Nbr1[i] + (long)Nbr2[i] - (long)TestNbr[i];
-			Sum[i] = (int)(carry & MaxUInt);
+		for (i = 0; i < NumberLength; i++) {
+			carry = (carry >> 31) + (long) Nbr1[i] + (long) Nbr2[i] - (long) TestNbr[i];
+			Sum[i] = (int) (carry & MaxUInt);
 		}
-		if (carry < 0)
-		{
+		if (carry < 0) {
 			carry = 0;
-			for (i = 0; i < NumberLength; i++)
-			{
-				carry = (carry >> 31) + (long)Sum[i] + (long)TestNbr[i];
-				Sum[i] = (int)(carry & MaxUInt);
+			for (i = 0; i < NumberLength; i++) {
+				carry = (carry >> 31) + (long) Sum[i] + (long) TestNbr[i];
+				Sum[i] = (int) (carry & MaxUInt);
 			}
 		}
 	}
 
 	static void SubtractBigNbrModN(int Nbr1[], int Nbr2[], int Diff[],
-	                               int TestNbr[], int NumberLength)
-	{
+	                               int TestNbr[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long carry = 0;
 		int i;
 
-		for (i = 0; i < NumberLength; i++)
-		{
-			carry = (carry >> 31) + (long)Nbr1[i] - (long)Nbr2[i];
-			Diff[i] = (int)(carry & MaxUInt);
+		for (i = 0; i < NumberLength; i++) {
+			carry = (carry >> 31) + (long) Nbr1[i] - (long) Nbr2[i];
+			Diff[i] = (int) (carry & MaxUInt);
 		}
-		if (carry < 0)
-		{
+		if (carry < 0) {
 			carry = 0;
-			for (i = 0; i < NumberLength; i++)
-			{
-				carry = (carry >> 31) + (long)Diff[i] + (long)TestNbr[i];
-				Diff[i] = (int)(carry & MaxUInt);
+			for (i = 0; i < NumberLength; i++) {
+				carry = (carry >> 31) + (long) Diff[i] + (long) TestNbr[i];
+				Diff[i] = (int) (carry & MaxUInt);
 			}
 		}
 	}
 
-	void MontgomeryMult(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult(int Nbr1[], int Nbr2[], int Prod[]) {
 		long New;
 		int NumberLength = this.NumberLength;
 		String EcmInfo;
 
-		if (TerminateThread)
-		{
+		if (TerminateThread) {
 			throw new ArithmeticException();
 		}
-		if (lModularMult >= 0)
-		{
+		if (lModularMult >= 0) {
 			lModularMult++;
-			if ((lModularMult % yieldFreq) == 0)
-			{
+			if ((lModularMult % yieldFreq) == 0) {
 				Thread.yield();
 				New = System.currentTimeMillis();
 				if (OldTimeElapsed >= 0
-						&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000)
-				{
+						&& OldTimeElapsed / 1000 != (OldTimeElapsed + New - Old) / 1000) {
 					OldTimeElapsed += New - Old;
 					Old = New;
-					switch (StepECM)
-					{
-						case 1 :
+					switch (StepECM) {
+						case 1:
 							EcmInfo = "Step 1: " + (indexPrimes * 100 / nbrPrimes) + "%";
 							break;
-						case 2 :
+						case 2:
 							EcmInfo =
 									"Step 2: "
 											+ (maxIndexM == 0 ? 0 : (indexM * 100 / maxIndexM))
 											+ "%";
 							break;
-						default :
+						default:
 							EcmInfo = "";
 					}
 					labelStatus.setText(
@@ -4684,53 +3891,48 @@ public class ECM extends Applet implements Runnable
 				}
 			}
 		}
-		switch (NumberLength)
-		{
-			case 2 :
+		switch (NumberLength) {
+			case 2:
 				MontgomeryMult2(Nbr1, Nbr2, Prod);
 				break;
-			case 3 :
+			case 3:
 				MontgomeryMult3(Nbr1, Nbr2, Prod);
 				break;
-			case 4 :
+			case 4:
 				MontgomeryMult4(Nbr1, Nbr2, Prod);
 				break;
-			case 5 :
+			case 5:
 				MontgomeryMult5(Nbr1, Nbr2, Prod);
 				break;
-			case 6 :
+			case 6:
 				MontgomeryMult6(Nbr1, Nbr2, Prod);
 				break;
-			case 7 :
+			case 7:
 				MontgomeryMult7(Nbr1, Nbr2, Prod);
 				break;
-			case 8 :
+			case 8:
 				MontgomeryMult8(Nbr1, Nbr2, Prod);
 				break;
-			case 9 :
+			case 9:
 				MontgomeryMult9(Nbr1, Nbr2, Prod);
 				break;
-			case 10 :
+			case 10:
 				MontgomeryMult10(Nbr1, Nbr2, Prod);
 				break;
-			case 11 :
+			case 11:
 				MontgomeryMult11(Nbr1, Nbr2, Prod);
 				break;
 			default:
-				if (KARATSUBA_ENABLED == false || NumberLength < KARATSUBA_CUTOFF)
-				{
+				if (KARATSUBA_ENABLED == false || NumberLength < KARATSUBA_CUTOFF) {
 					LargeMontgomeryMult(Nbr1, Nbr2, Prod);
-				}
-				else
-				{
+				} else {
 					KaratsubaMontgomeryMult(Nbr1, Nbr2, Prod);
 				}
 				break;
 		}
 	}
 
-	void MontgomeryMult2(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult2(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1;
 		Prod0 = Prod1 = 0;
@@ -4738,25 +3940,22 @@ public class ECM extends Applet implements Runnable
 		long TestNbr1 = TestNbr[1];
 		long Nbr2_0 = Nbr2[0];
 		long Nbr2_1 = Nbr2[1];
-		for (int i=0; i<2; i++)
-		{
+		for (int i = 0; i < 2; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
 					MontDig * TestNbr1 + Nbr * Nbr2_1 + Prod1) & 0x7FFFFFFFL;
 			Prod1 = Pr >>> 31;
 		}
-		if (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0))
-		{
+		if (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0)) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = ((Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
 	}
 
-	void MontgomeryMult3(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult3(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2;
 		Prod0 = Prod1 = Prod2 = 0;
@@ -4766,8 +3965,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_0 = Nbr2[0];
 		long Nbr2_1 = Nbr2[1];
 		long Nbr2_2 = Nbr2[2];
-		for (int i=0; i<3; i++)
-		{
+		for (int i = 0; i < 3; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -4778,19 +3976,17 @@ public class ECM extends Applet implements Runnable
 		}
 		if (Prod2 > TestNbr2
 				|| Prod2 == TestNbr2
-				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0)))
-		{
+				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = ((Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
 	}
 
-	void MontgomeryMult4(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult4(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3;
 		Prod0 = Prod1 = Prod2 = Prod3 = 0;
@@ -4802,8 +3998,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_1 = Nbr2[1];
 		long Nbr2_2 = Nbr2[2];
 		long Nbr2_3 = Nbr2[3];
-		for (int i=0; i<4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -4818,21 +4013,19 @@ public class ECM extends Applet implements Runnable
 				|| Prod3 == TestNbr3
 				&& (Prod2 > TestNbr2
 				|| Prod2 == TestNbr2
-				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0))))
-		{
+				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0)))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
 			Prod3 = ((Pr >> 31) + Prod3 - TestNbr3) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
 	}
 
-	void MontgomeryMult5(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult5(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4;
 		Prod0 = Prod1 = Prod2 = Prod3 = Prod4 = 0;
@@ -4846,8 +4039,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_2 = Nbr2[2];
 		long Nbr2_3 = Nbr2[3];
 		long Nbr2_4 = Nbr2[4];
-		for (int i=0; i<5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -4866,23 +4058,21 @@ public class ECM extends Applet implements Runnable
 				|| Prod3 == TestNbr3
 				&& (Prod2 > TestNbr2
 				|| Prod2 == TestNbr2
-				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0)))))
-		{
+				&& (Prod1 > TestNbr1 || Prod1 == TestNbr1 && (Prod0 >= TestNbr0))))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
 			Prod3 = (Pr = (Pr >> 31) + Prod3 - TestNbr3) & 0x7FFFFFFFL;
 			Prod4 = ((Pr >> 31) + Prod4 - TestNbr4) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
 	}
 
-	void MontgomeryMult6(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult6(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5;
 		Prod0 = Prod1 = Prod2 = Prod3 = Prod4 = Prod5 = 0;
@@ -4898,8 +4088,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_3 = Nbr2[3];
 		long Nbr2_4 = Nbr2[4];
 		long Nbr2_5 = Nbr2[5];
-		for (int i=0; i<6; i++)
-		{
+		for (int i = 0; i < 6; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -4924,8 +4113,7 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0))))))
-		{
+				&& (Prod0 >= TestNbr0)))))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
@@ -4933,52 +4121,50 @@ public class ECM extends Applet implements Runnable
 			Prod4 = (Pr = (Pr >> 31) + Prod4 - TestNbr4) & 0x7FFFFFFFL;
 			Prod5 = ((Pr >> 31) + Prod5 - TestNbr5) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
 	}
 
-	void MontgomeryMult7(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult7(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr;
 		int MontDig;
 		int Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6;
 		Prod0 = Prod1 = Prod2 = Prod3 = Prod4 = Prod5 = Prod6 = 0;
-		int TestNbr0 = (int)TestNbr[0];
-		int TestNbr1 = (int)TestNbr[1];
-		int TestNbr2 = (int)TestNbr[2];
-		int TestNbr3 = (int)TestNbr[3];
-		int TestNbr4 = (int)TestNbr[4];
-		int TestNbr5 = (int)TestNbr[5];
-		int TestNbr6 = (int)TestNbr[6];
-		int Nbr2_0 = (int)Nbr2[0];
-		int Nbr2_1 = (int)Nbr2[1];
-		int Nbr2_2 = (int)Nbr2[2];
-		int Nbr2_3 = (int)Nbr2[3];
-		int Nbr2_4 = (int)Nbr2[4];
-		int Nbr2_5 = (int)Nbr2[5];
-		int Nbr2_6 = (int)Nbr2[6];
+		int TestNbr0 = (int) TestNbr[0];
+		int TestNbr1 = (int) TestNbr[1];
+		int TestNbr2 = (int) TestNbr[2];
+		int TestNbr3 = (int) TestNbr[3];
+		int TestNbr4 = (int) TestNbr[4];
+		int TestNbr5 = (int) TestNbr[5];
+		int TestNbr6 = (int) TestNbr[6];
+		int Nbr2_0 = (int) Nbr2[0];
+		int Nbr2_1 = (int) Nbr2[1];
+		int Nbr2_2 = (int) Nbr2[2];
+		int Nbr2_3 = (int) Nbr2[3];
+		int Nbr2_4 = (int) Nbr2[4];
+		int Nbr2_5 = (int) Nbr2[5];
+		int Nbr2_6 = (int) Nbr2[6];
 		int Sum;
-		for (int i=0; i<7; i++)
-		{
-			Pr = (Nbr = Nbr1[i]) * (long)Nbr2_0 + Prod0;
-			MontDig = ((int) Pr * (int)MontgomeryMultN) & 0x7FFFFFFF;
-			Prod0 = (int)(Pr = ((MontDig * (long)TestNbr0 + Pr) >>> 31) +
-					MontDig * (long)TestNbr1 + Nbr * (long)Nbr2_1 + Prod1) & 0x7FFFFFFF;
-			Prod1 = (int)(Pr = (Pr >>> 31) +
-					MontDig * (long)TestNbr2 + Nbr * (long)Nbr2_2 + Prod2) & 0x7FFFFFFF;
-			Prod2 = (int)(Pr = (Pr >>> 31) +
-					MontDig * (long)TestNbr3 + Nbr * (long)Nbr2_3 + Prod3) & 0x7FFFFFFF;
-			Prod3 = (int)(Pr = (Pr >>> 31) +
-					MontDig * (long)TestNbr4 + Nbr * (long)Nbr2_4 + Prod4) & 0x7FFFFFFF;
-			Prod4 = (int)(Pr = (Pr >>> 31) +
-					MontDig * (long)TestNbr5 + Nbr * (long)Nbr2_5 + Prod5) & 0x7FFFFFFF;
-			Prod5 = (int)(Pr = (Pr >>> 31) +
-					MontDig * (long)TestNbr6 + Nbr * (long)Nbr2_6 + Prod6) & 0x7FFFFFFF;
-			Prod6 = (int)(Pr >>> 31);
+		for (int i = 0; i < 7; i++) {
+			Pr = (Nbr = Nbr1[i]) * (long) Nbr2_0 + Prod0;
+			MontDig = ((int) Pr * (int) MontgomeryMultN) & 0x7FFFFFFF;
+			Prod0 = (int) (Pr = ((MontDig * (long) TestNbr0 + Pr) >>> 31) +
+					MontDig * (long) TestNbr1 + Nbr * (long) Nbr2_1 + Prod1) & 0x7FFFFFFF;
+			Prod1 = (int) (Pr = (Pr >>> 31) +
+					MontDig * (long) TestNbr2 + Nbr * (long) Nbr2_2 + Prod2) & 0x7FFFFFFF;
+			Prod2 = (int) (Pr = (Pr >>> 31) +
+					MontDig * (long) TestNbr3 + Nbr * (long) Nbr2_3 + Prod3) & 0x7FFFFFFF;
+			Prod3 = (int) (Pr = (Pr >>> 31) +
+					MontDig * (long) TestNbr4 + Nbr * (long) Nbr2_4 + Prod4) & 0x7FFFFFFF;
+			Prod4 = (int) (Pr = (Pr >>> 31) +
+					MontDig * (long) TestNbr5 + Nbr * (long) Nbr2_5 + Prod5) & 0x7FFFFFFF;
+			Prod5 = (int) (Pr = (Pr >>> 31) +
+					MontDig * (long) TestNbr6 + Nbr * (long) Nbr2_6 + Prod6) & 0x7FFFFFFF;
+			Prod6 = (int) (Pr >>> 31);
 		}
 		if (Prod6 > TestNbr6
 				|| Prod6 == TestNbr6
@@ -4992,8 +4178,7 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0)))))))
-		{
+				&& (Prod0 >= TestNbr0))))))) {
 			Prod0 = (Sum = Prod0 - TestNbr0) & 0x7FFFFFFF;
 			Prod1 = (Sum = (Sum >> 31) + (Prod1 - TestNbr1)) & 0x7FFFFFFF;
 			Prod2 = (Sum = (Sum >> 31) + (Prod2 - TestNbr2)) & 0x7FFFFFFF;
@@ -5002,17 +4187,16 @@ public class ECM extends Applet implements Runnable
 			Prod5 = (Sum = (Sum >> 31) + (Prod5 - TestNbr5)) & 0x7FFFFFFF;
 			Prod6 = ((Sum >> 31) + (Prod6 - TestNbr6)) & 0x7FFFFFFF;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
 	}
 
-	void MontgomeryMult8(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult8(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6, Prod7;
 		Prod0 = Prod1 = Prod2 = Prod3 = Prod4 = Prod5 = Prod6 = Prod7 = 0;
@@ -5032,8 +4216,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_5 = Nbr2[5];
 		long Nbr2_6 = Nbr2[6];
 		long Nbr2_7 = Nbr2[7];
-		for (int i=0; i<8; i++)
-		{
+		for (int i = 0; i < 8; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -5066,30 +4249,28 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0))))))))
-		{
-			Prod[0] = (int)((Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL);
-			Prod[1] = (int)((Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL);
-			Prod[2] = (int)((Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL);
-			Prod[3] = (int)((Pr = (Pr >> 31) + Prod3 - TestNbr3) & 0x7FFFFFFFL);
-			Prod[4] = (int)((Pr = (Pr >> 31) + Prod4 - TestNbr4) & 0x7FFFFFFFL);
-			Prod[5] = (int)((Pr = (Pr >> 31) + Prod5 - TestNbr5) & 0x7FFFFFFFL);
-			Prod[6] = (int)((Pr = (Pr >> 31) + Prod6 - TestNbr6) & 0x7FFFFFFFL);
-			Prod[7] = (int)(((Pr >> 31) + Prod7 - TestNbr7) & 0x7FFFFFFFL);
+				&& (Prod0 >= TestNbr0)))))))) {
+			Prod[0] = (int) ((Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL);
+			Prod[1] = (int) ((Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL);
+			Prod[2] = (int) ((Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL);
+			Prod[3] = (int) ((Pr = (Pr >> 31) + Prod3 - TestNbr3) & 0x7FFFFFFFL);
+			Prod[4] = (int) ((Pr = (Pr >> 31) + Prod4 - TestNbr4) & 0x7FFFFFFFL);
+			Prod[5] = (int) ((Pr = (Pr >> 31) + Prod5 - TestNbr5) & 0x7FFFFFFFL);
+			Prod[6] = (int) ((Pr = (Pr >> 31) + Prod6 - TestNbr6) & 0x7FFFFFFFL);
+			Prod[7] = (int) (((Pr >> 31) + Prod7 - TestNbr7) & 0x7FFFFFFFL);
 			return;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
-		Prod[7] = (int)Prod7;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
+		Prod[7] = (int) Prod7;
 	}
 
-	void MontgomeryMult9(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult9(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6, Prod7, Prod8;
 		Prod0 =
@@ -5112,8 +4293,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_6 = Nbr2[6];
 		long Nbr2_7 = Nbr2[7];
 		long Nbr2_8 = Nbr2[8];
-		for (int i=0; i<9; i++)
-		{
+		for (int i = 0; i < 9; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -5150,8 +4330,7 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0)))))))))
-		{
+				&& (Prod0 >= TestNbr0))))))))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
@@ -5162,19 +4341,18 @@ public class ECM extends Applet implements Runnable
 			Prod7 = (Pr = (Pr >> 31) + Prod7 - TestNbr7) & 0x7FFFFFFFL;
 			Prod8 = ((Pr >> 31) + Prod8 - TestNbr8) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
-		Prod[7] = (int)Prod7;
-		Prod[8] = (int)Prod8;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
+		Prod[7] = (int) Prod7;
+		Prod[8] = (int) Prod8;
 	}
 
-	void MontgomeryMult10(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult10(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6, Prod7, Prod8,
 				Prod9;
@@ -5200,8 +4378,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_7 = Nbr2[7];
 		long Nbr2_8 = Nbr2[8];
 		long Nbr2_9 = Nbr2[9];
-		for (int i=0; i<10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -5242,8 +4419,7 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0))))))))))
-		{
+				&& (Prod0 >= TestNbr0)))))))))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
@@ -5255,20 +4431,19 @@ public class ECM extends Applet implements Runnable
 			Prod8 = (Pr = (Pr >> 31) + Prod8 - TestNbr8) & 0x7FFFFFFFL;
 			Prod9 = ((Pr >> 31) + Prod9 - TestNbr9) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
-		Prod[7] = (int)Prod7;
-		Prod[8] = (int)Prod8;
-		Prod[9] = (int)Prod9;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
+		Prod[7] = (int) Prod7;
+		Prod[8] = (int) Prod8;
+		Prod[9] = (int) Prod9;
 	}
 
-	void MontgomeryMult11(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void MontgomeryMult11(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6, Prod7, Prod8,
 				Prod9, Prod10;
@@ -5296,8 +4471,7 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_8 = Nbr2[8];
 		long Nbr2_9 = Nbr2[9];
 		long Nbr2_10 = Nbr2[10];
-		for (int i=0; i<11; i++)
-		{
+		for (int i = 0; i < 11; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -5342,8 +4516,7 @@ public class ECM extends Applet implements Runnable
 				|| Prod2 == TestNbr2
 				&& (Prod1 > TestNbr1
 				|| Prod1 == TestNbr1
-				&& (Prod0 >= TestNbr0)))))))))))
-		{
+				&& (Prod0 >= TestNbr0))))))))))) {
 			Prod0 = (Pr = Prod0 - TestNbr0) & 0x7FFFFFFFL;
 			Prod1 = (Pr = (Pr >> 31) + Prod1 - TestNbr1) & 0x7FFFFFFFL;
 			Prod2 = (Pr = (Pr >> 31) + Prod2 - TestNbr2) & 0x7FFFFFFFL;
@@ -5356,21 +4529,20 @@ public class ECM extends Applet implements Runnable
 			Prod9 = (Pr = (Pr >> 31) + Prod9 - TestNbr9) & 0x7FFFFFFFL;
 			Prod10 = ((Pr >> 31) + Prod10 - TestNbr10) & 0x7FFFFFFFL;
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
-		Prod[7] = (int)Prod7;
-		Prod[8] = (int)Prod8;
-		Prod[9] = (int)Prod9;
-		Prod[10] = (int)Prod10;
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
+		Prod[7] = (int) Prod7;
+		Prod[8] = (int) Prod8;
+		Prod[9] = (int) Prod9;
+		Prod[10] = (int) Prod10;
 	}
 
-	void LargeMontgomeryMult(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void LargeMontgomeryMult(int Nbr1[], int Nbr2[], int Prod[]) {
 		long Pr, Nbr, MontDig;
 		long Prod0, Prod1, Prod2, Prod3, Prod4, Prod5, Prod6, Prod7, Prod8,
 				Prod9, Prod10;
@@ -5399,12 +4571,10 @@ public class ECM extends Applet implements Runnable
 		long Nbr2_9 = Nbr2[9];
 		long Nbr2_10 = Nbr2[10];
 		int j;
-		for (j = 11; j < NumberLength; j++)
-		{
+		for (j = 11; j < NumberLength; j++) {
 			Prod[j] = 0;
 		}
-		for (int i=0; i<NumberLength; i++)
-		{
+		for (int i = 0; i < NumberLength; i++) {
 			Pr = (Nbr = Nbr1[i]) * Nbr2_0 + Prod0;
 			MontDig = ((int) Pr * MontgomeryMultN) & 0x7FFFFFFFL;
 			Prod0 = (Pr = ((MontDig * TestNbr0 + Pr) >>> 31) +
@@ -5429,38 +4599,33 @@ public class ECM extends Applet implements Runnable
 					MontDig * TestNbr10 + Nbr * Nbr2_10 + Prod10) & 0x7FFFFFFFL;
 			Prod10 = (Pr = (Pr >>> 31) +
 					MontDig * TestNbr[11] + Nbr * Nbr2[11] + Prod[11]) & 0x7FFFFFFFL;
-			for (j = 12; j < NumberLength; j++)
-			{
-				Prod[j-1] = (int)((Pr = (Pr >>> 31) +
+			for (j = 12; j < NumberLength; j++) {
+				Prod[j - 1] = (int) ((Pr = (Pr >>> 31) +
 						MontDig * TestNbr[j] + Nbr * Nbr2[j] + Prod[j]) & 0x7FFFFFFFL);
 			}
-			Prod[j - 1] = (int)(Pr >>> 31);
+			Prod[j - 1] = (int) (Pr >>> 31);
 		}
-		Prod[0] = (int)Prod0;
-		Prod[1] = (int)Prod1;
-		Prod[2] = (int)Prod2;
-		Prod[3] = (int)Prod3;
-		Prod[4] = (int)Prod4;
-		Prod[5] = (int)Prod5;
-		Prod[6] = (int)Prod6;
-		Prod[7] = (int)Prod7;
-		Prod[8] = (int)Prod8;
-		Prod[9] = (int)Prod9;
-		Prod[10] = (int)Prod10;
-		for (j = NumberLength - 1; j >= 0; j--)
-		{
-			if (Prod[j] != TestNbr[j])
-			{
+		Prod[0] = (int) Prod0;
+		Prod[1] = (int) Prod1;
+		Prod[2] = (int) Prod2;
+		Prod[3] = (int) Prod3;
+		Prod[4] = (int) Prod4;
+		Prod[5] = (int) Prod5;
+		Prod[6] = (int) Prod6;
+		Prod[7] = (int) Prod7;
+		Prod[8] = (int) Prod8;
+		Prod[9] = (int) Prod9;
+		Prod[10] = (int) Prod10;
+		for (j = NumberLength - 1; j >= 0; j--) {
+			if (Prod[j] != TestNbr[j]) {
 				break;
 			}
 		}
-		if (j < 0 || j >= 0 && Prod[j] >= TestNbr[j])
-		{
+		if (j < 0 || j >= 0 && Prod[j] >= TestNbr[j]) {
 			Pr = 0;
-			for (j = 0; j < NumberLength; j++)
-			{
-				Prod[j] = (int)((Pr = (Pr >> 31) +
-						(long)Prod[j] - (long)TestNbr[j]) & 0x7FFFFFFFL);
+			for (j = 0; j < NumberLength; j++) {
+				Prod[j] = (int) ((Pr = (Pr >> 31) +
+						(long) Prod[j] - (long) TestNbr[j]) & 0x7FFFFFFFL);
 			}
 		}
 	}
@@ -5471,94 +4636,75 @@ public class ECM extends Applet implements Runnable
 	//  if t < N
 	//     return t
 	//  else return t - N
-	void KaratsubaMontgomeryMult(int Nbr1[], int Nbr2[], int Prod[])
-	{
+	void KaratsubaMontgomeryMult(int Nbr1[], int Nbr2[], int Prod[]) {
 		int carry = 0;
 		int i;
-		for (i=0; i<karatLength; i++)
-		{
+		for (i = 0; i < karatLength; i++) {
 			arrNbr[i] = Nbr1[i];
-			arrNbr[karatLength+i] = (int)Nbr2[i];
+			arrNbr[karatLength + i] = (int) Nbr2[i];
 		}
-		KaratsubaMultiply(0, karatLength, 2*karatLength);        // Get x.
+		KaratsubaMultiply(0, karatLength, 2 * karatLength);        // Get x.
 		System.arraycopy(arrNbr, 0,                              // Source
 				arrNbrM, 0,                             // Destination
-				2*karatLength);                         // Length
+				2 * karatLength);                         // Length
 		System.arraycopy(montgKaratsubaArr, 0,                   // Source
 				arrNbr, 0,                              // Destination
 				karatLength);                           // Length
-		KaratsubaMultiply(0, karatLength, 2*karatLength);        // Get m.
+		KaratsubaMultiply(0, karatLength, 2 * karatLength);        // Get m.
 		System.arraycopy(arrNbr, 0,                              // Source
 				arrNbr, 0,                              // Destination
 				karatLength);                           // Length
 		System.arraycopy(KaratsubaTestNbr, 0,                    // Source
 				arrNbr, 0,                              // Destination
 				karatLength);                           // Length
-		KaratsubaMultiply(0, karatLength, 2*karatLength);        // Get m*N.
-		for (i=0; i<2*karatLength; i++)
-		{
+		KaratsubaMultiply(0, karatLength, 2 * karatLength);        // Get m*N.
+		for (i = 0; i < 2 * karatLength; i++) {
 			carry += arrNbr[i] + arrNbrM[i];
-			if (carry < 0)
-			{                         // Bit 31 is set.
+			if (carry < 0) {                         // Bit 31 is set.
 				arrNbr[i] = carry - (-0x80000000);
 				carry = 1;
-			}
-			else
-			{
+			} else {
 				arrNbr[i] = carry;
 				carry = 0;
 			}
 		}                                                        // t is got.
-		if (carry==0)
-		{
-			for (i=2*karatLength-1; i>=karatLength; i--)
-			{
-				if (arrNbr[i] > KaratsubaTestNbr[i])
-				{
+		if (carry == 0) {
+			for (i = 2 * karatLength - 1; i >= karatLength; i--) {
+				if (arrNbr[i] > KaratsubaTestNbr[i]) {
 					carry = 1;
 					break;
 				}
-				if (arrNbr[i] < KaratsubaTestNbr[i])
-				{
+				if (arrNbr[i] < KaratsubaTestNbr[i]) {
 					break;
 				}
 			}
 		}
-		if (carry != 0)
-		{
+		if (carry != 0) {
 			carry = 0;
-			for (i=2*karatLength-1; i>=karatLength; i--)
-			{
+			for (i = 2 * karatLength - 1; i >= karatLength; i--) {
 				carry += arrNbr[i] - KaratsubaTestNbr[i];
-				if (carry < 0)
-				{                         // Bit 31 is set.
+				if (carry < 0) {                         // Bit 31 is set.
 					arrNbr[i] = carry - (-0x80000000);
-				}
-				else
-				{
+				} else {
 					arrNbr[i] = carry;
 				}
 			}
 		}
-		for (i=karatLength; i<2*karatLength; i++)
-		{
-			Prod[i-karatLength] = arrNbr[i];
+		for (i = karatLength; i < 2 * karatLength; i++) {
+			Prod[i - karatLength] = arrNbr[i];
 		}
 	}
 
-	void GetMontgomeryParms()
-	{
+	void GetMontgomeryParms() {
 		int NumberLength = this.NumberLength;
 		int N, x, i, j, k, div;
 		int length;
 
 		dN = (double) TestNbr[NumberLength - 1];
-		if (NumberLength > 1)
-		{
+		if (NumberLength > 1) {
 			dN += (double) TestNbr[NumberLength - 2] / dDosALa31;
 		}
-		if (NumberLength > 2)
-		{
+		if (NumberLength > 2) {
 			dN += (double) TestNbr[NumberLength - 3] / dDosALa62;
 		}
 
@@ -5568,40 +4714,32 @@ public class ECM extends Applet implements Runnable
 		x = x * (2 - N * x); // 16 least significant bits of inverse correct.
 		x = x * (2 - N * x); // 32 least significant bits of inverse correct.
 		MontgomeryMultN = (-x) & 0x7FFFFFFF;
-		if (KARATSUBA_ENABLED && NumberLength >= KARATSUBA_CUTOFF)
-		{
+		if (KARATSUBA_ENABLED && NumberLength >= KARATSUBA_CUTOFF) {
 			length = NumberLength;
 			div = 1;
-			while (length > KARATSUBA_CUTOFF)
-			{
+			while (length > KARATSUBA_CUTOFF) {
 				div *= 2;
-				length = (length+1)/2;
+				length = (length + 1) / 2;
 			}
 			karatLength = length * div;
-			for (i=NumberLength; i<karatLength; i++)
-			{
-				TestNbr[i]=0;
+			for (i = NumberLength; i < karatLength; i++) {
+				TestNbr[i] = 0;
 			}
 			NumberLength = karatLength;
-			for (i=0; i<NumberLength; i++)
-			{
-				KaratsubaTestNbr[i] = (int)TestNbr[i];
+			for (i = 0; i < NumberLength; i++) {
+				KaratsubaTestNbr[i] = (int) TestNbr[i];
 			}
-			montgKaratsubaArr[0] = (int)MontgomeryMultN;
-			j=1;
-			for (i=2; i<=length; i<<=1)
-			{
+			montgKaratsubaArr[0] = (int) MontgomeryMultN;
+			j = 1;
+			for (i = 2; i <= length; i <<= 1) {
 				// Compute x <- x * (2 + N * x)
 				System.arraycopy(KaratsubaTestNbr, 0, arrNbr, 0, j);
 				System.arraycopy(montgKaratsubaArr, 0, arrNbr, j, j);
 				NormalMultiply(0, j);
-				if ((arrNbrAux[0] += 2) < 0)
-				{
+				if ((arrNbrAux[0] += 2) < 0) {
 					arrNbrAux[0] &= 0x7FFFFFFF;
-					for (k=1; k<i; k++)
-					{
-						if (++arrNbrAux[k] >= 0)
-						{
+					for (k = 1; k < i; k++) {
+						if (++arrNbrAux[k] >= 0) {
 							break;
 						}
 						arrNbrAux[k] = 0;
@@ -5611,13 +4749,12 @@ public class ECM extends Applet implements Runnable
 				System.arraycopy(montgKaratsubaArr, 0, arrNbr, i, i);
 				NormalMultiply(0, i);
 				System.arraycopy(arrNbrAux, 0, montgKaratsubaArr, 0, i);
-				j<<=1;
+				j <<= 1;
 			}
 		}
 		j = NumberLength;
 		MontgomeryMultR1[j] = 1;
-		do
-		{
+		do {
 			MontgomeryMultR1[--j] = 0;
 		}
 		while (j > 0);
@@ -5630,19 +4767,14 @@ public class ECM extends Applet implements Runnable
 	}
 
 	private int KaratsubaAdd(int idxAddend1, int idxAddend2,
-	                         int idxSum, int length)
-	{
+	                         int idxSum, int length) {
 		int carry = 0;
-		for (int i=0; i<length; i++)
-		{
+		for (int i = 0; i < length; i++) {
 			carry += arrNbr[idxAddend1 + i] + arrNbr[idxAddend2 + i];
-			if (carry < 0)
-			{                         // Bit 31 is set.
+			if (carry < 0) {                         // Bit 31 is set.
 				arrNbr[idxSum + i] = carry - (-0x80000000);
 				carry = 1;
-			}
-			else
-			{
+			} else {
 				arrNbr[idxSum + i] = carry;
 				carry = 0;
 			}
@@ -5653,36 +4785,28 @@ public class ECM extends Applet implements Runnable
 	// The return value is the sign: true: negative.
 	// In result the absolute value of the difference is computed.
 	private boolean absSubtract(int idxMinuend, int idxSubtrahend,
-	                            int idxResult, int length)
-	{
+	                            int idxResult, int length) {
 		boolean sign = false;
 		int carry = 0;
-		int [] arrNbr = this.arrNbr;
+		int[] arrNbr = this.arrNbr;
 		int i;
-		for (i=length-1; i>=0; i--)
-		{
-			if (arrNbr[idxMinuend + i] != arrNbr[idxSubtrahend + i])
-			{
+		for (i = length - 1; i >= 0; i--) {
+			if (arrNbr[idxMinuend + i] != arrNbr[idxSubtrahend + i]) {
 				break;
 			}
 		}
-		if (i>=0 && arrNbr[idxMinuend + i] < arrNbr[idxSubtrahend + i])
-		{
+		if (i >= 0 && arrNbr[idxMinuend + i] < arrNbr[idxSubtrahend + i]) {
 			sign = true;
 			i = idxMinuend;
 			idxMinuend = idxSubtrahend;
 			idxSubtrahend = i;
 		}
-		for (i=0; i<length; i++)
-		{
+		for (i = 0; i < length; i++) {
 			carry = arrNbr[idxMinuend + i] - arrNbr[idxSubtrahend + i] - carry;
-			if (carry < 0)
-			{
+			if (carry < 0) {
 				arrNbr[idxResult + i] = carry + (-0x80000000);
 				carry = 1;
-			}
-			else
-			{
+			} else {
 				arrNbr[idxResult + i] = carry;
 				carry = 0;
 			}
@@ -5690,90 +4814,72 @@ public class ECM extends Applet implements Runnable
 		return sign;
 	}
 
-	private void NormalMultiply(int idxFactor1, int length)
-	{
+	private void NormalMultiply(int idxFactor1, int length) {
 		long sum, carry, prod;
 		int destIndex, j, offs, tmp;
 		int idxFactor2 = idxFactor1 + length;
 		sum = 0;
-		int lastDestIndex = 2*length-1;
-		for (destIndex=0; destIndex<lastDestIndex; destIndex++)
-		{
+		int lastDestIndex = 2 * length - 1;
+		for (destIndex = 0; destIndex < lastDestIndex; destIndex++) {
 			carry = 0;
-			offs = idxFactor2+destIndex;
-			if (destIndex<length)
-			{
-				for (j=destIndex; j>0; j-=2)
-				{
-					prod = (long)arrNbr[idxFactor1+j]*(long)arrNbr[offs-j] +
-							(long)arrNbr[idxFactor1+j-1]*(long)arrNbr[offs-j+1];
+			offs = idxFactor2 + destIndex;
+			if (destIndex < length) {
+				for (j = destIndex; j > 0; j -= 2) {
+					prod = (long) arrNbr[idxFactor1 + j] * (long) arrNbr[offs - j] +
+							(long) arrNbr[idxFactor1 + j - 1] * (long) arrNbr[offs - j + 1];
 					sum += prod & 0x7FFFFFFFL;
 					carry += prod >>> 31;
 				}
-				if (j==0)
-				{
-					prod = (long)arrNbr[idxFactor1+j]*(long)arrNbr[offs-j];
+				if (j == 0) {
+					prod = (long) arrNbr[idxFactor1 + j] * (long) arrNbr[offs - j];
 					sum += prod & 0x7FFFFFFFL;
 					carry += prod >>> 31;
 				}
-			}
-			else
-			{
-				for (j=length-1; j>destIndex-length; j-=2)
-				{
-					prod = (long)arrNbr[idxFactor1+j]*(long)arrNbr[offs-j] +
-							(long)arrNbr[idxFactor1+j-1]*(long)arrNbr[offs-j+1];
+			} else {
+				for (j = length - 1; j > destIndex - length; j -= 2) {
+					prod = (long) arrNbr[idxFactor1 + j] * (long) arrNbr[offs - j] +
+							(long) arrNbr[idxFactor1 + j - 1] * (long) arrNbr[offs - j + 1];
 					sum += prod & 0x7FFFFFFFL;
 					carry += prod >>> 31;
 				}
-				if (j==destIndex-length)
-				{
-					prod = (long)arrNbr[idxFactor1+j]*(long)arrNbr[offs-j];
+				if (j == destIndex - length) {
+					prod = (long) arrNbr[idxFactor1 + j] * (long) arrNbr[offs - j];
 					sum += prod & 0x7FFFFFFFL;
 					carry += prod >>> 31;
 				}
 			}
-			tmp = (int)(sum>>>31);
-			arrNbrAux[destIndex] = (int)sum & 0x7FFFFFFF;
+			tmp = (int) (sum >>> 31);
+			arrNbrAux[destIndex] = (int) sum & 0x7FFFFFFF;
 			sum = carry + tmp;
 		}
-		arrNbrAux[destIndex] = (int)sum;
-		System.arraycopy(arrNbrAux, 0, arrNbr, idxFactor1, 2*length);
+		arrNbrAux[destIndex] = (int) sum;
+		System.arraycopy(arrNbrAux, 0, arrNbr, idxFactor1, 2 * length);
 		return;
 	}
 
-	private void KaratsubaMultiply(int idxFactor1, int length, int endIndex)
-	{
-		int [] arrNbr = this.arrNbr;
+	private void KaratsubaMultiply(int idxFactor1, int length, int endIndex) {
+		int[] arrNbr = this.arrNbr;
 		int idxFactor2 = idxFactor1 + length;
 		int i, offs, carry, carry2, tmp;
 		int middle;
 		boolean sign;
-		if (length <= KARATSUBA_CUTOFF)
-		{
+		if (length <= KARATSUBA_CUTOFF) {
 			// Check if one of the factors is equal to zero.
-			for (i=length-1; i>=0; i--)
-			{
-				if (arrNbr[idxFactor1+i] != 0)
-				{
+			for (i = length - 1; i >= 0; i--) {
+				if (arrNbr[idxFactor1 + i] != 0) {
 					break;
 				}
 			}
-			if (i>=0)
-			{
-				for (i=length-1; i>=0; i--)
-				{
-					if (arrNbr[idxFactor2+i] != 0)
-					{
+			if (i >= 0) {
+				for (i = length - 1; i >= 0; i--) {
+					if (arrNbr[idxFactor2 + i] != 0) {
 						break;
 					}
 				}
 			}
-			if (i<0)
-			{              // One of the factors is equal to zero.
-				for (i=length-1; i>=0; i--)
-				{
-					arrNbr[idxFactor1+i] = arrNbr[idxFactor2+i] = 0;
+			if (i < 0) {              // One of the factors is equal to zero.
+				for (i = length - 1; i >= 0; i--) {
+					arrNbr[idxFactor1 + i] = arrNbr[idxFactor2 + i] = 0;
 				}
 				return;
 			}
@@ -5782,18 +4888,17 @@ public class ECM extends Applet implements Runnable
 		// Length > KARATSUBA_CUTOFF: Use Karatsuba multiplication.
 		// At this moment the order is: High1, Low1, High2, Low2.
 		// Exchange low part of first factor with high part of 2nd factor.
-		int halfLength = length/2;
-		for (i=idxFactor1+halfLength; i<idxFactor2; i++)
-		{
+		int halfLength = length / 2;
+		for (i = idxFactor1 + halfLength; i < idxFactor2; i++) {
 			tmp = arrNbr[i];
-			arrNbr[i] = arrNbr[i+halfLength];
-			arrNbr[i+halfLength] = tmp;
+			arrNbr[i] = arrNbr[i + halfLength];
+			arrNbr[i + halfLength] = tmp;
 		}
 		// At this moment the order is: High1, High2, Low1, Low2.
 		// Get absolute values of (High1-Low1) and (Low2-High2) and the signs.
 		sign = absSubtract(idxFactor1, idxFactor2, endIndex, halfLength);
-		sign = absSubtract(idxFactor2+halfLength, idxFactor1+halfLength,
-				endIndex+halfLength, halfLength) != sign;
+		sign = absSubtract(idxFactor2 + halfLength, idxFactor1 + halfLength,
+				endIndex + halfLength, halfLength) != sign;
 		middle = endIndex;
 		endIndex += length;
 		// Multiply both low parts.
@@ -5801,67 +4906,50 @@ public class ECM extends Applet implements Runnable
 		// Multiply both high parts.
 		KaratsubaMultiply(idxFactor2, halfLength, endIndex);
 		KaratsubaMultiply(middle, halfLength, endIndex);
-		if (sign)
-		{            // (High1-Low1) * (Low2-High2) is negative.
-			if (absSubtract(idxFactor1, middle, middle, length))
-			{          // Result is still negative.
+		if (sign) {            // (High1-Low1) * (Low2-High2) is negative.
+			if (absSubtract(idxFactor1, middle, middle, length)) {          // Result is still negative.
 				absSubtract(idxFactor2, middle, middle, length);
 				carry2 = 0;
-			}
-			else
-			{
+			} else {
 				carry2 = KaratsubaAdd(idxFactor2, middle, middle, length);
 			}
-		}
-		else
-		{            // (High1-Low1) * (Low2-High2) is non-negative.
+		} else {            // (High1-Low1) * (Low2-High2) is non-negative.
 			carry2 = KaratsubaAdd(idxFactor1, middle, middle, length);
 			carry2 += KaratsubaAdd(idxFactor2, middle, middle, length);
 		}
 		carry = 0;
-		offs = idxFactor1+halfLength;
-		for (i=0; i<length; i++)
-		{
-			carry += arrNbr[offs+i] + arrNbr[middle+i];
-			if (carry < 0)
-			{
-				arrNbr[offs+i] = carry - (-0x80000000);
+		offs = idxFactor1 + halfLength;
+		for (i = 0; i < length; i++) {
+			carry += arrNbr[offs + i] + arrNbr[middle + i];
+			if (carry < 0) {
+				arrNbr[offs + i] = carry - (-0x80000000);
 				carry = 1;
-			}
-			else
-			{
-				arrNbr[offs+i] = carry;
+			} else {
+				arrNbr[offs + i] = carry;
 				carry = 0;
 			}
 		}
-		arrNbr[idxFactor1+halfLength+i] += carry + carry2;
-		if (arrNbr[idxFactor1+halfLength+i] < 0)
-		{
-			arrNbr[idxFactor1+halfLength+i] -= (-0x80000000);
-			for (i=halfLength+1; i<length; i++)
-			{
-				if (++arrNbr[idxFactor1+i] >= 0)
-				{
+		arrNbr[idxFactor1 + halfLength + i] += carry + carry2;
+		if (arrNbr[idxFactor1 + halfLength + i] < 0) {
+			arrNbr[idxFactor1 + halfLength + i] -= (-0x80000000);
+			for (i = halfLength + 1; i < length; i++) {
+				if (++arrNbr[idxFactor1 + i] >= 0) {
 					break;
 				}
-				arrNbr[idxFactor1+i] = 0;
+				arrNbr[idxFactor1 + i] = 0;
 			}
 		}
 	}
 
-	void BigNbrModN(int Nbr[], int Length, int Mod[])
-	{
+	void BigNbrModN(int Nbr[], int Length, int Mod[]) {
 		int i, j;
-		for (i = 0; i < NumberLength; i++)
-		{
+		for (i = 0; i < NumberLength; i++) {
 			Mod[i] = Nbr[i + Length - NumberLength];
 		}
 		Mod[i] = 0;
 		AdjustModN(Mod, TestNbr, NumberLength);
-		for (i = Length - NumberLength - 1; i >= 0; i--)
-		{
-			for (j = NumberLength; j > 0; j--)
-			{
+		for (i = Length - NumberLength - 1; i >= 0; i--) {
+			for (j = NumberLength; j > 0; j--) {
 				Mod[j] = Mod[j - 1];
 			}
 			Mod[0] = Nbr[i];
@@ -5870,40 +4958,34 @@ public class ECM extends Applet implements Runnable
 	}
 
 	static void MultBigNbrModN(int Nbr1[], int Nbr2[], int Prod[],
-	                           int TestNbr[], int NumberLength)
-	{
+	                           int TestNbr[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		int i, j;
 		long Pr, Nbr;
 
 		if (NumberLength >= 2 &&
-				TestNbr[NumberLength-1]==0 && TestNbr[NumberLength-2]<0x40000000)
-		{
+				TestNbr[NumberLength - 1] == 0 && TestNbr[NumberLength - 2] < 0x40000000) {
 			NumberLength--;
 		}
 		i = NumberLength;
-		do
-		{
+		do {
 			Prod[--i] = 0;
 		}
 		while (i > 0);
 		i = NumberLength;
-		do
-		{
+		do {
 			Nbr = Nbr1[--i];
 			j = NumberLength;
-			do
-			{
+			do {
 				Prod[j] = Prod[j - 1];
 				j--;
 			}
 			while (j > 0);
 			Prod[0] = 0;
 			Pr = 0;
-			for (j = 0; j < NumberLength; j++)
-			{
+			for (j = 0; j < NumberLength; j++) {
 				Pr = (Pr >>> 31) + Nbr * Nbr2[j] + Prod[j];
-				Prod[j] = (int)(Pr & MaxUInt);
+				Prod[j] = (int) (Pr & MaxUInt);
 			}
 			Prod[j] += (Pr >>> 31);
 			AdjustModN(Prod, TestNbr, NumberLength);
@@ -5912,29 +4994,25 @@ public class ECM extends Applet implements Runnable
 	}
 
 	static void MultBigNbrByLongModN(int Nbr1[], long Nbr2, int Prod[],
-	                                 int TestNbr[], int NumberLength)
-	{
+	                                 int TestNbr[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long Pr;
 		int j;
 
-		if (NumberLength>=2 &&
-				TestNbr[NumberLength-1]==0 && TestNbr[NumberLength-2]<0x40000000)
-		{
+		if (NumberLength >= 2 &&
+				TestNbr[NumberLength - 1] == 0 && TestNbr[NumberLength - 2] < 0x40000000) {
 			NumberLength--;
 		}
 		Pr = 0;
-		for (j = 0; j < NumberLength; j++)
-		{
+		for (j = 0; j < NumberLength; j++) {
 			Pr = (Pr >>> 31) + Nbr2 * Nbr1[j];
-			Prod[j] = (int)(Pr & MaxUInt);
+			Prod[j] = (int) (Pr & MaxUInt);
 		}
-		Prod[j] = (int)(Pr >>> 31);
+		Prod[j] = (int) (Pr >>> 31);
 		AdjustModN(Prod, TestNbr, NumberLength);
 	}
 
-	static void AdjustModN(int Nbr[], int TestNbr[], int NumberLength)
-	{
+	static void AdjustModN(int Nbr[], int TestNbr[], int NumberLength) {
 		long MaxUInt = 0x7FFFFFFFL;
 		long TrialQuotient;
 		long carry;
@@ -5942,103 +5020,85 @@ public class ECM extends Applet implements Runnable
 		double dAux, dN;
 
 		dN = (double) TestNbr[NumberLength - 1];
-		if (NumberLength > 1)
-		{
+		if (NumberLength > 1) {
 			dN += (double) TestNbr[NumberLength - 2] / dDosALa31;
 		}
-		if (NumberLength > 2)
-		{
+		if (NumberLength > 2) {
 			dN += (double) TestNbr[NumberLength - 3] / dDosALa62;
 		}
 		dAux =
 				(double) Nbr[NumberLength] * dDosALa31 + (double) Nbr[NumberLength - 1];
-		if (NumberLength > 1)
-		{
+		if (NumberLength > 1) {
 			dAux += (double) Nbr[NumberLength - 2] / dDosALa31;
 		}
 		TrialQuotient = (long) (dAux / dN) + 3;
-		if (TrialQuotient >= DosALa32)
-		{
+		if (TrialQuotient >= DosALa32) {
 			carry = 0;
-			for (i = 0; i < NumberLength; i++)
-			{
+			for (i = 0; i < NumberLength; i++) {
 				carry = Nbr[i + 1] - (TrialQuotient >>> 31) * TestNbr[i] - carry;
-				Nbr[i + 1] = (int)(carry & MaxUInt);
+				Nbr[i + 1] = (int) (carry & MaxUInt);
 				carry = (MaxUInt - carry) >>> 31;
 			}
 			TrialQuotient &= MaxUInt;
 		}
 		carry = 0;
-		for (i = 0; i < NumberLength; i++)
-		{
+		for (i = 0; i < NumberLength; i++) {
 			carry = Nbr[i] - TrialQuotient * TestNbr[i] - carry;
-			Nbr[i] = (int)(carry & MaxUInt);
+			Nbr[i] = (int) (carry & MaxUInt);
 			carry = (MaxUInt - carry) >>> 31;
 		}
-		Nbr[NumberLength] -= (int)carry;
-		while ((Nbr[NumberLength] & MaxUInt) != 0)
-		{
+		Nbr[NumberLength] -= (int) carry;
+		while ((Nbr[NumberLength] & MaxUInt) != 0) {
 			carry = 0;
-			for (i = 0; i < NumberLength; i++)
-			{
-				carry += (long)Nbr[i] + (long)TestNbr[i];
-				Nbr[i] = (int)(carry & MaxUInt);
+			for (i = 0; i < NumberLength; i++) {
+				carry += (long) Nbr[i] + (long) TestNbr[i];
+				Nbr[i] = (int) (carry & MaxUInt);
 				carry >>= 31;
 			}
-			Nbr[NumberLength] += (int)carry;
+			Nbr[NumberLength] += (int) carry;
 		}
 	}
 
 	static void DivBigNbrByLong(int Dividend[], long Divisor, int Quotient[],
-	                            int NumberLength)
-	{
+	                            int NumberLength) {
 		int i;
 		boolean ChSignDivisor = false;
 		long Divid, Rem = 0;
 
-		if (Divisor < 0)
-		{                            // If divisor is negative...
+		if (Divisor < 0) {                            // If divisor is negative...
 			ChSignDivisor = true;      // Indicate to change sign at the end and
 			Divisor = -Divisor;        // convert divisor to positive.
 		}
-		if (Dividend[i = NumberLength - 1] >= 0x40000000)
-		{                            // If dividend is negative...
+		if (Dividend[i = NumberLength - 1] >= 0x40000000) {                            // If dividend is negative...
 			Rem = Divisor - 1;
 		}
-		for ( ; i >= 0; i--)
-		{
+		for (; i >= 0; i--) {
 			Divid = Dividend[i] + (Rem << 31);
-			Rem = Divid - (Quotient[i] = (int)(Divid / Divisor))*Divisor;
+			Rem = Divid - (Quotient[i] = (int) (Divid / Divisor)) * Divisor;
 		}
-		if (ChSignDivisor)
-		{                            // Change sign if divisor is negative.
+		if (ChSignDivisor) {                            // Change sign if divisor is negative.
 			// Convert divisor to positive.
 			ChSignBigNbr(Quotient, NumberLength);
 		}
 	}
 
 	static long RemDivBigNbrByLong(int Dividend[], long Divisor,
-	                               int NumberLength)
-	{
+	                               int NumberLength) {
 		int i;
 		long Rem = 0;
 		long Mod2_31;
-		int divis = (int)(Divisor < 0?-Divisor:Divisor);
-		if (Divisor < 0)
-		{                            // If divisor is negative...
+		int divis = (int) (Divisor < 0 ? -Divisor : Divisor);
+		if (Divisor < 0) {                            // If divisor is negative...
 			Divisor = -Divisor;        // Convert divisor to positive.
 		}
-		Mod2_31 = ((-2147483648)-divis)%divis;  // 2^31 mod divis.
-		if (Dividend[i = NumberLength - 1] >= 0x40000000)
-		{                            // If dividend is negative...
+		Mod2_31 = ((-2147483648) - divis) % divis;  // 2^31 mod divis.
+		if (Dividend[i = NumberLength - 1] >= 0x40000000) {                            // If dividend is negative...
 			Rem = Divisor - 1;
 		}
-		for ( ; i >= 0; i--)
-		{
+		for (; i >= 0; i--) {
 			Rem = Rem * Mod2_31 + Dividend[i];
-			do
-			{
-				Rem = (Rem >> 31)*Mod2_31+(Rem & 0x7FFFFFFF);
+			do {
+				Rem = (Rem >> 31) * Mod2_31 + (Rem & 0x7FFFFFFF);
 			} while (Rem > 0x1FFFFFFFFL);
 		}
 		return Rem % divis;
@@ -6053,131 +5113,102 @@ public class ECM extends Applet implements Runnable
 	// Step 5: If t>0, set u<-t, otherwise set v<-(-t).
 	// Step 6: Set t<-u-v. If t!=0, go back to step 3.
 	// Step 7: The GCD is u*2^k.
-	void GcdBigNbr(int Nbr1[], int Nbr2[], int Gcd[], int NumberLength)
-	{
+	void GcdBigNbr(int Nbr1[], int Nbr2[], int Gcd[], int NumberLength) {
 		int i, k;
 
 		System.arraycopy(Nbr1, 0, CalcAuxGcdU, 0, NumberLength);
 		System.arraycopy(Nbr2, 0, CalcAuxGcdV, 0, NumberLength);
-		for (i = 0; i < NumberLength; i++)
-		{
-			if (CalcAuxGcdU[i] != 0)
-			{
+		for (i = 0; i < NumberLength; i++) {
+			if (CalcAuxGcdU[i] != 0) {
 				break;
 			}
 		}
-		if (i == NumberLength)
-		{
+		if (i == NumberLength) {
 			System.arraycopy(CalcAuxGcdV, 0, Gcd, 0, NumberLength);
 			return;
 		}
-		for (i = 0; i < NumberLength; i++)
-		{
-			if (CalcAuxGcdV[i] != 0)
-			{
+		for (i = 0; i < NumberLength; i++) {
+			if (CalcAuxGcdV[i] != 0) {
 				break;
 			}
 		}
-		if (i == NumberLength)
-		{
+		if (i == NumberLength) {
 			System.arraycopy(CalcAuxGcdU, 0, Gcd, 0, NumberLength);
 			return;
 		}
-		if (CalcAuxGcdU[NumberLength - 1] >= 0x40000000L)
-		{
+		if (CalcAuxGcdU[NumberLength - 1] >= 0x40000000L) {
 			ChSignBigNbr(CalcAuxGcdU, NumberLength);
 		}
-		if (CalcAuxGcdV[NumberLength - 1] >= 0x40000000L)
-		{
+		if (CalcAuxGcdV[NumberLength - 1] >= 0x40000000L) {
 			ChSignBigNbr(CalcAuxGcdV, NumberLength);
 		}
 		k = 0;
-		while ((CalcAuxGcdU[0] & 1) == 0 && (CalcAuxGcdV[0] & 1) == 0)
-		{ // Step 1
+		while ((CalcAuxGcdU[0] & 1) == 0 && (CalcAuxGcdV[0] & 1) == 0) { // Step 1
 			k++;
 			DivBigNbrByLong(CalcAuxGcdU, 2, CalcAuxGcdU, NumberLength);
 			DivBigNbrByLong(CalcAuxGcdV, 2, CalcAuxGcdV, NumberLength);
 		}
-		if ((CalcAuxGcdU[0] & 1) == 1)
-		{ // Step 2
+		if ((CalcAuxGcdU[0] & 1) == 1) { // Step 2
 			System.arraycopy(CalcAuxGcdV, 0, CalcAuxGcdT, 0, NumberLength);
 			ChSignBigNbr(CalcAuxGcdT, NumberLength);
-		}
-		else
-		{
+		} else {
 			System.arraycopy(CalcAuxGcdU, 0, CalcAuxGcdT, 0, NumberLength);
 		}
-		do
-		{
-			while ((CalcAuxGcdT[0] & 1) == 0)
-			{ // Step 4
+		do {
+			while ((CalcAuxGcdT[0] & 1) == 0) { // Step 4
 				DivBigNbrByLong(CalcAuxGcdT, 2, CalcAuxGcdT, NumberLength); // Step 3
 			}
-			if (CalcAuxGcdT[NumberLength - 1] < 0x40000000L)
-			{ // Step 5
+			if (CalcAuxGcdT[NumberLength - 1] < 0x40000000L) { // Step 5
 				System.arraycopy(CalcAuxGcdT, 0, CalcAuxGcdU, 0, NumberLength);
-			}
-			else
-			{
+			} else {
 				System.arraycopy(CalcAuxGcdT, 0, CalcAuxGcdV, 0, NumberLength);
 				ChSignBigNbr(CalcAuxGcdV, NumberLength);
 			}                                                // Step 6
 			SubtractBigNbr(CalcAuxGcdU, CalcAuxGcdV, CalcAuxGcdT, NumberLength);
-			for (i = 0; i < NumberLength; i++)
-			{
-				if (CalcAuxGcdT[i] != 0)
-				{
+			for (i = 0; i < NumberLength; i++) {
+				if (CalcAuxGcdT[i] != 0) {
 					break;
 				}
 			}
 		}
 		while (i != NumberLength);
 		System.arraycopy(CalcAuxGcdU, 0, Gcd, 0, NumberLength); // Step 7
-		while (k > 0)
-		{
+		while (k > 0) {
 			AddBigNbr(Gcd, Gcd, Gcd, NumberLength);
 			k--;
 		}
 	}
 
-	String BigNbrToString(int Nbr[])
-	{
+	String BigNbrToString(int Nbr[]) {
 		long Rem;
 		int i;
 		boolean ChSign = false;
 		String nbrOutput = "";
 
-		if (Nbr[NumberLength - 1] >= 0x40000000)
-		{
+		if (Nbr[NumberLength - 1] >= 0x40000000) {
 			ChSignBigNbr(Nbr, NumberLength);
 			ChSign = true;
 		}
 		System.arraycopy(Nbr, 0, CalcBigNbr, 0, NumberLength);
-		do
-		{
+		do {
 			Rem = 0;
-			for (i = NumberLength - 1; i >= 0; i--)
-			{
+			for (i = NumberLength - 1; i >= 0; i--) {
 				CalcBigNbr[i] += Rem << 31;
 				Rem = CalcBigNbr[i] % Mi;
 				CalcBigNbr[i] /= Mi;
 			}
 			nbrOutput = String.valueOf(Rem + Mi).substring(1) + nbrOutput;
-			for (i = 0; i < NumberLength; i++)
-			{
-				if (CalcBigNbr[i] != 0)
-				{
+			for (i = 0; i < NumberLength; i++) {
+				if (CalcBigNbr[i] != 0) {
 					break;
 				}
 			}
 		}
 		while (i < NumberLength);
-		while (nbrOutput.charAt(0) == '0' && nbrOutput.length() > 1)
-		{
+		while (nbrOutput.charAt(0) == '0' && nbrOutput.length() > 1) {
 			nbrOutput = nbrOutput.substring(1);
 		}
-		if (ChSign)
-		{
+		if (ChSign) {
 			ChSignBigNbr(Nbr, NumberLength);
 			nbrOutput = "-" + nbrOutput;
 		}
@@ -6185,55 +5216,42 @@ public class ECM extends Applet implements Runnable
 	}
 
 	static void Convert31To32Bits(int[] nbr31bits, long[] nbr32bits,
-	                              int NumberLength)
-	{
+	                              int NumberLength) {
 		int i, j, k;
 		i = 0;
-		for (j = -1; j < NumberLength; j++)
-		{
-			k = i%31;
-			if (k == 0)
-			{
+		for (j = -1; j < NumberLength; j++) {
+			k = i % 31;
+			if (k == 0) {
 				j++;
 			}
-			if (j == NumberLength)
-			{
+			if (j == NumberLength) {
 				break;
 			}
-			if (j == NumberLength-1)
-			{
+			if (j == NumberLength - 1) {
 				nbr32bits[i] = nbr31bits[j] >> k;
-			}
-			else
-			{
+			} else {
 				nbr32bits[i] = ((nbr31bits[j] >> k) |
-						(nbr31bits[j+1] << (31-k))) & 0xFFFFFFFFL;
+						(nbr31bits[j + 1] << (31 - k))) & 0xFFFFFFFFL;
 			}
 			i++;
 		}
-		for (; i<NumberLength; i++)
-		{
+		for (; i < NumberLength; i++) {
 			nbr32bits[i] = 0;
 		}
 	}
 
-	static void Convert32To31Bits(long [] nbr32bits, int [] nbr31bits,
-	                              int NumberLength)
-	{
+	static void Convert32To31Bits(long[] nbr32bits, int[] nbr31bits,
+	                              int NumberLength) {
 		int i, j, k;
 		j = 0;
 		nbr32bits[NumberLength] = 0;
-		for (i = 0; i < NumberLength; i++)
-		{
+		for (i = 0; i < NumberLength; i++) {
 			k = i & 0x0000001F;
-			if (k == 0)
-			{
-				nbr31bits[i] = (int)(nbr32bits[j] & 0x7FFFFFFF);
-			}
-			else
-			{
-				nbr31bits[i] = (int)(((nbr32bits[j] >> (32-k)) |
-						(nbr32bits[j+1] << k)) & 0x7FFFFFFF);
+			if (k == 0) {
+				nbr31bits[i] = (int) (nbr32bits[j] & 0x7FFFFFFF);
+			} else {
+				nbr31bits[i] = (int) (((nbr32bits[j] >> (32 - k)) |
+						(nbr32bits[j + 1] << k)) & 0x7FFFFFFF);
 				j++;
 			}
 		}
@@ -6245,9 +5263,11 @@ public class ECM extends Applet implements Runnable
 	/* PURPOSE: Find the inverse multiplicative modulo v.                  */
 	/*                                                                     */
 	/* The algorithm terminates with u1 = u^(-1) MOD v.                    */
-	/***********************************************************************/
-	void ModInvBigNbr(int[] a, int[] inv, int[] b, int NumberLength)
-	{
+
+	/**
+	 * *******************************************************************
+	 */
+	void ModInvBigNbr(int[] a, int[] inv, int[] b, int NumberLength) {
 		int i;
 		int Dif, E;
 		int st1, st2;
@@ -6271,51 +5291,44 @@ public class ECM extends Applet implements Runnable
 		long[] CalcAuxModInvGamma = this.CalcAuxModInvGamma;
 
 		if (NumberLength >= 2 &&
-				b[NumberLength-1] == 0 && b[NumberLength-2] < 0x40000000)
-		{
+				b[NumberLength - 1] == 0 && b[NumberLength - 2] < 0x40000000) {
 			NumberLength--;
 		}
 		Convert31To32Bits(a, CalcAuxModInvA, NumberLength);
 		Convert31To32Bits(b, CalcAuxModInvB, NumberLength);
 		System.arraycopy(CalcAuxModInvB, 0, B, 0, NumberLength);
-		B0l = (int)B[0];
+		B0l = (int) B[0];
 		invB0l = B0l; // 2 least significant bits of inverse correct.
 		invB0l = invB0l * (2 - B0l * invB0l); // 4 LSB of inverse correct.
 		invB0l = invB0l * (2 - B0l * invB0l); // 8 LSB of inverse correct.
 		invB0l = invB0l * (2 - B0l * invB0l); // 16 LSB of inverse correct.
 		invB0l = invB0l * (2 - B0l * invB0l); // 32 LSB of inverse correct.
-		for (i = NumberLength - 1; i >= 0; i--)
-		{
+		for (i = NumberLength - 1; i >= 0; i--) {
 			CalcAuxModInvGamma[i] = 0;
 			CalcAuxModInvMu[i] = 0;
 		}
 		CalcAuxModInvMu[0] = 1;
 		Dif = 0;
-		outer_loop : for (;;)
-		{
+		outer_loop:
+		for (; ; ) {
 			Iaa = Ibb = 1;
 			Iab = Iba = 0;
 			Al = (int) CalcAuxModInvA[0];
 			Bl = (int) CalcAuxModInvB[0];
 			E = 0;
 			P = 1;
-			if (Bl == 0)
-			{
-				for (i = NumberLength - 1; i >= 0; i--)
-				{
+			if (Bl == 0) {
+				for (i = NumberLength - 1; i >= 0; i--) {
 					if (CalcAuxModInvB[i] != 0)
 						break;
 				}
 				if (i < 0)
 					break; // Go out of loop if CalcAuxModInvB = 0
 			}
-			for (;;)
-			{
+			for (; ; ) {
 				T1 = 0;
-				while ((Bl & 1) == 0)
-				{
-					if (E == 31)
-					{
+				while ((Bl & 1) == 0) {
+					if (E == 31) {
 						Yaa = Iaa;
 						Yab = Iab;
 						Yba = Iba;
@@ -6326,7 +5339,7 @@ public class ECM extends Applet implements Runnable
 						T1++;
 						Yaa <<= T1;
 						Yab <<= T1;
-						Ymb0 = (- (int) Yaa * Ml - (int) Yab * Gl) * invB0l;
+						Ymb0 = (-(int) Yaa * Ml - (int) Yab * Gl) * invB0l;
 						Ygb0 = (-Iba * Ml - Ibb * Gl) * invB0l;
 						carry1 = carry2 = carry3 = carry4 = 0;
 						Yaah = (int) (Yaa >> 32);
@@ -6344,8 +5357,7 @@ public class ECM extends Applet implements Runnable
 
 						st1 = Yaah * 6 + Yabh * 2 + Ymb0h;
 						st2 = Ybah * 6 + Ybbh * 2 + Ygb0h;
-						for (i = 0; i < NumberLength; i++)
-						{
+						for (i = 0; i < NumberLength; i++) {
 							Pr1 = Yaa * (Tmp1 = CalcAuxModInvMu[i]);
 							Pr2 = Yab * (Tmp2 = CalcAuxModInvGamma[i]);
 							Pr3 = Ymb0 * (Tmp3 = B[i]);
@@ -6357,85 +5369,83 @@ public class ECM extends Applet implements Runnable
 							Pr5 = Yaa * (Tmp4 = CalcAuxModInvA[i]);
 							Pr6 = Yab * (Tmp5 = CalcAuxModInvB[i]);
 							Pr7 = (Pr5 & 0xFFFFFFFFL) + (Pr6 & 0xFFFFFFFFL) + carry1;
-							switch (st1)
-							{
-								case -9 :
+							switch (st1) {
+								case -9:
 									carry3 = -Tmp1 - Tmp2 - Tmp3;
 									carry1 = -Tmp4 - Tmp5;
 									break;
-								case -8 :
+								case -8:
 									carry3 = -Tmp1 - Tmp2;
 									carry1 = -Tmp4 - Tmp5;
 									break;
-								case -7 :
+								case -7:
 									carry3 = -Tmp1 - Tmp3;
 									carry1 = -Tmp4;
 									break;
-								case -6 :
+								case -6:
 									carry3 = -Tmp1;
 									carry1 = -Tmp4;
 									break;
-								case -5 :
+								case -5:
 									carry3 = -Tmp1 + Tmp2 - Tmp3;
 									carry1 = -Tmp4 + Tmp5;
 									break;
-								case -4 :
+								case -4:
 									carry3 = -Tmp1 + Tmp2;
 									carry1 = -Tmp4 + Tmp5;
 									break;
-								case -3 :
+								case -3:
 									carry3 = -Tmp2 - Tmp3;
 									carry1 = -Tmp5;
 									break;
-								case -2 :
+								case -2:
 									carry3 = -Tmp2;
 									carry1 = -Tmp5;
 									break;
-								case -1 :
+								case -1:
 									carry3 = -Tmp3;
 									carry1 = 0;
 									break;
-								case 0 :
+								case 0:
 									carry3 = 0;
 									carry1 = 0;
 									break;
-								case 1 :
+								case 1:
 									carry3 = Tmp2 - Tmp3;
 									carry1 = Tmp5;
 									break;
-								case 2 :
+								case 2:
 									carry3 = Tmp2;
 									carry1 = Tmp5;
 									break;
-								case 3 :
+								case 3:
 									carry3 = Tmp1 - Tmp2 - Tmp3;
 									carry1 = Tmp4 - Tmp5;
 									break;
-								case 4 :
+								case 4:
 									carry3 = Tmp1 - Tmp2;
 									carry1 = Tmp4 - Tmp5;
 									break;
-								case 5 :
+								case 5:
 									carry3 = Tmp1 - Tmp3;
 									carry1 = Tmp4;
 									break;
-								case 6 :
+								case 6:
 									carry3 = Tmp1;
 									carry1 = Tmp4;
 									break;
-								case 7 :
+								case 7:
 									carry3 = Tmp1 + Tmp2 - Tmp3;
 									carry1 = Tmp4 + Tmp5;
 									break;
-								case 8 :
+								case 8:
 									carry3 = Tmp1 + Tmp2;
 									carry1 = Tmp4 + Tmp5;
 									break;
 							}
 							carry3 += (Pr1 >>> 32) + (Pr2 >>> 32) + (Pr3 >>> 32) + (Pr4 >> 32);
 							carry1 += (Pr5 >>> 32) + (Pr6 >>> 32) + (Pr7 >> 32);
-							if (i > 0)
-							{
+							if (i > 0) {
 								CalcAuxModInvMu[i - 1] = Pr4 & 0xFFFFFFFFL;
 								CalcAuxModInvA[i - 1] = Pr7 & 0xFFFFFFFFL;
 							}
@@ -6450,107 +5460,101 @@ public class ECM extends Applet implements Runnable
 							Pr5 = Yba * Tmp4;
 							Pr6 = Ybb * Tmp5;
 							Pr7 = (Pr5 & 0xFFFFFFFFL) + (Pr6 & 0xFFFFFFFFL) + carry2;
-							switch (st2)
-							{
-								case -9 :
+							switch (st2) {
+								case -9:
 									carry4 = -Tmp1 - Tmp2 - Tmp3;
 									carry2 = -Tmp4 - Tmp5;
 									break;
-								case -8 :
+								case -8:
 									carry4 = -Tmp1 - Tmp2;
 									carry2 = -Tmp4 - Tmp5;
 									break;
-								case -7 :
+								case -7:
 									carry4 = -Tmp1 - Tmp3;
 									carry2 = -Tmp4;
 									break;
-								case -6 :
+								case -6:
 									carry4 = -Tmp1;
 									carry2 = -Tmp4;
 									break;
-								case -5 :
+								case -5:
 									carry4 = -Tmp1 + Tmp2 - Tmp3;
 									carry2 = -Tmp4 + Tmp5;
 									break;
-								case -4 :
+								case -4:
 									carry4 = -Tmp1 + Tmp2;
 									carry2 = -Tmp4 + Tmp5;
 									break;
-								case -3 :
+								case -3:
 									carry4 = -Tmp2 - Tmp3;
 									carry2 = -Tmp5;
 									break;
-								case -2 :
+								case -2:
 									carry4 = -Tmp2;
 									carry2 = -Tmp5;
 									break;
-								case -1 :
+								case -1:
 									carry4 = -Tmp3;
 									carry2 = 0;
 									break;
-								case 0 :
+								case 0:
 									carry4 = 0;
 									carry2 = 0;
 									break;
-								case 1 :
+								case 1:
 									carry4 = Tmp2 - Tmp3;
 									carry2 = Tmp5;
 									break;
-								case 2 :
+								case 2:
 									carry4 = Tmp2;
 									carry2 = Tmp5;
 									break;
-								case 3 :
+								case 3:
 									carry4 = Tmp1 - Tmp2 - Tmp3;
 									carry2 = Tmp4 - Tmp5;
 									break;
-								case 4 :
+								case 4:
 									carry4 = Tmp1 - Tmp2;
 									carry2 = Tmp4 - Tmp5;
 									break;
-								case 5 :
+								case 5:
 									carry4 = Tmp1 - Tmp3;
 									carry2 = Tmp4;
 									break;
-								case 6 :
+								case 6:
 									carry4 = Tmp1;
 									carry2 = Tmp4;
 									break;
-								case 7 :
+								case 7:
 									carry4 = Tmp1 + Tmp2 - Tmp3;
 									carry2 = Tmp4 + Tmp5;
 									break;
-								case 8 :
+								case 8:
 									carry4 = Tmp1 + Tmp2;
 									carry2 = Tmp4 + Tmp5;
 									break;
 							}
 							carry4 += (Pr1 >>> 32) + (Pr2 >>> 32) + (Pr3 >>> 32) + (Pr4 >> 32);
 							carry2 += (Pr5 >>> 32) + (Pr6 >>> 32) + (Pr7 >> 32);
-							if (i > 0)
-							{
+							if (i > 0) {
 								CalcAuxModInvGamma[i - 1] = Pr4 & 0xFFFFFFFFL;
 								CalcAuxModInvB[i - 1] = Pr7 & 0xFFFFFFFFL;
 							}
 						}
 
-						if ((int) CalcAuxModInvA[i - 1] < 0)
-						{
+						if ((int) CalcAuxModInvA[i - 1] < 0) {
 							carry1 -= Yaa;
 							carry2 -= Yba;
 						}
-						if ((int) CalcAuxModInvB[i - 1] < 0)
-						{
+						if ((int) CalcAuxModInvB[i - 1] < 0) {
 							carry1 -= Yab;
 							carry2 -= Ybb;
 						}
-						if ((int) CalcAuxModInvMu[i - 1] < 0)
-						{
+						if ((int) CalcAuxModInvMu[i - 1] < 0) {
 							carry3 -= Yaa;
 							carry4 -= Yba;
 						}
-						if ((int) CalcAuxModInvGamma[i - 1] < 0)
-						{
+						if ((int) CalcAuxModInvGamma[i - 1] < 0) {
 							carry3 -= Yab;
 							carry4 -= Ybb;
 						}
@@ -6568,11 +5572,9 @@ public class ECM extends Applet implements Runnable
 				} /* end while */
 				Iaa <<= T1;
 				Iab <<= T1;
-				if (Dif >= 0)
-				{
+				if (Dif >= 0) {
 					Dif = -Dif;
-					if (((Al + Bl) & 3) == 0)
-					{
+					if (((Al + Bl) & 3) == 0) {
 						T1 = Iba;
 						Iba += Iaa;
 						Iaa = T1;
@@ -6582,9 +5584,7 @@ public class ECM extends Applet implements Runnable
 						T1 = Bl;
 						Bl += Al;
 						Al = T1;
-					}
-					else
-					{
+					} else {
 						T1 = Iba;
 						Iba -= Iaa;
 						Iaa = T1;
@@ -6595,17 +5595,12 @@ public class ECM extends Applet implements Runnable
 						Bl -= Al;
 						Al = T1;
 					}
-				}
-				else
-				{
-					if (((Al + Bl) & 3) == 0)
-					{
+				} else {
+					if (((Al + Bl) & 3) == 0) {
 						Iba += Iaa;
 						Ibb += Iab;
 						Bl += Al;
-					}
-					else
-					{
+					} else {
 						Iba -= Iaa;
 						Ibb -= Iab;
 						Bl -= Al;
@@ -6614,44 +5609,35 @@ public class ECM extends Applet implements Runnable
 				Dif--;
 			}
 		}
-		if (CalcAuxModInvA[0] != 1)
-		{
+		if (CalcAuxModInvA[0] != 1) {
 			SubtractBigNbr32(B, CalcAuxModInvMu, CalcAuxModInvMu, NumberLength);
 		}
-		if ((int) CalcAuxModInvMu[i = NumberLength - 1] < 0)
-		{
+		if ((int) CalcAuxModInvMu[i = NumberLength - 1] < 0) {
 			AddBigNbr32(B, CalcAuxModInvMu, CalcAuxModInvMu, NumberLength);
 		}
-		for (; i >= 0; i--)
-		{
+		for (; i >= 0; i--) {
 			if (B[i] != CalcAuxModInvMu[i])
 				break;
 		}
-		if (i < 0 || B[i] < CalcAuxModInvMu[i])
-		{ // If B < Mu
+		if (i < 0 || B[i] < CalcAuxModInvMu[i]) { // If B < Mu
 			SubtractBigNbr32(CalcAuxModInvMu, B, CalcAuxModInvMu, NumberLength); // Mu <- Mu - B
 		}
 		Convert32To31Bits(CalcAuxModInvMu, inv, NumberLength);
 	}
 
-	void FactorFibonacci(int Index, BigInteger BigOriginal)
-	{
+	void FactorFibonacci(int Index, BigInteger BigOriginal) {
 		int Index2, k;
 		BigInteger Nro1;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			NroFact = 1;
 			Factores[0] = BigOriginal;
 			Index2 = Index;
-			while (Index2 % 2 == 0)
-			{
+			while (Index2 % 2 == 0) {
 				Index2 /= 2;
 			}
 			k = 1; /* Factor F(Index2) */
-			while (k * k <= Index2)
-			{
-				if (Index2 % k == 0)
-				{
+			while (k * k <= Index2) {
+				if (Index2 % k == 0) {
 					Nro1 = Fibonacci(k).gcd(BigOriginal);
 					InsertFactor(Nro1);
 					InsertFactor(BigOriginal.divide(Nro1));
@@ -6662,8 +5648,7 @@ public class ECM extends Applet implements Runnable
 				k += 2;
 			}
 			Index2 = Index;
-			while (Index2 % 2 == 0)
-			{
+			while (Index2 % 2 == 0) {
 				Index2 /= 2;
 				InsertLucasFactor(Index2, BigOriginal);
 			}
@@ -6671,59 +5656,47 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	void FactorLucas(int Index, BigInteger BigOriginal)
-	{
+	void FactorLucas(int Index, BigInteger BigOriginal) {
 		NroFact = 1;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			Factores[0] = BigOriginal;
 			InsertLucasFactor(Index, BigOriginal);
 			SortFactors();
 		}
 	}
 
-	void InsertLucasFactor(int Index, BigInteger BigOriginal)
-	{
+	void InsertLucasFactor(int Index, BigInteger BigOriginal) {
 		int k;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			BigInteger Fibo = BigInt0;
 			BigInteger BigInt5 = BigInteger.valueOf(5);
 			BigInteger Nro1;
 			k = 1; /* Factor L(Index) */
-			while (k * k <= Index)
-			{
-				if (Index % k == 0)
-				{
+			while (k * k <= Index) {
+				if (Index % k == 0) {
 					Nro1 = Lucas(k).gcd(BigOriginal);
 					InsertFactor(Nro1);
-					if (k % 5 == 0)
-					{
+					if (k % 5 == 0) {
 						Fibo = Fibonacci(k);
 						InsertFactor(
 								BigInt5.multiply(Fibo).subtract(BigInt5).multiply(Fibo).add(
 										BigInt1));
 						InsertFactor(
 								BigInt5.multiply(Fibo).add(BigInt5).multiply(Fibo).add(BigInt1));
-					}
-					else
-					{
+					} else {
 						InsertFactor(Nro1);
 						InsertFactor(BigOriginal.divide(Nro1));
 					}
 					Nro1 = Lucas(Index / k).gcd(BigOriginal);
 					InsertFactor(Nro1);
-					if ((Index / k) % 5 == 0)
-					{
+					if ((Index / k) % 5 == 0) {
 						Fibo = Fibonacci(Index / k);
 						InsertFactor(
 								BigInt5.multiply(Fibo).subtract(BigInt5).multiply(Fibo).add(
 										BigInt1));
 						InsertFactor(
 								BigInt5.multiply(Fibo).add(BigInt5).multiply(Fibo).add(BigInt1));
-					}
-					else
-					{
+					} else {
 						InsertFactor(Nro1);
 						InsertFactor(BigOriginal.divide(Nro1));
 					}
@@ -6733,46 +5706,36 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	BigInteger Fibonacci(int Index)
-	{
+	BigInteger Fibonacci(int Index) {
 		int i;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			BigInteger FibonPrev = BigInt1;
 			BigInteger FibonAct = BigInt0;
 			BigInteger FibonNext;
-			for (i = 1; i <= Index; i++)
-			{
+			for (i = 1; i <= Index; i++) {
 				FibonNext = FibonPrev.add(FibonAct);
 				FibonPrev = FibonAct;
 				FibonAct = FibonNext;
 			}
 			return FibonAct;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	BigInteger Lucas(int Index)
-	{
+	BigInteger Lucas(int Index) {
 		int i;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			BigInteger LucasPrev = BigInteger.valueOf(-1);
 			BigInteger LucasAct = BigInt2;
 			BigInteger LucasNext;
-			for (i = 1; i <= Index; i++)
-			{
+			for (i = 1; i <= Index; i++) {
 				LucasNext = LucasPrev.add(LucasAct);
 				LucasPrev = LucasAct;
 				LucasAct = LucasNext;
 			}
 			return LucasAct;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
@@ -6781,24 +5744,20 @@ public class ECM extends Applet implements Runnable
 			BigInteger BigBase,
 			int Expon,
 			BigInteger BigIncre,
-			BigInteger BigOriginal)
-	{
+			BigInteger BigOriginal) {
 		int Expon2, k;
 		int Incre;
 		BigInteger Nro1;
 
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			Incre = BigIncre.intValue();
 			NroFact = 1;
 			Factores[0] = BigOriginal;
 			Expon2 = Expon;
 			Nro1 = BigBase.pow(Expon2).add(BigIncre);
 			InsertFactor(Nro1);
-			if ((digitsInGroup & 0x1000) == 0 && Nro1.bitLength() > 60)
-			{
-				try
-				{ // Get known primitive factors.
+			if ((digitsInGroup & 0x1000) == 0 && Nro1.bitLength() > 60) {
+				try { // Get known primitive factors.
 					lowerTextArea.setText(
 							"Requesting known primitive factors from Web server.");
 					URL script =
@@ -6815,21 +5774,16 @@ public class ECM extends Applet implements Runnable
 					BufferedReader in = new BufferedReader(new InputStreamReader(buffer));
 					String factorsAscii = in.readLine();
 					in.close();
-					if (factorsAscii.length() > 0)
-					{ // Factors found in server.
+					if (factorsAscii.length() > 0) { // Factors found in server.
 						int indexFactors = 0;
 						int newIndexFactors = 0;
-						do
-						{ // Loop through factors.
+						do { // Loop through factors.
 							newIndexFactors = factorsAscii.indexOf('*', indexFactors);
-							if (newIndexFactors > 0)
-							{
+							if (newIndexFactors > 0) {
 								InsertFactor(
 										new BigInteger(
 												factorsAscii.substring(indexFactors, newIndexFactors)));
-							}
-							else
-							{
+							} else {
 								InsertFactor(
 										new BigInteger(factorsAscii.substring(indexFactors)));
 							}
@@ -6837,31 +5791,24 @@ public class ECM extends Applet implements Runnable
 						}
 						while (indexFactors > 0);
 					}
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 				}
 			}
-			while (Expon2 % 2 == 0 && Incre == -1)
-			{
+			while (Expon2 % 2 == 0 && Incre == -1) {
 				Expon2 /= 2;
 				InsertFactor(BigBase.pow(Expon2).add(BigInt1));
 				InsertAurifFactors(BigBase, Expon2, 1);
 			}
 			k = 1;
-			while (k * k <= Expon)
-			{
-				if (Expon % k == 0)
-				{
-					if (k % 2 != 0)
-					{ /* Only for odd exponent */
+			while (k * k <= Expon) {
+				if (Expon % k == 0) {
+					if (k % 2 != 0) { /* Only for odd exponent */
 						Nro1 = BigBase.pow(Expon / k).add(BigIncre).gcd(BigOriginal);
 						InsertFactor(Nro1);
 						InsertFactor(BigOriginal.divide(Nro1));
 						InsertAurifFactors(BigBase, Expon / k, Incre);
 					}
-					if ((Expon / k) % 2 != 0)
-					{ /* Only for odd exponent */
+					if ((Expon / k) % 2 != 0) { /* Only for odd exponent */
 						Nro1 = BigBase.pow(k).add(BigIncre).gcd(BigOriginal);
 						InsertFactor(Nro1);
 						InsertFactor(BigOriginal.divide(Nro1));
@@ -6874,16 +5821,12 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	void InsertAurifFactors(BigInteger BigBase, int Expon, int Incre)
-	{
+	void InsertAurifFactors(BigInteger BigBase, int Expon, int Incre) {
 		int t1, t2, t3, N, N1, q, L, j, k, Base;
-		if (BigBase.compareTo(BigInteger.valueOf(386)) <= 0)
-		{
+		if (BigBase.compareTo(BigInteger.valueOf(386)) <= 0) {
 			Base = BigBase.intValue();
-			if (Expon % 2 == 0 && Incre == -1)
-			{
-				do
-				{
+			if (Expon % 2 == 0 && Incre == -1) {
+				do {
 					Expon /= 2;
 				}
 				while (Expon % 2 == 0);
@@ -6891,28 +5834,21 @@ public class ECM extends Applet implements Runnable
 			}
 			if (Expon % Base == 0
 					&& Expon / Base % 2 != 0
-					&& ((Base % 4 != 1 && Incre == 1) || (Base % 4 == 1 && Incre == -1)))
-			{
+					&& ((Base % 4 != 1 && Incre == 1) || (Base % 4 == 1 && Incre == -1))) {
 				N = Base;
-				if (N % 4 == 1)
-				{
+				if (N % 4 == 1) {
 					N1 = N;
-				}
-				else
-				{
+				} else {
 					N1 = 2 * N;
 				}
 				DegreeAurif = Totient(N1) / 2;
-				for (k = 1; k <= DegreeAurif; k += 2)
-				{
+				for (k = 1; k <= DegreeAurif; k += 2) {
 					AurifQ[k] = JacobiSymbol(N, k);
 				}
-				for (k = 2; k <= DegreeAurif; k += 2)
-				{
+				for (k = 2; k <= DegreeAurif; k += 2) {
 					t1 = k; // Calculate t2 = gcd(k, N1)
 					t2 = N1;
-					while (t1 != 0)
-					{
+					while (t1 != 0) {
 						t3 = t2 % t1;
 						t2 = t1;
 						t1 = t3;
@@ -6920,11 +5856,9 @@ public class ECM extends Applet implements Runnable
 					AurifQ[k] = Moebius(N1 / t2) * Totient(t2) * Cos((N - 1) * k);
 				}
 				Gamma[0] = Delta[0] = 1;
-				for (k = 1; k <= DegreeAurif / 2; k++)
-				{
+				for (k = 1; k <= DegreeAurif / 2; k++) {
 					Gamma[k] = Delta[k] = 0;
-					for (j = 0; j < k; j++)
-					{
+					for (j = 0; j < k; j++) {
 						Gamma[k] =
 								Gamma[k]
 										+ N * AurifQ[2 * k
@@ -6943,23 +5877,18 @@ public class ECM extends Applet implements Runnable
 					Gamma[k] /= 2 * k;
 					Delta[k] = (Delta[k] + Gamma[k]) / (2 * k + 1);
 				}
-				for (k = DegreeAurif / 2 + 1; k <= DegreeAurif; k++)
-				{
+				for (k = DegreeAurif / 2 + 1; k <= DegreeAurif; k++) {
 					Gamma[k] = Gamma[DegreeAurif - k];
 				}
-				for (k = (DegreeAurif + 1) / 2; k < DegreeAurif; k++)
-				{
+				for (k = (DegreeAurif + 1) / 2; k < DegreeAurif; k++) {
 					Delta[k] = Delta[DegreeAurif - k - 1];
 				}
 				q = Expon / Base;
 				L = 1;
-				while (L * L <= q)
-				{
-					if (q % L == 0)
-					{
+				while (L * L <= q) {
+					if (q % L == 0) {
 						GetAurifeuilleFactor(L, BigBase);
-						if (q != L * L)
-						{
+						if (q != L * L) {
 							GetAurifeuilleFactor(q / L, BigBase);
 						}
 					}
@@ -6968,25 +5897,21 @@ public class ECM extends Applet implements Runnable
 			}
 		}
 	}
+
 	// Sort the factors
-	void SortFactors()
-	{
+	void SortFactors() {
 		int j, k;
 		BigInteger Nro1;
-		for (k = 0; k < NroFact - 1; k++)
-		{
-			for (j = k + 1; j < NroFact; j++)
-			{
-				if (Factores[k].compareTo(Factores[j]) > 0)
-				{
+		for (k = 0; k < NroFact - 1; k++) {
+			for (j = k + 1; j < NroFact; j++) {
+				if (Factores[k].compareTo(Factores[j]) > 0) {
 					Nro1 = Factores[k];
 					Factores[k] = Factores[j];
 					Factores[j] = Nro1;
 				}
 			}
 		}
-		for (k = 0; k < NroFact; k++)
-		{
+		for (k = 0; k < NroFact; k++) {
 			PD[NbrFactors + k - 1] = Factores[k];
 			Exp[NbrFactors + k - 1] = 1;
 			Typ[NbrFactors + k - 1] = -1; /* Unknown */
@@ -6994,35 +5919,28 @@ public class ECM extends Applet implements Runnable
 		NbrFactors += k - 1;
 	}
 
-	int JacobiSymbol(int M, int Q)
-	{
+	int JacobiSymbol(int M, int Q) {
 		int k, t1, t2, t3, jacobi;
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 
 			// Calculate gcd(M,Q)
 
 			t1 = M;
 			t2 = Q;
-			while (t1 != 0)
-			{
+			while (t1 != 0) {
 				t3 = t2 % t1;
 				t2 = t1;
 				t1 = t3;
 			}
-			if (t2 > 1)
-			{
+			if (t2 > 1) {
 				return 0;
 			}
 			jacobi = 1;
-			while (Q % 2 == 0)
-			{
+			while (Q % 2 == 0) {
 				Q /= 2;
 			}
-			if (Q % 3 == 0)
-			{
-				do
-				{
+			if (Q % 3 == 0) {
+				do {
 					jacobi = (jacobi * M) % 3;
 					Q /= 3;
 				}
@@ -7031,16 +5949,12 @@ public class ECM extends Applet implements Runnable
 			}
 
 			k = 5;
-			while (k * k <= Q)
-			{
-				if (k % 3 != 0)
-				{
-					while (Q % k == 0)
-					{
+			while (k * k <= Q) {
+				if (k % 3 != 0) {
+					while (Q % k == 0) {
 						Q /= k;
 						jacobi = (jacobi + k) % k;
-						for (t1 = (k - 1) / 2; t1 > 0; t1--)
-						{
+						for (t1 = (k - 1) / 2; t1 > 0; t1--) {
 							jacobi = jacobi * M % k;
 						}
 						jacobi = (jacobi + 1) % k - 1;
@@ -7048,168 +5962,131 @@ public class ECM extends Applet implements Runnable
 				}
 				k += 2;
 			}
-			if (Q > 1)
-			{
+			if (Q > 1) {
 				jacobi = (jacobi + Q) % Q;
-				for (t1 = (Q - 1) / 2; t1 > 0; t1--)
-				{
+				for (t1 = (Q - 1) / 2; t1 > 0; t1--) {
 					jacobi = jacobi * M % Q;
 				}
 				jacobi = (jacobi + 1) % Q - 1;
 			}
 			return jacobi;
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
 
-	static int Cos(int N)
-	{
-		switch (N % 8)
-		{
-			case 0 :
+	static int Cos(int N) {
+		switch (N % 8) {
+			case 0:
 				return 1;
-			case 4 :
+			case 4:
 				return -1;
 		}
 		return 0;
 	}
 
-	int Totient(int N)
-	{
+	int Totient(int N) {
 		int totient, q, k;
 
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			totient = q = N;
-			if (q % 2 == 0)
-			{
+			if (q % 2 == 0) {
 				totient /= 2;
-				do
-				{
+				do {
 					q /= 2;
 				}
 				while (q % 2 == 0);
 			}
-			if (q % 3 == 0)
-			{
+			if (q % 3 == 0) {
 				totient = totient * 2 / 3;
-				do
-				{
+				do {
 					q /= 3;
 				}
 				while (q % 3 == 0);
 			}
 			k = 5;
-			while (k * k <= q)
-			{
-				if (k % 3 != 0 && q % k == 0)
-				{
+			while (k * k <= q) {
+				if (k % 3 != 0 && q % k == 0) {
 					totient = totient * (k - 1) / k;
-					do
-					{
+					do {
 						q /= k;
 					}
 					while (q % k == 0);
 				}
 				k += 2;
 			}
-			if (q > 1)
-			{
+			if (q > 1) {
 				totient = totient * (q - 1) / q;
 			}
 			return totient;
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
 
-	int Moebius(int N)
-	{
+	int Moebius(int N) {
 		int moebius, q, k;
 
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			moebius = 1;
 			q = N;
-			if (q % 2 == 0)
-			{
+			if (q % 2 == 0) {
 				moebius = -moebius;
 				q /= 2;
-				if (q % 2 == 0)
-				{
+				if (q % 2 == 0) {
 					return 0;
 				}
 			}
-			if (q % 3 == 0)
-			{
+			if (q % 3 == 0) {
 				moebius = -moebius;
 				q /= 3;
-				if (q % 3 == 0)
-				{
+				if (q % 3 == 0) {
 					return 0;
 				}
 			}
 			k = 5;
-			while (k * k <= q)
-			{
-				if (k % 3 != 0)
-				{
-					while (q % k == 0)
-					{
+			while (k * k <= q) {
+				if (k % 3 != 0) {
+					while (q % k == 0) {
 						moebius = -moebius;
 						q /= k;
-						if (q % k == 0)
-						{
+						if (q % k == 0) {
 							return 0;
 						}
 					}
 				}
 				k += 2;
 			}
-			if (q > 1)
-			{
+			if (q > 1) {
 				moebius = -moebius;
 			}
 			return moebius;
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
 
-	void InsertFactor(BigInteger N)
-	{
+	void InsertFactor(BigInteger N) {
 		int g;
 
-		for (g = NroFact - 1; g >= 0; g--)
-		{
+		for (g = NroFact - 1; g >= 0; g--) {
 			Factores[NroFact] = Factores[g].gcd(N);
 			if (!Factores[NroFact].equals(BigInt1) &&
-					!Factores[NroFact].equals(Factores[g]))
-			{
+					!Factores[NroFact].equals(Factores[g])) {
 				Factores[g] = Factores[g].divide(Factores[NroFact]);
 				NroFact++;
 			}
 		}
 	}
 
-	void GetAurifeuilleFactor(int L, BigInteger BigBase)
-	{
+	void GetAurifeuilleFactor(int L, BigInteger BigBase) {
 		BigInteger X, Csal, Dsal, Nro1;
 		int k;
 
-		if (onlyFactoring)
-		{
+		if (onlyFactoring) {
 			X = BigBase.pow(L);
 			Csal = Dsal = BigInt1;
-			for (k = 1; k < DegreeAurif; k++)
-			{
+			for (k = 1; k < DegreeAurif; k++) {
 				Csal = Csal.multiply(X).add(BigInteger.valueOf(Gamma[k]));
 				Dsal = Dsal.multiply(X).add(BigInteger.valueOf(Delta[k]));
 			}
@@ -7220,10 +6097,8 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	boolean ComputeFourSquares(BigInteger PD[], int Exp[])
-	{
-		if (onlyFactoring)
-		{
+	boolean ComputeFourSquares(BigInteger PD[], int Exp[]) {
+		if (onlyFactoring) {
 			int indexPrimes;
 			BigInteger p, q, K, Mult1, Mult2, Mult3, Mult4;
 			BigInteger Tmp, Tmp1, Tmp2, Tmp3, M1, M2, M3, M4;
@@ -7232,71 +6107,55 @@ public class ECM extends Applet implements Runnable
 			Quad2 = BigInt0;
 			Quad3 = BigInt0;
 			Quad4 = BigInt0;
-			for (indexPrimes = NbrFactors - 1; indexPrimes >= 0; indexPrimes--)
-			{
-				if (Exp[indexPrimes] % 2 == 0)
-				{
+			for (indexPrimes = NbrFactors - 1; indexPrimes >= 0; indexPrimes--) {
+				if (Exp[indexPrimes] % 2 == 0) {
 					continue;
 				}
 				p = PD[indexPrimes];
 				q = p.subtract(BigInt1); /* q = p-1 */
-				if (p.equals(BigInt2))
-				{
+				if (p.equals(BigInt2)) {
 					Mult1 = BigInt1; /* 2 = 1^2 + 1^2 + 0^2 + 0^2 */
 					Mult2 = BigInt1;
 					Mult3 = BigInt0;
 					Mult4 = BigInt0;
-				}
-				else
-				{ /* Prime not 2 */
-					if (!p.testBit(1))
-					{ /* if p = 1 (mod 4) */
+				} else { /* Prime not 2 */
+					if (!p.testBit(1)) { /* if p = 1 (mod 4) */
 						K = BigInt1;
-						do
-						{ // Compute Mult1 = sqrt(-1) mod p
+						do { // Compute Mult1 = sqrt(-1) mod p
 							K = K.add(BigInt1);
 							Mult1 = K.modPow(q.shiftRight(2), p);
 						}
 						while (Mult1.equals(BigInt1) || Mult1.equals(q));
-						if (!Mult1.multiply(Mult1).mod(p).equals(q))
-						{
+						if (!Mult1.multiply(Mult1).mod(p).equals(q)) {
 							return false; /* The number is not prime */
 						}
 						Mult2 = BigInt1;
-						for (;;)
-						{
+						for (; ; ) {
 							K = Mult1.multiply(Mult1).add(Mult2.multiply(Mult2)).divide(p);
-							if (K.equals(BigInt1))
-							{
+							if (K.equals(BigInt1)) {
 								Mult3 = BigInt0;
 								Mult4 = BigInt0;
 								break;
 							}
-							if (p.mod(K).signum() == 0)
-							{
+							if (p.mod(K).signum() == 0) {
 								return false; /* The number is not prime */
 							}
 							M1 = Mult1.mod(K);
 							M2 = Mult2.mod(K);
-							if (M1.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M1.compareTo(K.shiftRight(1)) > 0) {
 								M1 = M1.subtract(K);
 							}
-							if (M2.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M2.compareTo(K.shiftRight(1)) > 0) {
 								M2 = M2.subtract(K);
 							}
 							Tmp = Mult1.multiply(M1).add(Mult2.multiply(M2)).divide(K);
 							Mult2 = Mult1.multiply(M2).subtract(Mult2.multiply(M1)).divide(K);
 							Mult1 = Tmp;
 						} /* end while */
-					} /* end p = 1 (mod 4) */
-					else
-					{ /* if p = 3 (mod 4) */
+					} /* end p = 1 (mod 4) */ else { /* if p = 3 (mod 4) */
 						// Compute Mult1 and Mult2 so Mult1^2 + Mult2^2 = -1 (mod p)
 						Mult1 = BigInt0;
-						do
-						{
+						do {
 							Mult1 = Mult1.add(BigInt1);
 						}
 						while (BigInt1
@@ -7311,8 +6170,7 @@ public class ECM extends Applet implements Runnable
 										p);
 						Mult3 = BigInt1;
 						Mult4 = BigInt0;
-						for (;;)
-						{
+						for (; ; ) {
 							K =
 									Mult1
 											.multiply(Mult1)
@@ -7320,22 +6178,16 @@ public class ECM extends Applet implements Runnable
 											.add(Mult3.multiply(Mult3))
 											.add(Mult4.multiply(Mult4))
 											.divide(p);
-							if (K.equals(BigInt1))
-							{
+							if (K.equals(BigInt1)) {
 								break;
 							}
-							if (!K.testBit(0))
-							{ // If K is even ...
-								if (Mult1.add(Mult2).testBit(0))
-								{
-									if (!Mult1.add(Mult3).testBit(0))
-									{
+							if (!K.testBit(0)) { // If K is even ...
+								if (Mult1.add(Mult2).testBit(0)) {
+									if (!Mult1.add(Mult3).testBit(0)) {
 										Tmp = Mult2;
 										Mult2 = Mult3;
 										Mult3 = Tmp;
-									}
-									else
-									{
+									} else {
 										Tmp = Mult2;
 										Mult2 = Mult4;
 										Mult4 = Tmp;
@@ -7354,20 +6206,16 @@ public class ECM extends Applet implements Runnable
 							M2 = Mult2.mod(K);
 							M3 = Mult3.mod(K);
 							M4 = Mult4.mod(K);
-							if (M1.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M1.compareTo(K.shiftRight(1)) > 0) {
 								M1 = M1.subtract(K);
 							}
-							if (M2.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M2.compareTo(K.shiftRight(1)) > 0) {
 								M2 = M2.subtract(K);
 							}
-							if (M3.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M3.compareTo(K.shiftRight(1)) > 0) {
 								M3 = M3.subtract(K);
 							}
-							if (M4.compareTo(K.shiftRight(1)) > 0)
-							{
+							if (M4.compareTo(K.shiftRight(1)) > 0) {
 								M4 = M4.subtract(K);
 							}
 							Tmp1 =
@@ -7430,8 +6278,7 @@ public class ECM extends Applet implements Runnable
 				Quad2 = Tmp2;
 				Quad1 = Tmp1;
 			} /* end for indexPrimes */
-			for (indexPrimes = 0; indexPrimes < NbrFactors; indexPrimes++)
-			{
+			for (indexPrimes = 0; indexPrimes < NbrFactors; indexPrimes++) {
 				p = PD[indexPrimes].pow(Exp[indexPrimes] / 2);
 				Quad1 = Quad1.multiply(p);
 				Quad2 = Quad2.multiply(p);
@@ -7443,38 +6290,32 @@ public class ECM extends Applet implements Runnable
 			Quad3 = Quad3.abs();
 			Quad4 = Quad4.abs();
 			// Sort squares
-			if (Quad1.compareTo(Quad2) < 0)
-			{
+			if (Quad1.compareTo(Quad2) < 0) {
 				Tmp = Quad1;
 				Quad1 = Quad2;
 				Quad2 = Tmp;
 			}
-			if (Quad1.compareTo(Quad3) < 0)
-			{
+			if (Quad1.compareTo(Quad3) < 0) {
 				Tmp = Quad1;
 				Quad1 = Quad3;
 				Quad3 = Tmp;
 			}
-			if (Quad1.compareTo(Quad4) < 0)
-			{
+			if (Quad1.compareTo(Quad4) < 0) {
 				Tmp = Quad1;
 				Quad1 = Quad4;
 				Quad4 = Tmp;
 			}
-			if (Quad2.compareTo(Quad3) < 0)
-			{
+			if (Quad2.compareTo(Quad3) < 0) {
 				Tmp = Quad2;
 				Quad2 = Quad3;
 				Quad3 = Tmp;
 			}
-			if (Quad2.compareTo(Quad4) < 0)
-			{
+			if (Quad2.compareTo(Quad4) < 0) {
 				Tmp = Quad2;
 				Quad2 = Quad4;
 				Quad4 = Tmp;
 			}
-			if (Quad3.compareTo(Quad4) < 0)
-			{
+			if (Quad3.compareTo(Quad4) < 0) {
 				Tmp = Quad3;
 				Quad3 = Quad4;
 				Quad4 = Tmp;
@@ -7483,14 +6324,11 @@ public class ECM extends Applet implements Runnable
 		return true;
 	}
 
-	private long modPow(long NbrMod, long Expon, long currentPrime)
-	{
+	private long modPow(long NbrMod, long Expon, long currentPrime) {
 		long Power = 1;
 		long Square = NbrMod;
-		while (Expon != 0)
-		{
-			if ((Expon & 1) == 1)
-			{
+		while (Expon != 0) {
+			if ((Expon & 1) == 1) {
 				Power = (Power * Square) % currentPrime;
 			}
 			Square = (Square * Square) % currentPrime;
@@ -7499,8 +6337,7 @@ public class ECM extends Applet implements Runnable
 		return Power;
 	}
 
-	public String StartFactorExprBatch(String inputStr, int type)
-	{
+	public String StartFactorExprBatch(String inputStr, int type) {
 		batchFinished = false;
 		this.inputStr = inputStr;
 		batchPrime = (type == 1);
@@ -7509,8 +6346,7 @@ public class ECM extends Applet implements Runnable
 		return "";
 	}
 
-	void BatchThread()
-	{
+	void BatchThread() {
 		outputStr = new StringBuffer();
 		String expr, firstN, nextN, endExpression, ExpressionToCompute;
 		int StrLen = inputStr.length();
@@ -7521,107 +6357,85 @@ public class ECM extends Applet implements Runnable
 		BigInteger ExpressionResult[] = new BigInteger[1];
 		textNumber.setEditable(false);
 		labelTop.setText("Number to factor:");
-		while (index < StrLen)
-		{
+		while (index < StrLen) {
 			newIndex = inputStr.indexOf('\n', index);
-			if (newIndex < 0)
-			{                // No line feed found, it means last line.
+			if (newIndex < 0) {                // No line feed found, it means last line.
 				newIndex = StrLen;
 			}
 			expr = inputStr.substring(index, newIndex).trim();
 			index = newIndex + 1;
-			if (expr.length() == 0)
-			{                      // Replicate blank line.
+			if (expr.length() == 0) {                      // Replicate blank line.
 				outputStr.append('\n');
-			}
-			else if (expr.charAt(0) == '#')
-			{                      // Replicate comment.
+			} else if (expr.charAt(0) == '#') {                      // Replicate comment.
 				outputStr.append(expr);
 				outputStr.append('\n');
-			}
-			else if (expr.charAt(0) == 'x')
-			{                      // Loop command.
+			} else if (expr.charAt(0) == 'x') {                      // Loop command.
 				newIndex = expr.indexOf(';');
-				if (newIndex < 0)
-				{                    // Semicolon not found.
+				if (newIndex < 0) {                    // Semicolon not found.
 					outputStr.append(expr);
 					outputStr.append(": three semicolons expected but none found.\n");
 					continue;
 				}
-				if (expr.length() < 3)
-				{
+				if (expr.length() < 3) {
 					outputStr.append(expr);
 					outputStr.append(": initial expression too short\n");
 					continue;
 				}
 				firstN = expr.substring(2, newIndex);
-				if (expr.charAt(1) != '=')
-				{
+				if (expr.charAt(1) != '=') {
 					outputStr.append(expr);
 					outputStr.append(": Syntax error on first expression.\n");
 					continue;
 				}
-				if (!evaluateExpression(1, firstN, ExpressionResult))
-				{
+				if (!evaluateExpression(1, firstN, ExpressionResult)) {
 					continue;
 				}
 				N = ExpressionResult[0];
-				newIndex2 = expr.indexOf(';', newIndex+1);
-				if (newIndex2 < 0)
-				{                    // Semicolon not found.
+				newIndex2 = expr.indexOf(';', newIndex + 1);
+				if (newIndex2 < 0) {                    // Semicolon not found.
 					outputStr.append(expr);
 					outputStr.append(": three semicolons expected but only one found\n");
 					continue;
 				}
-				nextN = expr.substring(newIndex+1, newIndex2);
+				nextN = expr.substring(newIndex + 1, newIndex2);
 				if (nextN.length() < 3 ||
-						nextN.charAt(0) != 'x' || nextN.charAt(1) != '=')
-				{
+						nextN.charAt(0) != 'x' || nextN.charAt(1) != '=') {
 					outputStr.append(expr);
 					outputStr.append(": Syntax error on next expression.\n");
 					continue;
 				}
 				nextN = nextN.substring(2);
-				newIndex3 = expr.indexOf(';', newIndex2+1);
-				if (newIndex3 < 0)
-				{                    // Semicolon not found.
+				newIndex3 = expr.indexOf(';', newIndex2 + 1);
+				if (newIndex3 < 0) {                    // Semicolon not found.
 					outputStr.append(expr);
 					outputStr.append(": three semicolons expected but only two found\n");
 					continue;
 				}
-				endExpression = expr.substring(newIndex2+1, newIndex3);
-				ExpressionToCompute = expr.substring(newIndex3+1);
+				endExpression = expr.substring(newIndex2 + 1, newIndex3);
+				ExpressionToCompute = expr.substring(newIndex3 + 1);
 				counter = 1;
-				for (;;)
-				{
+				for (; ; ) {
 					if (!computeExpression(endExpression, N, counter,
-							ExpressionResult))
-					{
+							ExpressionResult)) {
 						break;
 					}
-					if (ExpressionResult[0].signum() > 0)
-					{                  // Go out if the end expression is > 0.
+					if (ExpressionResult[0].signum() > 0) {                  // Go out if the end expression is > 0.
 						break;
 					}
 					if (!computeExpression(ExpressionToCompute, N, counter,
-							ExpressionResult))
-					{
+							ExpressionResult)) {
 						break;
 					}
 					factorExpression(ExpressionResult);
 					if (!computeExpression(nextN, N, counter,
-							ExpressionResult))
-					{
+							ExpressionResult)) {
 						break;
 					}
 					N = ExpressionResult[0];
 					counter++;
 				}
-			}
-			else
-			{
-				if (!evaluateExpression(0, expr, ExpressionResult))
-				{
+			} else {
+				if (!evaluateExpression(0, expr, ExpressionResult)) {
 					continue;
 				}
 				factorExpression(ExpressionResult);
@@ -7639,21 +6453,14 @@ public class ECM extends Applet implements Runnable
 	}
 
 	private boolean computeExpression(String expr, BigInteger N, int counter,
-	                                  BigInteger [] ExpressionResult)
-	{
+	                                  BigInteger[] ExpressionResult) {
 		StringBuffer varsReplaced = new StringBuffer();
-		for (int i=0; i<expr.length(); i++)
-		{
-			if (expr.charAt(i) == 'x')
-			{
+		for (int i = 0; i < expr.length(); i++) {
+			if (expr.charAt(i) == 'x') {
 				varsReplaced.append(N.toString());
-			}
-			else if (expr.charAt(i) == 'i')
-			{
+			} else if (expr.charAt(i) == 'i') {
 				varsReplaced.append(counter);
-			}
-			else
-			{
+			} else {
 				varsReplaced.append(expr.charAt(i));
 			}
 		}
@@ -7661,187 +6468,132 @@ public class ECM extends Applet implements Runnable
 	}
 
 	private boolean evaluateExpression(int type, String expr,
-	                                   BigInteger [] ExpressionResult)
-	{
+	                                   BigInteger[] ExpressionResult) {
 		int ExpressionRC;
-		try
-		{
+		try {
 			ExpressionRC =
 					Expression.ComputeExpression(
 							expr,
 							type,
 							ExpressionResult);
-		}
-		catch (OutOfMemoryError e)
-		{
+		} catch (OutOfMemoryError e) {
 			outputStr.append(expr);
 			outputStr.append(": Out of memory\n");
 			return false;
-		}
-		catch (ArithmeticException e)
-		{
+		} catch (ArithmeticException e) {
 			return false;
 		}
-		if (ExpressionRC > 1)
-		{
+		if (ExpressionRC > 1) {
 			outputStr.append(expr);
-			outputStr.append(": "+expressionText[-2 - ExpressionRC]);
+			outputStr.append(": " + expressionText[-2 - ExpressionRC]);
 			outputStr.append('\n');
 			return false;
 		}
 		return true;
 	}
 
-	private void factorExpression(BigInteger [] ExpressionResult)
-	{
+	private void factorExpression(BigInteger[] ExpressionResult) {
 		int i;
 		NumberToFactor = ExpressionResult[0];
 		BigInteger AbsNumberToFactor = NumberToFactor.abs();
-		if (batchPrime)
-		{
-			if (AbsNumberToFactor.compareTo(BigInt3) <= 0)
-			{
+		if (batchPrime) {
+			if (AbsNumberToFactor.compareTo(BigInt3) <= 0) {
 				NbrFactors = 0;     // Indicate it is prime (2 or 3).
-			}
-			else if (BigInt3.modPow(AbsNumberToFactor.subtract(BigInt1),
-					AbsNumberToFactor).equals(BigInt1))
-			{                // Pseudoprime
-				if (AbsNumberToFactor.bitLength() < 34)
-				{                    // Small number
+			} else if (BigInt3.modPow(AbsNumberToFactor.subtract(BigInt1),
+					AbsNumberToFactor).equals(BigInt1)) {                // Pseudoprime
+				if (AbsNumberToFactor.bitLength() < 34) {                    // Small number
 					long modulus = AbsNumberToFactor.longValue();
-					if (modulus % 2 == 0)
-					{
+					if (modulus % 2 == 0) {
 						NbrFactors = 1;     // Indicate it is composite.
-					}
-					else
-					{
+					} else {
 						NbrFactors = 0;     // Indicate prime in advance.
-						for (long Div = 3; Div*Div <= modulus; Div += 2)
-						{
-							if (modulus % Div == 0)
-							{
+						for (long Div = 3; Div * Div <= modulus; Div += 2) {
+							if (modulus % Div == 0) {
 								NbrFactors = 1;     // Indicate it is composite.
 								break;
 							}
 						}
 					}
-				}
-				else
-				{                      // Large number.
+				} else {                      // Large number.
 					textNumber.setText(NumberToFactor.toString());
 					startNewFactorization(true); // Request complete factorization
-					if (NbrFactors == 1 && Exp[0] == 1)
-					{
+					if (NbrFactors == 1 && Exp[0] == 1) {
 						NbrFactors = 0;    // Indicate number prime
 					}
 				}
-			}
-			else
-			{                        // Pseudoprime test indicate composite.
+			} else {                        // Pseudoprime test indicate composite.
 				NbrFactors = 1;        // Indicate number composite.
 			}
-		}
-		else
-		{
-			if (AbsNumberToFactor.compareTo(BigInt1) <= 0)
-			{
-			}
-			else if (AbsNumberToFactor.bitLength() < 34)
-			{                    // Small number
+		} else {
+			if (AbsNumberToFactor.compareTo(BigInt1) <= 0) {
+			} else if (AbsNumberToFactor.bitLength() < 34) {                    // Small number
 				long modulus = AbsNumberToFactor.longValue();
 				int Expon = 0;
 				i = 0;
-				while (modulus % 2 == 0)
-				{
+				while (modulus % 2 == 0) {
 					Expon++;
 					modulus /= 2;
 				}
-				if (Expon > 0)
-				{
+				if (Expon > 0) {
 					PD[0] = BigInt2;
 					Exp[0] = Expon;
 					i++;
 				}
 				long Div = 3;
-				while (Div*Div <= modulus)
-				{
+				while (Div * Div <= modulus) {
 					Expon = 0;
-					while (modulus % Div == 0)
-					{
+					while (modulus % Div == 0) {
 						Expon++;
 						modulus /= Div;
 					}
-					if (Expon > 0)
-					{
+					if (Expon > 0) {
 						PD[i] = BigInteger.valueOf(Div);
 						Exp[i] = Expon;
 						i++;
 					}
 					Div += 2;
 				}
-				if (modulus > 1)
-				{
+				if (modulus > 1) {
 					PD[i] = BigInteger.valueOf(modulus);
 					Exp[i] = 1;
 					i++;
 				}
 				NbrFactors = i;
-			}
-			else
-			{
+			} else {
 				textNumber.setText(NumberToFactor.toString());
 				startNewFactorization(true);     // Request complete factorization
-				if (numberIsNegative)
-				{
+				if (numberIsNegative) {
 					NumberToFactor = NumberToFactor.negate();
 				}
 			}
 		}
 		outputStr.append(NumberToFactor.toString());
-		if (batchPrime)
-		{               // Test primality
-			if (AbsNumberToFactor.signum() == 0)
-			{
+		if (batchPrime) {               // Test primality
+			if (AbsNumberToFactor.signum() == 0) {
 				outputStr.append(" is a zero\n");
 			}
-			if (AbsNumberToFactor.compareTo(BigInt1) == 0)
-			{
+			if (AbsNumberToFactor.compareTo(BigInt1) == 0) {
 				outputStr.append(" is a unit\n");
-			}
-			else if (NbrFactors == 0)
-			{
+			} else if (NbrFactors == 0) {
 				outputStr.append(" is prime\n");
-			}
-			else
-			{
+			} else {
 				outputStr.append(" is composite\n");
 			}
-		}
-		else
-		{               // Perform complete factorization
-			if (AbsNumberToFactor.compareTo(BigInt1) <= 0)
-			{
-				outputStr.append(" = "+NumberToFactor.toString()+"\n");
-			}
-			else
-			{
-				if (NumberToFactor.signum() < 0)
-				{
+		} else {               // Perform complete factorization
+			if (AbsNumberToFactor.compareTo(BigInt1) <= 0) {
+				outputStr.append(" = " + NumberToFactor.toString() + "\n");
+			} else {
+				if (NumberToFactor.signum() < 0) {
 					outputStr.append(" = -1 * ");
-				}
-				else
-				{
+				} else {
 					outputStr.append(" = ");
 				}
-				for (i=0; i<NbrFactors; i++)
-				{
-					if (i > 0)
-					{
+				for (i = 0; i < NbrFactors; i++) {
+					if (i > 0) {
 						outputStr.append(" * ");
 					}
 					outputStr.append(PD[i].toString());
-					if (Exp[i] > 1)
-					{
+					if (Exp[i] > 1) {
 						outputStr.append('^');
 						outputStr.append(Exp[i]);
 					}
@@ -7851,101 +6603,74 @@ public class ECM extends Applet implements Runnable
 		}
 	}
 
-	public String resultBatch()
-	{
-		if (batchFinished)
-		{
+	public String resultBatch() {
+		if (batchFinished) {
 			return outputStr.toString();
 		}
 		return "";
 	}
-	class Command implements ActionListener
-	{
+
+	class Command implements ActionListener {
 		int id;
 		ECM appletEcm;
 
-		public Command(int id, ECM appletEcm)
-		{
+		public Command(int id, ECM appletEcm) {
 			this.id = id;
 			this.appletEcm = appletEcm;
 		}
 
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			int nbrEntered;
-			switch (id)
-			{
-				case ACTION_TEXT_NBR :
-					if (calcThread != null && calcThread.isAlive())
-					{
+			switch (id) {
+				case ACTION_TEXT_NBR:
+					if (calcThread != null && calcThread.isAlive()) {
 						new AlertContinue(appletEcm); // Pop up alert
-					}
-					else
-					{
+					} else {
 						startNewFactorization(false);    // Start new factorization.
 					}
 					break;
-				case ACTION_TEXT_CURVE :
-				case ACTION_BTN_CURVE :
-					try
-					{
+				case ACTION_TEXT_CURVE:
+				case ACTION_BTN_CURVE:
+					try {
 						nbrEntered = Integer.parseInt(textCurve.getText());
-					}
-					catch (Exception exc)
-					{
+					} catch (Exception exc) {
 						nbrEntered = -1;
 					}
-					if (nbrEntered >= 0 && nbrEntered < 100000000)
-					{
+					if (nbrEntered >= 0 && nbrEntered < 100000000) {
 						NextEC = nbrEntered;
-						if (calcThread != null)
-						{
+						if (calcThread != null) {
 							TerminateThread = true;
-							try
-							{
+							try {
 								// Wait until the factorization thread dies
 								calcThread.join();
-							}
-							catch (InterruptedException ie)
-							{
+							} catch (InterruptedException ie) {
 							}
 						}
-						if (NextEC == 0)
-						{
+						if (NextEC == 0) {
 							NextEC = TYP_SIQS + EC;
 							forcedECM = false;
-						}
-						else
-						{
+						} else {
 							forcedECM = true;
 						}
 						calcThread = new Thread(appletEcm); // Start factorization thread
 						calcThread.start();
 					}
 					break;
-				case ACTION_TEXT_FACTOR :
-				case ACTION_BTN_FACTOR :
-					try
-					{
+				case ACTION_TEXT_FACTOR:
+				case ACTION_BTN_FACTOR:
+					try {
 						InputFactor = new BigInteger(textFactor.getText().trim());
-					}
-					catch (Exception exc)
-					{
+					} catch (Exception exc) {
 						InputFactor = BigInt0;
 					}
 
-					if (InputFactor.compareTo(BigInt1) > 0)
-					{
-						if (calcThread != null)
-						{
+					if (InputFactor.compareTo(BigInt1) > 0) {
+						if (calcThread != null) {
 							TerminateThread = true;
-							try
-							{
+							try {
 								// Wait until the factorization thread dies
 								calcThread.join();
-							}
-							catch (InterruptedException ie)
-							{
+							} catch (InterruptedException ie) {
 							}
 						}
 						InsertNewFactor(InputFactor);
@@ -7961,92 +6686,5 @@ public class ECM extends Applet implements Runnable
 } /* end applet */
 /* end applet */
 
-class AlertContinue extends Frame
-{
-	static final long serialVersionUID = 30L;
-
-	public AlertContinue(ECM applet)
-	{
-		super("Warning!");
-		Label label1, label2;
-		Button buttonYes, buttonNo;
-		ActionListener al = new AlertActionListener(applet);
-		setSize(400, 210);
-		setVisible(true);
-		setLayout(null);
-		label1 = new Label("A factorization is still in progress!", Label.CENTER);
-		label2 =
-				new Label("Do you want to stop it and start a new one?", Label.CENTER);
-		label1.setFont(new Font("Helvetica", Font.PLAIN, 12));
-		label2.setFont(new Font("Helvetica", Font.PLAIN, 12));
-		buttonYes = new Button("Yes");
-		buttonNo = new Button("No");
-		label1.setBounds(new Rectangle(25, 40, 350, 20));
-		label2.setBounds(new Rectangle(25, 70, 350, 20));
-		buttonYes.setBounds(new Rectangle(100, 130, 40, 30));
-		buttonYes.setActionCommand("Yes");
-		buttonYes.addActionListener(al);
-		buttonNo.setBounds(new Rectangle(260, 130, 40, 30));
-		buttonNo.setActionCommand("No");
-		buttonNo.addActionListener(al);
-		add(label1);
-		add(label2);
-		add(buttonYes);
-		add(buttonNo);
-		buttonNo.requestFocus();
-		validate();
-	}
-}
-
-class AlertActionListener implements ActionListener
-{
-	private ECM appletEcm;
-	public AlertActionListener(ECM myApplet)
-	{
-		appletEcm = myApplet;
-	}
-
-	public void actionPerformed(ActionEvent e)
-	{
-		String s = e.getActionCommand();
-		if (s.equals("Yes"))
-		{
-			appletEcm.startNewFactorization(false);  // Start new factorization.
-		}
-		((Frame)((Component)e.getSource()).getParent()).dispose();
-	}
-
-} /* end class */
 /* end class */
 
-class PanelWindowListener implements WindowListener
-{
-	public void windowClosing(WindowEvent arg0)
-	{
-		System.exit(0);
-	}
-
-	public void windowOpened(WindowEvent arg0)
-	{
-	}
-
-	public void windowClosed(WindowEvent arg0)
-	{
-	}
-
-	public void windowIconified(WindowEvent arg0)
-	{
-	}
-
-	public void windowDeiconified(WindowEvent arg0)
-	{
-	}
-
-	public void windowActivated(WindowEvent arg0)
-	{
-	}
-
-	public void windowDeactivated(WindowEvent arg0)
-	{
-	}
-}
